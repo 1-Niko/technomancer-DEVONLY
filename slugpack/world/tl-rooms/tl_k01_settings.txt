@@ -1,0 +1,13 @@
+Template: NONE
+WaveSpeed: 0.50288
+WaveLength: 0.99856
+WaveAmplitude: 0.04736541
+SecondWaveLength: 0.1666667
+SecondWaveAmplitude: 0
+Grime: 0.25
+Palette: 8
+EffectColorA: 19
+EffectColorB: 18
+Effects: LightRain-0.3152174-20-20, 
+AmbientSounds: OMNI><AM_ENV-LightWind.ogg><745.0867><519.3655><0.2934783><1, 
+FadePalette: 14, 0.4782609, 0.5978261, 0.6521739, 0.6630435, 0.6847826, 0.6630435, 0.6847826, 0.6847826, 0.6956522, 0.7173913, 0.7173913

@@ -1,0 +1,13 @@
+Template: NONE
+DangerType: Flood
+WaveSpeed: 0.5
+WaveLength: 0.75
+WaveAmplitude: 0.04764494
+SecondWaveLength: 0.1666667
+SecondWaveAmplitude: 0
+Grime: 0.07608695
+BkgDroneVolume: 0
+Palette: 17
+Effects: SilenceWater-1-20-20, HeatWave-0.1521739-18-79, VoidMelt-0.1630435-15-129, LethalWater-1-295-313, LavaSurface-1-1083-119, WaterFluxMinLevel-0.1086956-287-38, WaterFluxMaxLevel-0.3478261-285-100, WaterFluxFrequency-0.4782609-279-150, WaterFluxMinDelay-0.173913-270-207, WaterFluxMaxDelay-0.1086956-267-260, WaterFluxOffset-0.5543478-550-329, 
+AmbientSounds: OMNI><AM_ENV-SubTerr.ogg><832.449><648.2303><0.3913043><1, OMNI><AM_SUB-BlankState.ogg><655.7352><648.0505><0.3369565><1, SPOT><SO_WAT-LilDrips.ogg><61.28461><504.303><0.1630435><1><466.2846><1444.303><-255.3553><-65.35535><0><0.4260871, SPOT><SO_IND-Boiler.ogg><742.2867><321.8034><0.2826087><0.7652174><457.2867><1226.803><-167.3553><-112.3553><0><0.3717393, 
+FadePalette: 31, 0.2717391, 1, 0.1086956

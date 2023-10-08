@@ -1,0 +1,13 @@
+Template: NONE
+DangerType: FloodAndRain
+WaveSpeed: 0.4955857
+WaveLength: 0.9977929
+WaveAmplitude: 0.08881611
+SecondWaveLength: 0.1666667
+SecondWaveAmplitude: 0
+Palette: 9
+EffectColorB: 18
+Effects: SilenceWater-1-20-20, 
+PlacedObjects: LightFixture><842.0797><401.0666><RedLight~17.32051~-10~84, LightFixture><113.7672><421.8007><RedLight~-262.6795~59~97, InsectGroup><570.4985><198.3><-175~104~264.0001~36.99998~WaterGlowworm~1, PlacedWaterfall><306.2><713.2469><-16~-125~4~2, PlacedWaterfall><460.0105><718.3003><-17~-139~4~3, PlacedWaterfall><675.2865><715.5533><-8~-131~4~1, ClimbableWire><146.6819><511.5831><187~-308~110.3205~-108~Black~18, WaterTrash><164.3233><197.9063><-170~79.99998~26~12~0~598^42~63, 
+AmbientSounds: OMNI><SO_WAT-OpenFlow.ogg><650.5771><333.6494><0.5><1, SPOT><SO_IND-FlourLight.ogg><774.0843><493.112><0.5><1><843.0842><399.112><-35.35534><-35.35534><0><0.1, SPOT><SO_IND-FlourLight.ogg><199.0514><317.0237><0.5><1><99.05139><428.0237><-35.35534><-35.35534><0><0.1, 
+FadePalette: 10, 0.7826087

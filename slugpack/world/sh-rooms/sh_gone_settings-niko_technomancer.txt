@@ -1,0 +1,15 @@
+Template: SH_SettingsTemplate_DarkSun
+DangerType: Rain
+WaveSpeed: 0.4734481
+WaveLength: 0.9867241
+WaveAmplitude: 0.01655214
+SecondWaveLength: 0.1666667
+SecondWaveAmplitude: 0
+Clouds: 0.2282609
+Grime: 0.09782609
+Palette: 12
+EffectColorA: 18
+Effects: LightBurn-0-30-30, 
+PlacedObjects: DataPearl><715.901><655.8689><202~18~0~0~Misc~0, CosmeticSlimeMold><731.787><638.3035><-45~69, SlimeMold><728.2662><645.1993><177~-68~2~3, SlimeMold><731.3852><624.3527><172.0001~-159~2~3, CosmeticSlimeMold2><732.8036><623.1927><0~100, 
+AmbientSounds: OMNI><AM_ENV-CityTone.ogg><782.6069><566.6398><0.2934783><1, OMNI><AM_RAIN-QuietThunder.ogg><761.5604><322.6863><0.2065217><1, OMNI><AM_ENV-NatWind.ogg><752.0741><495.0642><0.2826087><1, 
+FadePalette: 9, 0.1304348, 0.1304348, 0.1304348, 0.1304348

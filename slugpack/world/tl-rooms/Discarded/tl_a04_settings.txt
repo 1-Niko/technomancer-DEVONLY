@@ -1,0 +1,6 @@
+Template: NONE
+DangerType: None
+Grime: 0.06521739
+Palette: 20
+PlacedObjects: LightSource><83.104><510.4208><0.4347826~Environment~294~-71~153~2.602539~1~0~None~0~0, 
+FadePalette: 21, 0.75

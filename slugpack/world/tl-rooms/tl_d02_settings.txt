@@ -1,0 +1,9 @@
+Template: NONE
+DangerType: Flood
+WaveSpeed: 0.5
+WaveLength: 0.75
+WaveAmplitude: 0.03970544
+SecondWaveLength: 0.1666667
+SecondWaveAmplitude: 0
+Palette: 10
+PlacedObjects: LightFixture><3378.652><418.1746><RedLight~17.32051~-10~35, LightFixture><2677.625><429.1563><RedLight~17.32051~-10~7, LightFixture><2078.93><595.9137><RedLight~17.32051~-10~71, LightFixture><1559.919><413.183><RedLight~17.32051~-10~20, LightFixture><1274.937><195.8199><RedLight~17.32051~-10~43, LightFixture><540.6645><420.3192><RedLight~17.32051~-10~77, 

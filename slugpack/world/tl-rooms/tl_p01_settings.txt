@@ -1,0 +1,6 @@
+Template: NONE
+Clouds: 0.0326087
+Grime: 0
+Palette: 21
+EffectColorA: 19
+FadePalette: 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0

@@ -1,0 +1,10 @@
+Template: NONE
+DangerType: None
+CeilingDrips: 0
+Clouds: 0
+Grime: 0
+Palette: 6
+EffectColorB: 13
+Effects: HeatWave-0.4456522-20-20, PixelShift-1-20-79, Bloom-0-26-130, 
+PlacedObjects: VultureMask><881.7283><149.5512><, VultureMask><1129.325><125.8147><, LightFixture><851.0606><158.314><HolyFire~-927.6794~-117~2, LightFixture><903.5518><118.7236><HolyFire~-979.6794~-150~15, LightFixture><1063.721><174.5522><HolyFire~-853.6796~-40~100, LightFixture><1148.55><113.7399><HolyFire~-688.6794~-138~28, LightFixture><1042.622><140.9035><HolyFire~-833.6795~-87~82, LightFixture><873.6078><135.6093><HolyFire~-940.6794~-23~31, LightFixture><1095.815><145.5608><HolyFire~-866.6795~71~42, LightFixture><980.9459><100.7908><HolyFire~-1055.679~86~33, LightFixture><1004.903><118.8787><HolyFire~-819.6795~-142~6, LightFixture><1190.151><130.3806><HolyFire~-125.6795~-155~76, 
+FadePalette: 8, 0.7173913, 0.7173913

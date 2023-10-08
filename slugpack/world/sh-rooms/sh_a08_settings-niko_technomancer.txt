@@ -1,0 +1,13 @@
+DangerType: Rain
+WaveSpeed: 0.4964211
+WaveLength: 0.9982105
+WaveAmplitude: 0.04533783
+SecondWaveLength: 0.1666667
+SecondWaveAmplitude: 0
+Clouds: 0.326087
+Grime: 0
+BkgDroneVolume: 0
+Palette: 12
+Effects: FireFlies-0.1086956-20-20, 
+AmbientSounds: OMNI><AM_ENV-CityTone.ogg><846.4982><621.55><0.4673913><1, SPOT><AM_WIN-MedWind.ogg><764.5566><250.8011><0.4891304><0.8826087><584.5566><502.8011><-292.3553><-35.35535><0><0.5130436, 
+FadePalette: 0, 0.08695652

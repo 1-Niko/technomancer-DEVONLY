@@ -1,0 +1,7 @@
+Template: NONE
+Clouds: 1
+Grime: 0
+Palette: 21
+EffectColorA: 19
+EffectColorB: 21
+PlacedObjects: LightSource><13288.85><723.3671><0.07608695~White~36~-16~31~-207.3975~0~1~None~0~0, LightSource><15655.95><727.1947><0.1413043~White~25~22~-152~-188.3975~0~1~None~0~0, EffectColourChanger><26977.94><636.5724><181~-138~14~True~True~129^113, EffectColourChanger><15614.95><680.0331><132~-11~9~True~True~100^100, EffectColourChanger><13240.42><663.5648><100~50~9~True~True~100^100, EffectColourChanger><27340.83><627.6844><22~-102~14~True~True~374^123, EffectColourChanger><24352.58><671.6831><-114~-109~9~True~True~100^100, EffectColourChanger><26743.08><670.0994><-90~-112~9~True~True~100^100, LightSource><24408.7><726.5199><0.07608695~White~-11~-51~33~-38.39746~0~1~None~0~0, LightSource><26793.12><730.1595><0.173913~White~-9~-39~32~-224.3975~0~1~None~0~0, 

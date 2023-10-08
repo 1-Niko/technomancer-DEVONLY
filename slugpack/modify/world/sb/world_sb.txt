@@ -1,0 +1,84 @@
+[MERGE]
+CONDITIONAL LINKS
+technomancer : SB_E04 : SB_C06 : SB_C06TECH
+technomancer : SB_F02 : SB_C06 : DISCONNECTED
+technomancer : SB_S03 : SB_C06 : SB_C06TECH
+
+technomancer : SB_F02 : SB_D04 : DISCONNECTED
+technomancer : SB_S04 : SB_D04 : SB_D04TECH
+technomancer : GATE_DS_SB : SB_D04 : SB_D04TECH
+
+technomancer : SB_J03 : SB_F01 : SB_F01TECH
+technomancer : SB_G03 : SB_F01 : SB_F01TECH
+
+technomancer : SB_C11 : SB_J10 : SB_J10TECH
+technomancer : SB_J10TECH : DISCONNECTED : SB_C11
+
+technomancer : SB_B02 : SB_C05 : SB_C05TECH
+technomancer : SB_C05TECH : DISCONNECTED : SB_B02
+END CONDITIONAL LINKS
+
+ROOMS
+SB_C06TECH : SB_E04, SB_S03
+SB_D04TECH : SB_S04, GATE_DS_SB
+SB_F01TECH : SB_G03, SB_J03
+SB_J10TECH : DISCONNECTED
+SB_C05TECH : DISCONNECTED
+END ROOMS
+
+CREATURES
+(technomancer)OFFSCREEN : 0-Miros-7, 0-Scavenger-10, 0-Leviathan
+(technomancer)OFFSCREEN : 0-Miros-7, 0-Scavenger-18, 0-Leviathan
+(technomancer)SB_C01 : 2-TentaclePlant, 7-Black, 9-Black
+(technomancer)SB_C01 : 2-TentaclePlant, 7-Black, 9-Black, 4-DropBug
+(technomancer)SB_G02 : 4-Centipede, 10-TentaclePlant, 5-Centipede-2, 6-TentaclePlant, 5-Salamander-{PreCycle}
+(technomancer)SB_G02 : 3-DropBug-2, 4-Centipede, 10-TentaclePlant, 5-Centipede-2, 6-TentaclePlant, 5-Salamander-{PreCycle}
+(technomancer)SB_E02 : 6-TentaclePlant, 7-TentaclePlant, 5-Centipede, 10-Centipede, 8-Centipede
+(technomancer)SB_E02 : 3-DropBug-2, 6-TentaclePlant, 7-TentaclePlant, 5-Centipede, 10-Centipede, 8-Centipede
+(technomancer)SB_B02 : 3-TentaclePlant, 3-Salamander-{PreCycle}, 2-Eel-{PreCycle}
+(technomancer)SB_B02 : 3-TentaclePlant, 2-DropBug, 3-Salamander-{PreCycle}, 2-Eel-{PreCycle}
+(technomancer)SB_J02 : 3-Salamander, 4-Salamander-3, 5-Eel-2-{PreCycle}
+(technomancer)SB_J02 : 3-Cyan-3, 5-JetFish, 5-Eel-2-{PreCycle}
+(technomancer)SB_H03 : 10-Small Centipede-2, 7-Caramel, 8-Blue-2, 9-Small Centipede-3
+(technomancer)SB_H03 : 10-Centipede-2, 6-SpitterSpider, 7-BigSpider-3, 8-BigSpider-2, 9-BigSpider-2, 6-Centipede-2
+(technomancer)SB_C07 : 2-Salamander, 3-Salamander
+(technomancer)SB_C07 : 2-Salamander, 3-Dropbug
+(technomancer)SB_H02 : 4-Centipede-3, 5-BigSpider-5, 7-Centipede-4, 5-Red Centipede
+(technomancer)SB_H02 : 4-Centipede-3, 5-BigSpider-5, 6-SpitterSpider-2, 7-Centipede-4, 5-Red Centipede
+(technomancer)SB_F02 : 4-Black, 5-Black, 6-Black, 7-Black
+(technomancer)SB_F02 : 5-Black, 6-Black, 7-Black, 8-Black-2
+(technomancer)SB_E04 : 5-Centipede
+(technomancer)SB_E04 : 6-SpitterSpider, 6-MotherSpider
+(technomancer)SB_C06 : 3-Black, 4-Black
+(technomancer)SB_C06 : 3-Black, 4-Black-2
+(technomancer)SB_F01 : 3-Black, 4-Black-2, 5-Black
+(technomancer)SB_F01 : 3-SpitterSpider, 4-SpitterSpider-2, 5-BigSpider
+(technomancer)SB_J03 : 7-Black, 4-TentaclePlant, 5-Small Centipede-3, 6-Centipede-2, 5-Salamander-{PreCycle}
+(technomancer)SB_J03 : 8-Black, 7-Black, 4-TentaclePlant, 5-Small Centipede-3, 6-Centipede-3, 5-Salamander-{PreCycle}
+(technomancer)SB_A03 : 4-TentaclePlant, 5-Caramel
+(technomancer)SB_A03 : 3-DropBug, 4-TentaclePlant, 5-Cyan-2
+(technomancer)SB_D04 : 9-Black, 5-BigSpider, 6-BigSpider
+(technomancer)SB_TESTB : 2-Salamander, 3-Small Centipede-3
+(technomancer)SB_TESTB : 2-Salamander, 3-Small Centipede-4
+(technomancer)SB_E07 : 8-Black-2
+(technomancer)SB_E07 : 5-BigSpider, 8-Black-2, 11-MotherSpider
+(technomancer)SB_C10 : 17-TentaclePlant, 5-BigSpider-2
+(technomancer)SB_C10 : 17-Mimic-{21}, 19-Mimic-{11}, 5-BigSpider, 12-SpitterSpider
+(technomancer)SB_GOR01 : 3-Small Centipede-5, 5-Blue, 6-Small Centipede-5
+(technomancer)SB_GOR01 : 3-Small Centipede-5, 3-Centipede-2, 4-BigSpider-5, 5-Blue, 6-Small Centipede-5
+(technomancer)SB_C11 : 2-Centipede-2
+(technomancer)SB_C11 : 2-Blue
+(technomancer)SB_J10 : 3-TentaclePlant, 4-Centipede, 6-Small Centipede-2
+(technomancer)SB_J10 : 3-TentaclePlant, 4-Centipede-2
+(technomancer)SB_TOPSIDE : 2-BigNeedleWorm, 2-SmallNeedleWorm-3
+(technomancer)SB_G04 : 15-Black, 17-Black, 7-MotherSpider
+(technomancer)SB_G04 : 3-DropBug-2, 15-Black, 17-Black-2, 7-SpitterSpider-2, 6-MotherSpider
+(technomancer)LINEAGE : SB_A03 : 6 : Blue-0.3, White-0.5, Red-0
+(technomancer)LINEAGE : SB_A03 : 6 : Cyan-0.3, White-0.5, Red-0
+(technomancer)LINEAGE : SB_A04 : 4 : Dropbug-0.4, SpitterSpider-0.4, Red-0
+(technomancer)LINEAGE : SB_J02 : 4 : Jetfish-0.5, Salamander-0
+(technomancer)LINEAGE : SB_C07 : 3 : Salamander-1.0, Cyan-0
+(technomancer)LINEAGE : SB_E04 : 5 : Eggbug-1.0, SpitterSpider-0
+(technomancer)LINEAGE : SB_E02 : 4 : Dropbug-0.8, SpitterSpider-0.5, Cyan-0.3, SpitterSpider-0
+END CREATURES
+[ENDMERGE]

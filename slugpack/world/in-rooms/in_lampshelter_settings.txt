@@ -1,0 +1,5 @@
+Template: NONE
+Palette: 27
+EffectColorA: 11
+PlacedObjects: LightSource><542.8215><367.3132><0.5543481~EffectColor1~154~72~50~86.60254~0~0~None~0~0, CustomEntranceSymbol><368.066><370.5785><17.32051~-10~ShortcutDots~0.25, 
+FadePalette: 10, 0.5434783
