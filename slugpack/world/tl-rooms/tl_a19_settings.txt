@@ -1,0 +1,7 @@
+Template: NONE
+DangerType: None
+Grime: 0
+Palette: 21
+PlacedObjects: DataPearl><108.9064><95.37537><-249~74~0~0~Misc~0, DataPearl><914.0503><154.238><0~0~0~0~Misc~0, DataPearl><892.1678><155.0676><0~0~0~0~Misc~0, DataPearl><873.061><153.3154><0~0~0~0~Misc~0, DataPearl><749.0927><95.37347><0~0~0~0~Misc~0, DataPearl><731.2068><96.44528><0~0~0~0~Misc~0, DataPearl><713.1885><93.05966><0~0~0~0~Misc~0, DataPearl><771.23><157.449><0~0~0~0~Misc~0, DataPearl><752.3983><156.1158><0~0~0~0~Misc~0, DataPearl><732.382><154.0997><0~0~0~0~Misc~0, DataPearl><347.3488><113.4239><0~0~0~0~Misc~0, DataPearl><326.0505><114.2355><0~0~0~0~Misc~0, DataPearl><310.4089><114.3715><0~0~0~0~Misc~0, DataPearl><411.086><172.3644><0~0~0~0~Misc~0, DataPearl><388.2936><175.0548><0~0~0~0~Misc~0, DataPearl><371.4414><174.192><0~0~0~0~Misc~0, DataPearl><348.3753><176.4059><0~0~0~0~Misc~0, DataPearl><329.1595><170.4283><0~0~0~0~Misc~0, DataPearl><311.0585><173.3078><0~0~0~0~Misc~0, DataPearl><189.2864><152.0533><-324~-14~0~0~Misc~0, DataPearl><168.3313><153.4327><-300~-21~0~0~Misc~0, DataPearl><146.0502><148.2421><-286~-5~0~0~Misc~0, DataPearl><145.4496><94.26279><-282~55.00003~0~0~Misc~0, DataPearl><127.2124><96.05356><-266~61.00003~0~0~Misc~0, 
+AmbientSounds: OMNI><AM_ENV-SubTerr.ogg><757.8574><448.6097><0.1956522><1, 
+FadePalette: 8, 0.4347826

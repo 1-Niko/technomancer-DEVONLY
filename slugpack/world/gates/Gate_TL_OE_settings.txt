@@ -1,0 +1,11 @@
+Template: NONE
+DangerType: None
+RainIntensity: 0
+RumbleIntensity: 0
+Clouds: 0.8586956
+Grime: 0.1630435
+Palette: 19
+Effects: SilenceWater-1-20-20, 
+PlacedObjects: TrainTrack><-203.1908><702.559><29~-129~False~TL_OEGATE~1363^88~30~150~10, CustomEntranceSymbol><55.90671><189.3757><17.32051~-10~ShortcutDots~0.25, NoSpearStickZone><475.0503><256.011><4~254, ResizeablePopupTrigger><755.6072><197.1099><-620.0001~331~Please keep in mind that this region is unfinished%2regionmaking is exhausting!~0~6.641317~-1~1~True~True~-1~-58^95, 
+FadePalette: 8, 0.6630435
+RoomSpecificScriptActive: ON

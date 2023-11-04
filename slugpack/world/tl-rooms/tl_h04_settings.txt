@@ -1,0 +1,7 @@
+Template: NONE
+Clouds: 0.75
+Palette: 14
+EffectColorB: 18
+Effects: LightRain-0.2391304-20-20, 
+AmbientSounds: OMNI><AM_ENV-Outside.ogg><295.3975><315.885><0.5><1, OMNI><AM_ENV-LightWind.ogg><319.2158><412.947><0.326087><1, OMNI><AM_ENV-LushNight.ogg><244.4233><196.9001><0.25><1, SPOT><AM_IND-50hz.ogg><730.915><339.0689><0.5><1><3780.915><458.0689><-35.35534><-35.35534><0><0.1, OMNI><am_rain-quietthunder.ogg><772.1356><251.664><0.3478261><1, 
+FadePalette: 10, 0.6847826, 0.5652174, 0.4347826, 0.3478261, 0.2173913, 0.1086956, 0.04347826, 0

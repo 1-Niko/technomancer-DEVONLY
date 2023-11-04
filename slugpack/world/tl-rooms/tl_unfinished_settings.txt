@@ -1,0 +1,7 @@
+Template: NONE
+DangerType: None
+Grime: 0
+Palette: 12
+Effects: SilenceWater-1-20-20, 
+PlacedObjects: RectanglePopupTrigger><112.0875><371.6166><100~50~Sorry%2these rooms are unfinished! Here's a small parkour challenge for now%2please come back later!~0~10.48911~0~1~True~True~-1~40^60, ReliableSpear><2495.307><99.94838><, NoSpearStickZone><952.394><212.3613><7~164, NoSpearStickZone><1982.422><219.6488><0~162, NoSpearStickZone><2702.357><227.3601><-7~150, 
+AmbientSounds: OMNI><AM_IND-Factory01.ogg><724.1772><217.9363><0.1521739><1, OMNI><AM_IND-Factory04.ogg><723.4073><178.1772><0.173913><1, OMNI><AM_ENV-WallHum.ogg><745.3257><426.0648><0.2391304><1, 

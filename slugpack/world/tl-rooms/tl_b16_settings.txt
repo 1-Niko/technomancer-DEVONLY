@@ -1,0 +1,7 @@
+Template: NONE
+DangerType: None
+Grime: 0
+Palette: 20
+FadePalette: 34, 0.6956522, 0
+MorePalette0: 21, 0, 1
+MorePalette1: 8, 0, 0.3913043
