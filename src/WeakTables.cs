@@ -25,10 +25,15 @@ namespace Slugpack
             public FShader ColourChangerShader = null;
             public FShader SelectionShader = null;
             public FShader ConnectingLine = null;
+            public FShader ModifiedLightBeamShader = null;
+            public FShader DynamicTrain = null;
+            public FShader SpinningFan = null;
 
             public AssetBundle SlugShaders = null;
             public Texture _shadowMask = null;
             public Texture _effectMask = null;
+            public Texture _RGB2HSL = null;
+            public Texture _HSL2RGB = null;
 
             public Vector2 position = Vector2.zero;
         }
@@ -113,6 +118,7 @@ namespace Slugpack
         public class ShortcutList
         {
             public List<DataStructures.Lock> locks = new();
+            public int camPosition = 0;
         }
 
         public class GraphicsData

@@ -1,0 +1,7 @@
+Template: SH_SettingsTemplate_DarkSun
+Grime: 0.09782609
+Palette: 12
+EffectColorA: 18
+EffectColorB: 0
+Effects: LightBurn-0.2065217-20-20, BkgOnlyLightning-0.5108696-237-142, 
+FadePalette: 10, 0.3586957

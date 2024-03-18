@@ -97,7 +97,7 @@ namespace Slugpack
         private static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
         {
             orig(self, eu);
-
+            
             if (self != null && self.room != null && self.room.game != null && self.slugcatStats.name.ToString() == Constants.Technomancer)
             {
                 if (!Constants.ScanLineMemory.TryGetValue(self, out var scanline)) Constants.ScanLineMemory.Add(self, scanline = new WeakTables.ScanLine());

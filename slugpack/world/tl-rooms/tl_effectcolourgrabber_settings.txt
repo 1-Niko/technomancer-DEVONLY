@@ -1,7 +1,0 @@
-Template: NONE
-CeilingDrips: 0
-RandomItemDensity: 0
-RandomItemSpearChance: 0
-EffectColorA: 0
-PlacedObjects: EffectColourChanger><152.5967><939.8781><-23~-131~9~30~426^333~False, 
-WetTerrain: OFF

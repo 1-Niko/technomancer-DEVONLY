@@ -1,0 +1,45 @@
+TECHY TRAIN GRAPHICS OVERHAUL
+1. Shader to give them 3d look
+	a. Must save xy position
+	b. Depth
+	c. and simulate shading
+		(Also would be optimal to remove the lightburn bleedthrough in TL_V01)
+	
+	Likely, it would be optimal to just save each slice individually
+	since that would mean I don't have to waste bitspace on depth data
+	and just store each slice.
+	
+	Would likely also make depth simulation easier, since I could just apply an
+	offset (still a shader) based on which layer it's supposed to be, determined
+	by a variable instead of shader sampling.
+	
+2. MAKE THEM NOT BLOCKY
+3. Some way to better match the lighting of the area
+4. Pipe entrances and connections
+5. More/better variation (optional)
+6. Procedural trains?
+
+DONE 0. Add pipes to train endcaps
+DONE 1. Add more objects to use (random machines, poles, etc)
+DONE 2. Make the train object scrollable (easier debugging)
+DONE 3. Full trains (Can't just stitch together the debug objects either, have to make a full thing because of the clipping)
+DONE 4. PROCEDURAL trains
+DONE 5. Some way to generate procedural trains at runtime
+DONE 6. Shaders so it doesn't look like CRAP
+DONE 7. pipe icons
+     8. add a small glow effect to pipe icons because i think it would be cool
+     9. prodecural rust, slime, and melt on train objects? (probably better as separate sprites? idk)
+DONE A. Add customdepth to the train shader
+DONE B. Fix the Bloom issue
+DONE C. Set up colour and depth effects for all sprites
+DONE D. Edit shader so each screen has its own shadow mask (with no mask counted as full shadow), then make those shadow masks accessible as a file in the world data
+DONE E. Make shadows work on train parts
+DONE F. Add accessories
+	 G. Figure out where accessories should go
+DONE H. Add shadows to accessories
+DONE I. Make accessories randomized
+
+
+ACCESSORIES/LOCATIONS:
+1. two entrance top (with poles) (left wheel, center, right wheel)
+   a. There cannot be a center piece without there being a left or right piece, though a center piece is not required for there to be a left, right, or left and right pieces

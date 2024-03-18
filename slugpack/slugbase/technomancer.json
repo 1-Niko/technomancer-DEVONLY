@@ -10,12 +10,12 @@
     ],
 	"auto_grab_batflies": false,
 	
-    "start_room": ["SU_A53", "SB_S09"],
+    "start_room": ["GATE_TL_OE", "SB_S09"],
 	
-	"cycle_length_min": 18.15,
-	"cycle_length_max": 28.246,
+	"cycle_length_min": 10.89,
+	"cycle_length_max": 16.9476,
 	
-	"karma": 4,
+	"karma": 0,
 	"karma_cap": 4,
     
 	"select_menu_scene": "Slugcat_Technomancer",

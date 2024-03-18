@@ -7,6 +7,7 @@ using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 namespace Slugpack
@@ -359,7 +360,11 @@ namespace Slugpack
             // "element.destNode != -1" seems to be enough to distinguish from pipe entrances and everything else
             // foreach (var shortcut in room.shortcuts.Where(element => element.destNode != -1 && element.destNode < room.abstractRoom.connections.Length && room.abstractRoom.connections[element.destNode] != -1).ToList())
             // foreach (var shortcut in room.shortcuts.Where(element => element.LeadingSomewhere).ToList()) // Filters out the wack a mole holes and spawnpoints, but also selects exit pipes with no connection set
-            foreach (var shortcut in room.shortcuts.Where(element => (element.destNode != -1 && element.destNode < room.abstractRoom.connections.Length && room.abstractRoom.connections[element.destNode] != -1) || element.shortCutType == ShortcutData.Type.Normal).ToList())
+            
+            // Use this one when shortcut support is added
+            // foreach (var shortcut in room.shortcuts.Where(element => (element.destNode != -1 && element.destNode < room.abstractRoom.connections.Length && room.abstractRoom.connections[element.destNode] != -1) || element.shortCutType == ShortcutData.Type.Normal).ToList())
+            
+            foreach (var shortcut in room.shortcuts.Where(element => (element.destNode != -1)).ToList())
             {
                 NodeInfo.Add(new DataStructures.Node(room.MiddleOfTile(shortcut.StartTile), 1, 0, null));
                     //room.MiddleOfTile(shortcut.StartTile), 1, 0, null));
@@ -377,13 +382,17 @@ namespace Slugpack
 
             foreach (var item in items)
             {
-                break;
+                if ((item as PlayerCarryableItem) is DataPearl || (item as PlayerCarryableItem) is OverseerCarcass)
+                {
+                    NodeInfo.Add(new DataStructures.Node((item as PlayerCarryableItem).firstChunk.pos, 1, 0, item));
+                }
             }
 
-            foreach (var _object in objects)
+            // There's a bug with these at the moment
+            /*foreach (var _object in objects.Where(element => element.type.ToString() == "TrackHologram" || element.type.ToString() == "TrainBell"))
             {
-                break;
-            }
+                NodeInfo.Add(new DataStructures.Node(_object.pos, 3, 0, null));
+            }*/
 
             return NodeInfo;
         }
@@ -507,7 +516,7 @@ namespace Slugpack
         /// </summary>
         /// <param name="fullyQualifiedPath"></param>
         /// <returns></returns>
-        public static AssetBundle LoadFromEmbeddedResource(string fullyQualifiedPath)
+        public static AssetBundle LoadFromEmbeddedResource_OLD(string fullyQualifiedPath)
         {
             Debug.Log($"Loading embedded asset bundle: {fullyQualifiedPath}");
             using (MemoryStream mstr = new MemoryStream())
@@ -521,6 +530,11 @@ namespace Slugpack
                 Debug.Log("Unity has successfully loaded this asset bundle from memory.");
                 return bundle;
             }
+        }
+
+        public static AssetBundle LoadFromEmbeddedResource(string fullyQualifiedPath)
+        {
+            return AssetBundle.LoadFromStream(Assembly.GetExecutingAssembly().GetManifestResourceStream(fullyQualifiedPath));
         }
 
         public static FShader CreateFromAsset(AssetBundle bundle, string shortName)
@@ -595,6 +609,130 @@ namespace Slugpack
             DateTimeOffset now = DateTimeOffset.UtcNow;
             float unixTimestamp = (float)(now.ToUnixTimeSeconds() + (now.Millisecond / 1000.0));
             return unixTimestamp;
+        }
+
+        public static float encodeBools(bool a, bool b)
+        {
+            if (!a && !b) { return 0.25f; }
+            else if (a && !b) { return 0.5f; }
+            else if (!a && b) { return 0.75f; }
+            else if (a && b) { return 1f; }
+            else return 0f;
+        }
+
+        public static int binStep(int N)
+        {
+            if (N >= 0)
+                return 1;
+            return 0;
+        }
+
+        public static List<float> intFloatListBinaryEncoding(int N)
+        {
+            // All outputs will have 4 bits, so there's no need to generalize
+            return new List<float>() { binStep((N % 32) - 16), binStep((N % 16) - 8), binStep((N % 8) - 4), binStep((N % 4) - 2), binStep((N % 2) - 1) };
+        }
+
+        public static float FloatListBinaryEncoding(List<float> a, List<float> b, List<float> c, List<float> d)
+        {
+            return (float)((a[0] * Mathf.Pow(2, 19)) + (a[1] * Mathf.Pow(2, 18)) + (a[2] * Mathf.Pow(2, 17)) + (a[3] * Mathf.Pow(2, 16)) + (a[4] * Mathf.Pow(2, 15)) +
+                           (b[0] * Mathf.Pow(2, 14)) + (b[1] * Mathf.Pow(2, 13)) + (b[2] * Mathf.Pow(2, 12)) + (b[3] * Mathf.Pow(2, 11)) + (b[4] * Mathf.Pow(2, 10)) +
+                           (c[0] * Mathf.Pow(2, 9)) + (c[1] * Mathf.Pow(2, 8)) + (c[2] * Mathf.Pow(2, 7)) + (c[3] * Mathf.Pow(2, 6)) + (c[4] * Mathf.Pow(2, 5)) +
+                           (d[0] * Mathf.Pow(2, 4)) + (d[1] * Mathf.Pow(2, 3)) + (d[2] * Mathf.Pow(2, 2)) + (d[3] * Mathf.Pow(2, 1)) + (d[4] * Mathf.Pow(2, 0)));
+        }
+
+        public static int convertFloat(float N)
+        {
+            return (int)Mathf.Round(N * 31f);
+        }
+
+        public static float encodeFloats(float a, float b, float c, float d)
+        {
+            return FloatListBinaryEncoding(intFloatListBinaryEncoding(convertFloat(a)),
+                                           intFloatListBinaryEncoding(convertFloat(b)),
+                                           intFloatListBinaryEncoding(convertFloat(c)),
+                                           intFloatListBinaryEncoding(convertFloat(d)));
+        }
+
+        public static float FloatListBinaryEncoding(List<float> b, List<float> c, List<float> d)
+        {
+            return (float)((b[0] * Mathf.Pow(2, 14)) + (b[1] * Mathf.Pow(2, 13)) + (b[2] * Mathf.Pow(2, 12)) + (b[3] * Mathf.Pow(2, 11)) + (b[4] * Mathf.Pow(2, 10)) + 
+                           (c[0] * Mathf.Pow(2, 9)) + (c[1] * Mathf.Pow(2, 8)) + (c[2] * Mathf.Pow(2, 7)) + (c[3] * Mathf.Pow(2, 6)) + (c[4] * Mathf.Pow(2, 5)) +
+                           (d[0] * Mathf.Pow(2, 4)) + (d[1] * Mathf.Pow(2, 3)) + (d[2] * Mathf.Pow(2, 2)) + (d[3] * Mathf.Pow(2, 1)) + (d[4] * Mathf.Pow(2, 0)));
+        }
+
+        public static float encodeFloats(float a, float b, float c)
+        {
+            return FloatListBinaryEncoding(intFloatListBinaryEncoding(convertFloat(a)), intFloatListBinaryEncoding(convertFloat(b)), intFloatListBinaryEncoding(convertFloat(c)));
+        }
+
+        public static UnityEngine.Color HexToColor(string hex)
+        {
+            hex = hex.TrimStart('#'); // Remove the '#' if it's included in the input
+            if (hex.Length != 6)
+            {
+                throw new ArgumentException("Invalid HEX code. It should be 6 characters long.");
+            }
+
+            int r = int.Parse(hex.Substring(0, 2), System.Globalization.NumberStyles.HexNumber);
+            int g = int.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
+            int b = int.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
+
+            return new UnityEngine.Color(r / 255f, g / 255f, b / 255f);
+        }
+
+        public static bool IsTechnomancerOrVoyager(SlugcatStats.Name slugName)
+        {
+            return null != slugName && (slugName.ToString() == Constants.Technomancer || slugName.ToString() == Constants.Voyager);
+        }
+        public static bool IsTechnomancerOrVoyager(Creature crit)
+        {
+            return crit is Player player && IsTechnomancerOrVoyager(player.slugcatStats.name);
+        }
+
+        public static void InPlaceTryCatch<T>(ref T variableToSet, T defaultValue, string errorMessage, [CallerLineNumber] int lineNumber = 0)
+        {
+            try
+            {
+                variableToSet = defaultValue;
+            }
+            catch (Exception ex)
+            { 
+                Debug.Log(errorMessage.Replace("%ln", $"{lineNumber}"));
+                Debug.LogException(ex);
+            }
+        }
+
+        /*public static Texture2D SpriteToTexture2D(FSprite sprite)
+        {
+            var texture = new Texture2D((int)sprite.rect.width, (int)sprite.rect.height);
+            var pixels = sprite.texture.GetPixels(
+                (int)sprite.textureRect.x,
+                (int)sprite.textureRect.y,
+                (int)sprite.textureRect.width,
+                (int)sprite.textureRect.height
+            );
+            texture.SetPixels(pixels);
+            texture.Apply();
+            return texture;
+        }
+        
+
+        public static UnityEngine.Color SampleTexture(Texture2D texture, float u, float v)
+        {
+            // Ensure the UVs are clamped between 0 and 1
+            u = Mathf.Clamp01(u);
+            v = Mathf.Clamp01(v);
+
+            // Sample the color using bilinear filtering
+            UnityEngine.Color color = texture.GetPixelBilinear(u, v);
+
+            return color;
+        }*/
+
+        public static float Floor(float number)
+        {
+            return (int)number;
         }
     }
 }

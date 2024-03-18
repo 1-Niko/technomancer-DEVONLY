@@ -1,0 +1,7 @@
+Template: NONE
+DangerType: None
+Grime: 0
+Palette: 21
+PlacedObjects: LightFixture><443.9851><203.1993><RedLight~17.32051~-10~80, 
+AmbientSounds: OMNI><AM_ENV-SubTerr.ogg><722.5711><448.6606><0.1847826><1, SPOT><AM_IND-50hz.ogg><701.178><337.6589><0.5><1><441.178><204.6589><-35.35534><-35.35534><0><0.1, 
+FadePalette: 8, 0.5

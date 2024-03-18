@@ -1,8 +1,8 @@
 ﻿using BepInEx;
+using Fisobs.Core;
 using Slugpack;
 using System.Security;
 using System.Security.Permissions;
-using UnityEngine;
 
 #pragma warning disable CS0618 // ignore false message
 [module: UnverifiableCode]
@@ -18,14 +18,45 @@ namespace SlugpackPlugin
 
         public void OnEnable()
         {
-            GameHooks.Apply();
-            PlayerHooks.Apply();
-            PlayerGraphicsHooks.Apply();
-            HypothermiaHooks.Apply();
-            CreatureHooks.Apply();
-            MoonDialogue.Apply();
-            InitializeObjects.Apply();
-            // ScreenAnimation.Apply();
+            try
+            {
+                GameHooks.Apply();
+                PlayerHooks.Apply();
+                PlayerGraphicsHooks.Apply();
+                HypothermiaHooks.Apply();
+                CreatureHooks.Apply();
+                MoonDialogue.Apply();
+                InitializeObjects.Apply();
+                RoomScripts.Apply();
+
+                // glizard is dead
+                /*
+                _ = CreatureTemplateType.PastGreen;
+                LizardHooks.Apply();
+
+                // Creature initialization
+                On.RainWorld.OnModsDisabled += (orig, self, newlyDisabledMods) =>
+                {
+                    orig(self, newlyDisabledMods);
+                    for (var i = 0; i < newlyDisabledMods.Length; i++)
+                    {
+                        if (newlyDisabledMods[i].id == _ID)
+                        {
+                            if (MultiplayerUnlocks.CreatureUnlockList.Contains(SandboxUnlockID.PastGreen))
+                                MultiplayerUnlocks.CreatureUnlockList.Remove(SandboxUnlockID.PastGreen);
+                            CreatureTemplateType.UnregisterValues();
+                            SandboxUnlockID.UnregisterValues();
+                            break;
+                        }
+                    }
+                };
+                Content.Register(new PastGreenCritob());
+                */
+            }
+            catch (System.Exception e)
+            {
+                throw e;
+            }
         }
     }
 }

@@ -1,0 +1,9 @@
+albinos: false
+overseersSpawnChance: 0.05
+overseersMin: 1
+overseersMax: 3
+playerGuideOverseerSpawnChance: 0.0
+pupSpawnChance: 0.0
+Subregion: Subway
+Subregion: Maintenance
+Subregion: Filtration System

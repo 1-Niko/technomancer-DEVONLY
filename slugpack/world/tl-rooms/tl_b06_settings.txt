@@ -3,7 +3,10 @@ DangerType: None
 Grime: 0.1195652
 RandomItemDensity: 0
 RandomItemSpearChance: 0
-Palette: 21
+Palette: 20
 EffectColorA: 15
 EffectColorB: 19
-PlacedObjects: DataPearl><285.9119><590.8825><-386~-289~0~0~Misc~0, DataPearl><269.4745><589.8016><-372~-168~0~0~Misc~0, DataPearl><250.8631><588.1458><-353~-45~0~0~Misc~0, LightSource><213.0536><925.5381><0.5108696~EffectColor2~0~100~-313~348.6025~0~0~None~0~0, LightSource><337.3347><928.3873><0.5108696~EffectColor2~0~100~-440~231.6025~0~0~None~0~0, LightSource><886.5984><848.3695><0.4999998~EffectColor2~0~100~111~394.6025~0~0~None~0~0, LightSource><757.684><846.0782><0.5108696~EffectColor2~0~100~224.0001~513.6025~0~0~None~0~0, LightSource><361.5023><548.3><0.5217393~EffectColor2~0~100~-459~-363.3975~0~0~None~0~0, LightSource><441.5364><486.6967><0.4999998~EffectColor2~0~100~-537~-425.3975~0~0~None~0~0, LightSource><778.4158><487.6814><0.5217389~EffectColor2~0~100~206~32.60254~0~0~None~0~0, LightSource><879.4349><551.3109><0.5108696~EffectColor2~0~100~103.9999~80.60248~0~0~None~0~0, 
+AmbientSounds: OMNI><AM_ENV-SubTerr.ogg><706.8614><447.8558><0.2391304><1, 
+FadePalette: 34, 0.8369565, 0
+MorePalette0: 21, 0, 1
+MorePalette1: 8, 0, 0.5543478
