@@ -8,11 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="slugpack" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Shaders\slugpack" />
+    <EmbeddedResource Include="slugpack" />
   </ItemGroup>
 
 	<Target Name="GenerateMod" AfterTargets="PostBuildEvent">
@@ -34,6 +30,11 @@
             <Private>false</Private>
         </Reference>
     </ItemGroup>
+
+
+	<ItemGroup>
+	  <Folder Include="Shaders\" />
+	</ItemGroup>
     
 
 </Project>
