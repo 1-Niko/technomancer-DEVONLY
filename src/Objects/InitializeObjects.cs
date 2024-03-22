@@ -7,10 +7,8 @@ namespace Slugpack
     {
         internal static void Apply()
         {
-            On.RainWorld.OnModsInit += (orig, self) =>
+            try
             {
-                orig(self);
-
                 if (!initialized)
                 {
                     RegisterManagedObject<TrackHologramObject, TrackHologramData, ManagedRepresentation>("TrackHologram", "Technomancer");
@@ -30,9 +28,16 @@ namespace Slugpack
                     RegisterManagedObject<ProceduralTrainObject, TrainObjectData, ManagedRepresentation>("DEBUGTRAINOBJECT", "Technomancer");
                     RegisterManagedObject<FakeSubregionPopupObject, FakeSubregionPopupData, ManagedRepresentation>("FakeSubregionPopup", "Technomancer");
 
+                    Debug.LogWarning("Technomancer Objects Initialized!");
+
                     initialized = true;
                 }
-            };
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError(ex);
+                Debug.LogException(ex);
+            }
         }
 
         static bool initialized;

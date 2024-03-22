@@ -45,7 +45,7 @@ public class Plugin : BaseUnityPlugin
             Futile.atlasManager.LoadAtlas("atlases/hologramatlas");
 
             //// Train atlases
-            //Futile.atlasManager.LoadAtlas("atlases/trainatlas");
+            Futile.atlasManager.LoadAtlas("atlases/trainatlas");
             // Futile.atlasManager.LoadAtlas("atlases/train_accessory_top_atlas");
 
             if (Constants.shaders_enabled)
@@ -111,6 +111,7 @@ public class Plugin : BaseUnityPlugin
             };
             Content.Register(new PastGreenCritob());
             */
+
         }
         catch (Exception ex)
         {
@@ -122,7 +123,7 @@ public class Plugin : BaseUnityPlugin
 
     //private void LoadAtlases()
     //{
-    //    foreach (var file in AssetManager.ListDirectory("atlases"))
+    //    foreach (var file in AssetManager.ListDirectory("tn_atlases"))
     //    {
     //        if (".png".Equals(Path.GetExtension(file)))
     //        {
