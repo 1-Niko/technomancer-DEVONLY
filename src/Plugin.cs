@@ -40,18 +40,18 @@ public class Plugin : BaseUnityPlugin
             RoomScripts.Apply();
 
             //Now loading all with method
-            //LoadAtlases();
-            Futile.atlasManager.LoadAtlas("atlases/slugpackatlas");
-            Futile.atlasManager.LoadAtlas("atlases/hologramatlas");
+            LoadAtlases();
 
-            //// Train atlases
-            Futile.atlasManager.LoadAtlas("atlases/trainatlas");
+            //Futile.atlasManager.LoadAtlas("atlases/slugpackatlas");
+            //Futile.atlasManager.LoadAtlas("atlases/hologramatlas");
+            //Futile.atlasManager.LoadAtlas("atlases/trainatlas");
+
             // Futile.atlasManager.LoadAtlas("atlases/train_accessory_top_atlas");
 
             if (Constants.shaders_enabled)
             {
                 if (!Constants.SlugpackShaders.TryGetValue(self, out var _))
-                { Constants.SlugpackShaders.Add(self, _ = new WeakTables.Shaders()); }
+                { Constants.SlugpackShaders.Add(self, _ = new Shaders()); }
 
                 if (Constants.SlugpackShaders.TryGetValue(self, out var Shaders))
                 {
@@ -89,7 +89,7 @@ public class Plugin : BaseUnityPlugin
             }
 
             // glizard is dead
-            /*
+
             _ = CreatureTemplateType.PastGreen;
             LizardHooks.Apply();
 
@@ -110,7 +110,7 @@ public class Plugin : BaseUnityPlugin
                 }
             };
             Content.Register(new PastGreenCritob());
-            */
+
 
         }
         catch (Exception ex)
@@ -121,21 +121,21 @@ public class Plugin : BaseUnityPlugin
         }
     }
 
-    //private void LoadAtlases()
-    //{
-    //    foreach (var file in AssetManager.ListDirectory("tn_atlases"))
-    //    {
-    //        if (".png".Equals(Path.GetExtension(file)))
-    //        {
-    //            if (File.Exists(Path.ChangeExtension(file, ".txt")))
-    //            {
-    //                Futile.atlasManager.LoadAtlas(Path.ChangeExtension(file, null));
-    //            }
-    //            else
-    //            {
-    //                Futile.atlasManager.LoadImage(Path.ChangeExtension(file, null));
-    //            }
-    //        }
-    //    }
-    //}
+    private void LoadAtlases()
+    {
+        foreach (var file in AssetManager.ListDirectory("tn_atlases"))
+        {
+            if (".png".Equals(Path.GetExtension(file)))
+            {
+                if (File.Exists(Path.ChangeExtension(file, ".txt")))
+                {
+                    Futile.atlasManager.LoadAtlas(Path.ChangeExtension(file, null));
+                }
+                else
+                {
+                    Futile.atlasManager.LoadImage(Path.ChangeExtension(file, null));
+                }
+            }
+        }
+    }
 }

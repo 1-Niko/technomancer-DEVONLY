@@ -15,8 +15,8 @@ namespace Slugpack
         {
             Icon = new SimpleIcon("Kill_Past_Green_Lizard", Color.green);
             RegisterUnlock(KillScore.Configurable(25), SandboxUnlockID.PastGreen);
-            // SandboxPerformanceCost = new(3f, 1.5f);
-            // LoadedPerformanceCost = 200f;
+            SandboxPerformanceCost = new(3f, 1.5f);
+            LoadedPerformanceCost = 200f;
             // ShelterDanger = ShelterDanger.Hostile;
         }
 
