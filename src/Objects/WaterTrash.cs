@@ -1,7 +1,4 @@
-using System.Collections.Generic;
-using UnityEngine;
 using static Pom.Pom;
-using static Slugpack.DataStructures;
 
 namespace Slugpack
 {
@@ -80,7 +77,7 @@ namespace Slugpack
             {
                 Vector2 offset = this.pos + new Vector2(this.trashArea.x / trashCount * i, 0);
                 sLeaser.sprites[i].isVisible = true;
-                sLeaser.sprites[i].SetPosition(new Vector2(offset.x, this.room.FloatWaterLevel(Mathf.Max(offset.x,0))) - rCam.pos);
+                sLeaser.sprites[i].SetPosition(new Vector2(offset.x, this.room.FloatWaterLevel(Mathf.Max(offset.x, 0))) - rCam.pos);
 
                 int depth = (int)Mathf.Round(Utilities.Normalize(depths[i], 0, 30, this.frontDepth, this.backDepth));
 

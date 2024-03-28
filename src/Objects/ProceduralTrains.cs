@@ -1,11 +1,9 @@
-using UnityEngine;
 using static Pom.Pom;
 
 namespace Slugpack
 {
     public class TrainTrackObjectData : ManagedData
     {
-
         [IntegerField("A", 0, 65535, 0, ManagedFieldWithPanel.ControlType.slider, displayName: "Seed")]
         public int seed;
 
@@ -48,9 +46,9 @@ namespace Slugpack
             dynamicSprite.pos = this.placedObject.pos;
         }
 
-        PlacedObject placedObject;
-        Room room;
-        TrainSpriteObject dynamicSprite;
+        private PlacedObject placedObject;
+        private Room room;
+        private TrainSpriteObject dynamicSprite;
     }
 
     public class TrainSpriteObject : CosmeticSprite
@@ -195,7 +193,6 @@ namespace Slugpack
 
             // It is a much stickier issue than I had hoped, will probably have to put this off for a while
 
-
             // FOR FUTURE REFERENCE:
             // These sprites being in the hud is to solve the BLOOM issue, to keep it from bleeding through incorrectly
 
@@ -220,7 +217,6 @@ namespace Slugpack
                 else
                     sLeaser.sprites[i].MoveInFrontOfOtherNode(sLeaser.sprites[0]);
             }
-
         }
 
         // Sprite Groups

@@ -1,12 +1,14 @@
 namespace Slugpack;
 
-static class WeakTables
+internal static class WeakTables
 {
     public class Shaders
     {
         public FShader Redify = null;
+
         // public FShader Layer_0 = null;
         public FShader ShadowMask = null;
+
         public FShader HologramA = null;
         public FShader HologramB = null;
         public FShader Distances = null;

@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using UnityEngine;
-using static Pom.Pom;
+﻿using static Pom.Pom;
 
 namespace Slugpack
 {
@@ -41,9 +39,9 @@ namespace Slugpack
             base.Destroy();
         }
 
-        Streamers streamerLine;
+        private Streamers streamerLine;
 
-        PlacedObject placedObject;
+        private PlacedObject placedObject;
     }
 
     public class Streamers : CosmeticSprite

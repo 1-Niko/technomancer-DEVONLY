@@ -1,8 +1,4 @@
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
 using static Pom.Pom;
-using static Slugpack.WeakTables;
 
 namespace Slugpack
 {
@@ -314,7 +310,6 @@ namespace Slugpack
             block.SetTexture("texture", null);
             _batteryMeter._renderLayer._meshRenderer.SetPropertyBlock(block); // This updates the stored information
             */
-
         }
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
@@ -402,6 +397,7 @@ namespace Slugpack
                 sLeaser.sprites[i].MoveBehindOtherNode(sLeaser.sprites[i - 1]);
             }
         }
+
         public float velocity;
 
         public int sprite;

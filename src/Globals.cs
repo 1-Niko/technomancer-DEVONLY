@@ -18,6 +18,8 @@ global using static Slugpack.WeakTables;
 global using System.Security;
 global using Random = UnityEngine.Random;
 global using System.Collections;
+global using CreatureType = CreatureTemplate.Type;
+global using DevInterface;
 using Slugpack;
 
 #pragma warning disable CS0618 // ignore false message

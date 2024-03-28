@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-using UnityEngine;
 using static Pom.Pom;
 
 namespace Slugpack
@@ -39,9 +37,9 @@ namespace Slugpack
             base.Destroy();
         }
 
-        PlacedObject placedObject;
+        private PlacedObject placedObject;
 
-        ProceduralTrain dynamicSprite;
+        private ProceduralTrain dynamicSprite;
     }
 
     public class ProceduralTrain : CosmeticSprite
@@ -137,26 +135,31 @@ namespace Slugpack
                     top_isVisible[1] = false;
                     top_isVisible[2] = false;
                     break;
+
                 case 1:
                     top_isVisible[0] = true;
                     top_isVisible[1] = false;
                     top_isVisible[2] = false;
                     break;
+
                 case 2:
                     top_isVisible[0] = false;
                     top_isVisible[1] = false;
                     top_isVisible[2] = true;
                     break;
+
                 case 3:
                     top_isVisible[0] = true;
                     top_isVisible[1] = true;
                     top_isVisible[2] = false;
                     break;
+
                 case 4:
                     top_isVisible[0] = false;
                     top_isVisible[1] = true;
                     top_isVisible[2] = true;
                     break;
+
                 case 5:
                     top_isVisible[0] = true;
                     top_isVisible[1] = true;
@@ -197,21 +200,26 @@ namespace Slugpack
                             case 0: // Left endcap
                                 element_name = spriteNames[2, k];
                                 break;
+
                             case 1: // Left wheel
                                 element_name = spriteNames[3, k];
                                 break;
+
                             case -1: // Right endcap
                                 element_name = spriteNames[1, k];
                                 break;
+
                             case -2: // Right wheel
                                 element_name = spriteNames[3, k];
                                 break;
+
                             case -3: // Center wheel condition
                                 if (length > centerwheel_threshold)
                                     element_name = spriteNames[3, k];
                                 else
                                     element_name = spriteNames[0, k];
                                 break;
+
                             default:
                                 element_name = spriteNames[0, k];
                                 break;
@@ -292,7 +300,6 @@ namespace Slugpack
 
             // It is a much stickier issue than I had hoped, will probably have to put this off for a while
 
-
             // FOR FUTURE REFERENCE:
             // These sprites being in the hud is to solve the BLOOM issue, to keep it from bleeding through incorrectly
 
@@ -319,7 +326,6 @@ namespace Slugpack
             {
                 sLeaser.sprites[i].MoveInFrontOfOtherNode(sLeaser.sprites[(length * layer_count) + 1]);
             }
-
 
             for (int i = length * layer_count * 2; i < (length + accessory_count) * layer_count * 2; i++)
             {

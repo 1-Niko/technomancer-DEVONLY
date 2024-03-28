@@ -1,4 +1,3 @@
-using UnityEngine;
 using static Pom.Pom;
 using static Pom.Pom.Vector2ArrayField;
 
@@ -6,7 +5,6 @@ namespace Slugpack
 {
     public class SpinningFanData : ManagedData
     {
-
         [Vector2ArrayField("CHAIN1", 2, true, Vector2ArrayRepresentationType.Chain, new float[4] { 0, 0, -50, 0 })]
         public Vector2[] FrontBladeCamOffset;
 
@@ -15,6 +13,7 @@ namespace Slugpack
 
         [FloatField("A", -40f, 40f, 0f, 0.1f, ManagedFieldWithPanel.ControlType.slider, displayName: "Fan1 Speed")]
         public float frontspeed;
+
         [FloatField("B", -40f, 40f, 0f, 0.1f, ManagedFieldWithPanel.ControlType.slider, displayName: "Fan2 Speed")]
         public float backspeed;
 
@@ -112,9 +111,9 @@ namespace Slugpack
             dynamicSprite.pos = this.placedObject.pos;
         }
 
-        PlacedObject placedObject;
-        Room room;
-        SpinningFanObject dynamicSprite;
+        private PlacedObject placedObject;
+        private Room room;
+        private SpinningFanObject dynamicSprite;
     }
 
     public class SpinningFanObject : CosmeticSprite

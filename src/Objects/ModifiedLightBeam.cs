@@ -1,4 +1,3 @@
-using UnityEngine;
 using static Pom.Pom;
 using static Pom.Pom.Vector2ArrayField;
 
@@ -99,9 +98,9 @@ namespace Slugpack
             base.Destroy();
         }
 
-        ModifiedLightBeamSprite LightBeam;
+        private ModifiedLightBeamSprite LightBeam;
 
-        PlacedObject placedObject;
+        private PlacedObject placedObject;
     }
 
     public class ModifiedLightBeamSprite : CosmeticSprite
@@ -126,7 +125,7 @@ namespace Slugpack
 
             Color sky = this.colour;
 
-            sLeaser.sprites[0].color = new Color(sky.r, sky.g, sky.b, Utilities.encodeFloats(depth, opacity, whiteness) / 32767f);
+            sLeaser.sprites[0].color = new Color(sky.r, sky.g, sky.b, Utilities.EncodeFloats(depth, opacity, whiteness) / 32767f);
 
             if (sLeaser.sprites[0] != null && (sLeaser.sprites[0] as TriangleMesh) != null && this.verts != null)
             {

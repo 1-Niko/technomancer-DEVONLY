@@ -1,5 +1,4 @@
-﻿using UnityEngine;
-using static Pom.Pom;
+﻿using static Pom.Pom;
 
 namespace Slugpack
 {
@@ -80,9 +79,9 @@ namespace Slugpack
             base.Destroy();
         }
 
-        SkullOfTheDragon DragonsSkull;
+        private SkullOfTheDragon DragonsSkull;
 
-        PlacedObject placedObject;
+        private PlacedObject placedObject;
     }
 
     public class SkullOfTheDragon : CosmeticSprite

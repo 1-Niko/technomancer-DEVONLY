@@ -16,6 +16,7 @@ public class RoomController : CosmeticSprite
         this.previousNodeCount = 0;
         this.generateEmptyNodes();
     }
+
     public override void Update(bool eu)
     {
         base.Update(eu);
@@ -107,9 +108,9 @@ public class RoomController : CosmeticSprite
         }
     }
 
-    Room room;
+    private Room room;
 
-    int previousNodeCount;
+    private int previousNodeCount;
 }
 
 public class HighlightSprite : CosmeticSprite
@@ -124,6 +125,7 @@ public class HighlightSprite : CosmeticSprite
     public Dictionary<HighlightSprite, ConnectingLine> connectionTable { get; }
     public bool isSmall { get; set; }
     public bool selected { get; set; }
+
     public HighlightSprite(Vector2 pos, int nodeLevel, int protectionLevels, Room room, RoomController owner, PhysicalObject anchor)
     {
         this.age = Utilities.Timestamp();
@@ -279,7 +281,6 @@ public class HighlightSprite : CosmeticSprite
         sLeaser.sprites[2].color = new Color(0, 0, (this.selected) ? 1 : 0, 0);
         sLeaser.sprites[3].color = new Color(0, 0, (this.selected) ? 1 : 0, 0);
 
-
         if (Constants.shaders_enabled)
             if (Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var Shaders))
             {
@@ -338,17 +339,17 @@ public class HighlightSprite : CosmeticSprite
         }
     }
 
-    int nodeLevel;
+    private int nodeLevel;
 
-    int protectionLevels;
+    private int protectionLevels;
 
-    float stepTimer;
+    private float stepTimer;
 
-    float lastStepTimer;
+    private float lastStepTimer;
 
-    Room room;
+    private Room room;
 
-    RoomCamera.SpriteLeaser spriteLeaser;
+    private RoomCamera.SpriteLeaser spriteLeaser;
 }
 
 public class ConnectingLine : CosmeticSprite
@@ -503,15 +504,15 @@ public class ConnectingLine : CosmeticSprite
         }
     }
 
-    float lastLen;
+    private float lastLen;
 
-    float lastRot;
+    private float lastRot;
 
-    float stepTimer;
+    private float stepTimer;
 
-    float lastPadding;
+    private float lastPadding;
 
-    float lastStepTimer;
+    private float lastStepTimer;
 
-    RoomCamera.SpriteLeaser spriteLeaser;
+    private RoomCamera.SpriteLeaser spriteLeaser;
 }

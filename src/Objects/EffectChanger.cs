@@ -1,5 +1,3 @@
-using System.Linq;
-using UnityEngine;
 using static Pom.Pom;
 
 namespace Slugpack
@@ -66,9 +64,9 @@ namespace Slugpack
             base.Destroy();
         }
 
-        EffectChangerObject EffectObject;
+        private EffectChangerObject EffectObject;
 
-        PlacedObject placedObject;
+        private PlacedObject placedObject;
     }
 
     public class EffectChangerObject : CosmeticSprite
@@ -77,6 +75,7 @@ namespace Slugpack
         public int colour { get; set; }
         public bool effectA { get; set; }
         public bool effectB { get; set; }
+
         public float fade { get; set; }
         public float hue { get; set; }
         public float saturation { get; set; }
@@ -115,7 +114,7 @@ namespace Slugpack
 
             sLeaser.sprites[0].isVisible = true;
 
-            sLeaser.sprites[0].color = new Color(Utilities.encodeBools(effectA, effectB), (1f - (this.colour / 21f)) % 1f, Utilities.encodeFloats(fade, hue, saturation, brightness), 0f);
+            sLeaser.sprites[0].color = new Color(Utilities.EncodeBools(effectA, effectB), (1f - (this.colour / 21f)) % 1f, Utilities.EncodeFloats(fade, hue, saturation, brightness), 0f);
 
             if (Constants.shaders_enabled)
                 if (Constants.SlugpackShaders.TryGetValue(rCam?.room?.world?.game?.rainWorld, out var Shaders))

@@ -1,9 +1,8 @@
-using System.ComponentModel;
 using static Pom.Pom;
 
 namespace Slugpack
 {
-    static class InitializeObjects
+    internal static class InitializeObjects
     {
         internal static void Apply()
         {
@@ -40,6 +39,6 @@ namespace Slugpack
             }
         }
 
-        static bool initialized;
+        private static bool initialized;
     }
 }

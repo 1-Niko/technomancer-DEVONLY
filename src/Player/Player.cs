@@ -1,13 +1,6 @@
-using System.Collections.Generic;
-using System.Drawing.Printing;
-using System.Linq;
-using System.Security.Cryptography;
-using Unity.Collections.LowLevel.Unsafe;
-using UnityEngine;
-
 namespace Slugpack
 {
-    static class PlayerHooks
+    internal static class PlayerHooks
     {
         internal static void Apply()
         {
@@ -36,6 +29,7 @@ namespace Slugpack
                 return orig(self, testObj);
             }
         }
+
         private static void Player_checkInput(On.Player.orig_checkInput orig, Player self)
         {
             orig(self);
@@ -94,10 +88,11 @@ namespace Slugpack
                 }
             }
         }
+
         private static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
         {
             orig(self, eu);
-            
+
             if (self != null && self.room != null && self.room.game != null && self.slugcatStats.name.ToString() == Constants.Technomancer)
             {
                 if (!Constants.ScanLineMemory.TryGetValue(self, out var scanline)) Constants.ScanLineMemory.Add(self, scanline = new WeakTables.ScanLine());
@@ -198,7 +193,7 @@ namespace Slugpack
 
                         for (int i = 0; i < self.bodyChunks.Length; i++)
                         {
-                            // Function points towards location of interest as expected, but seems to 
+                            // Function points towards location of interest as expected, but seems to
                             //    1. Increase the force by way too much
                             //    2. Ignore the point power altogether (point straight at location of interest)
                             // Definitely a way to fix it but im not sure at the moment
@@ -465,7 +460,6 @@ namespace Slugpack
                                 }
                             }
 
-
                             if (scanline.arrow.creature != null && scanline.arrow.creature.stun == 0)
                             {
                                 // Creature Events
@@ -600,7 +594,6 @@ namespace Slugpack
                             }
                             else if (scanline.arrow.creature != null)
                             {
-
                             }
                         }
                     }

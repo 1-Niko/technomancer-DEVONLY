@@ -1,4 +1,3 @@
-using UnityEngine;
 using static Pom.Pom;
 using static Pom.Pom.Vector2ArrayField;
 
@@ -115,9 +114,9 @@ namespace Slugpack
             base.Destroy();
         }
 
-        PlacedObject placedObject;
+        private PlacedObject placedObject;
 
-        LightSource lightSourceA;
-        LightSource lightSourceB;
+        private LightSource lightSourceA;
+        private LightSource lightSourceB;
     }
 }

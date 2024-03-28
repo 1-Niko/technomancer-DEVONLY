@@ -49,16 +49,16 @@ public static class DataStructures
             else
             { UnityEngine.Object.Destroy(texture); }
         }
-
     }
 
     public class Sprite
     {
         public Sprite(int lockValue, int spriteIndex, Vector2 offset, float rotation, Anchorpoint anchor, Scale scale, float minimum, float maximum) =>
-            (Lock, SpriteIndex, Offset, Rotation, AnchorX, AnchorY, ScaleX, ScaleY, Minimum, Maximum) = 
+            (Lock, SpriteIndex, Offset, Rotation, AnchorX, AnchorY, ScaleX, ScaleY, Minimum, Maximum) =
             (lockValue, $"FurTuft{spriteIndex}", offset, rotation, anchor.x, anchor.y, scale.x, scale.y, minimum, maximum);
+
         public Sprite(int lockValue, int spriteIndex, Vector2 offset, float rotation, Anchorpoint anchor, Scale scale, Color Colour) =>
-            (Lock, SpriteIndex, Offset, Rotation, AnchorX, AnchorY, ScaleX, ScaleY, Color) = 
+            (Lock, SpriteIndex, Offset, Rotation, AnchorX, AnchorY, ScaleX, ScaleY, Color) =
             (lockValue, $"FurTuft{spriteIndex}", offset, rotation, anchor.x, anchor.y, scale.x, scale.y, Colour);
 
         public int Lock { get; set; }
@@ -122,6 +122,7 @@ public static class DataStructures
     {
         public Node(Vector2 position, int level, int protection, PhysicalObject anchor) =>
             (this.position, this.level, this.protection, this.anchor) = (position, level, protection, anchor);
+
         public Vector2 position { get; set; }
         public int level { get; set; }
         public int protection { get; set; }

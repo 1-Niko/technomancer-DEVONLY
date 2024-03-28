@@ -1,6 +1,6 @@
 namespace Slugpack;
 
-static class Dialogue
+internal static class Dialogue
 {
     public static readonly string[] techy_meet_moon_firsttime_old = {
         "Hello, little companion. Is this reaching you?",

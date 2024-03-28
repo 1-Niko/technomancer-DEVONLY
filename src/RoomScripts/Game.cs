@@ -2,7 +2,7 @@ using MoreSlugcatsEnums = MoreSlugcats.MoreSlugcatsEnums;
 
 namespace Slugpack;
 
-static class GameHooks
+internal static class GameHooks
 {
     internal static void Apply()
     {

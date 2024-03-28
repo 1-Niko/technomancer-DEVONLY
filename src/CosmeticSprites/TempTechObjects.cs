@@ -107,6 +107,7 @@ public class SlugArrow : CosmeticSprite
         this.scanline = scanline;
         this.colour = colour;
     }
+
     public SlugArrow(Vector2 pos, float scanline, Color colour, Creature stickToCreature)
     {
         this.pos = pos;
@@ -114,6 +115,7 @@ public class SlugArrow : CosmeticSprite
         this.colour = colour;
         creature = stickToCreature;
     }
+
     public SlugArrow(Vector2 pos, float scanline, Color colour, PhysicalObject stickToItem)
     {
         this.pos = pos;
@@ -122,7 +124,7 @@ public class SlugArrow : CosmeticSprite
         item = stickToItem;
     }
 
-    float RoundToNearest(float x, float n) => (float)Math.Round(x / n) * n;
+    private float RoundToNearest(float x, float n) => (float)Math.Round(x / n) * n;
 
     public override void Update(bool eu)
     {

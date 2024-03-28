@@ -1,8 +1,6 @@
-using UnityEngine;
-
 namespace Slugpack
 {
-    static class HypothermiaHooks
+    internal static class HypothermiaHooks
     {
         internal static void Apply()
         {

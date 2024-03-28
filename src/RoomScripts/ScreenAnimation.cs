@@ -56,7 +56,7 @@ namespace Slugpack
                                 if (caminfo.asyncLoads.ContainsKey(key) && caminfo.asyncLoads[key].isDone)
                                 {
                                     caminfo.imageData.Add(key, caminfo.asyncLoads[key].texture.GetRawTextureData());
-                                    
+
                                     caminfo.asyncLoads[key].Dispose();
                                     caminfo.asyncLoads[key] = null;
 
@@ -179,6 +179,5 @@ namespace Slugpack
             }
             return screensFolders;
         }
-
     }*/
 }

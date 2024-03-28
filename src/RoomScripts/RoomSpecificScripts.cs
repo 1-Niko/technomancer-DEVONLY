@@ -31,7 +31,7 @@ public class RoomScripts
 public class GATE_TL_OE_IntroScript : UpdatableAndDeletable
 {
     internal static bool alreadyRun; //sighs. but hey it fixes the problem
-    Player RealizedPlayer => room.game.Players.Count > 0 ? room.game.Players[0].realizedCreature as Player : null;
+    private Player RealizedPlayer => room.game.Players.Count > 0 ? room.game.Players[0].realizedCreature as Player : null;
 
     public GATE_TL_OE_IntroScript(Room room)
     {

@@ -1,10 +1,6 @@
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using UnityEngine;
-
 namespace Slugpack
 {
-    static class Constants
+    internal static class Constants
     {
         public const string Voyager = "voyager";
 
@@ -26,7 +22,7 @@ namespace Slugpack
 
         public static ConditionalWeakTable<RainWorld, Shaders> SlugpackShaders = new();
 
-        public static readonly ulong[] FurData = 
+        public static readonly ulong[] FurData =
         [
             0xD21802F008A81006, 0xD96624837B4AA00B, 0x0004E02005450840, 0x6FCD352033803DE0, 0x5412150E02D034EC, 0x009802900601805A, 0x29A3BAD45402C802, 0x761B67034AE617EB,
             0x53C009802EA0601B, 0x65B91B332D54E033, 0x4018F0666D9490C1, 0x62356600D0006601, 0xC199707385ACD66D, 0x006C02D9080199CD, 0x80268B5AA000A007, 0x8012066D12C0780D,

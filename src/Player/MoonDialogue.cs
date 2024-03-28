@@ -1,9 +1,6 @@
-using System.Linq;
-using UnityEngine;
-
 namespace Slugpack
 {
-    static class MoonDialogue
+    internal static class MoonDialogue
     {
         internal static void Apply()
         {

@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-using static Pom.Pom;
+﻿using static Pom.Pom;
 using static Pom.Pom.Vector2ArrayField;
-using static Slugpack.WeakTables;
 
 namespace Slugpack
 {
@@ -101,9 +97,9 @@ namespace Slugpack
             base.Destroy();
         }
 
-        TrainBell bellSprite;
+        private TrainBell bellSprite;
 
-        PlacedObject placedObject;
+        private PlacedObject placedObject;
     }
 
     public class TrainBell : CosmeticSprite
@@ -192,7 +188,6 @@ namespace Slugpack
                 }
                 break;
             }
-
         }
 
         public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)

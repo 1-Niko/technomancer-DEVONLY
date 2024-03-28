@@ -1,25 +1,21 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using UnityEngine;
-
 using static Slugpack.Constants;
 using static Slugpack.Utilities;
 
 namespace Slugpack
 {
-    static class PlayerGraphicsHooks
+    internal static class PlayerGraphicsHooks
     {
-        static readonly List<float> FEAFD765 = new() { 64f, 32f, 16f, 8f, 4f, 2f, 1f };
-        static readonly List<float> D266428E = new() { -1f, 4f, 2f, 1f, 0.5f, 0.25f, 0.125f, 0.0625f, 0.03125f, 0.015625f, 0.0078125f, 0.00390625f, 0.001953125f };
-        static readonly List<float> E6AB2708 = new() { -1f, 8f, 4f, 2f, 1f, 0.5f, 0.25f, 0.125f, 0.0625f, 0.03125f, 0.015625f, 0.0078125f, 0.00390625f, 0.001953125f };
-        static readonly List<float> CCFC91A1 = new() { -1f, 256f, 128f, 64f, 32f, 16f, 8f, 4f, 2f, 1f, 0.5f, 0.25f, 0.125f, 0.0625f };
-        static readonly List<float> EC274780 = new() { 1f, 0.5f, 0.25f, 0.125f, 0.0625f, 0.03125f, 0.015625f, 0.0078125f, 0.00390625f, 0.001953125f };
-        static readonly List<float> B9B05710 = new() { -1f, 1f };
+        private static readonly List<float> FEAFD765 = new() { 64f, 32f, 16f, 8f, 4f, 2f, 1f };
+        private static readonly List<float> D266428E = new() { -1f, 4f, 2f, 1f, 0.5f, 0.25f, 0.125f, 0.0625f, 0.03125f, 0.015625f, 0.0078125f, 0.00390625f, 0.001953125f };
+        private static readonly List<float> E6AB2708 = new() { -1f, 8f, 4f, 2f, 1f, 0.5f, 0.25f, 0.125f, 0.0625f, 0.03125f, 0.015625f, 0.0078125f, 0.00390625f, 0.001953125f };
+        private static readonly List<float> CCFC91A1 = new() { -1f, 256f, 128f, 64f, 32f, 16f, 8f, 4f, 2f, 1f, 0.5f, 0.25f, 0.125f, 0.0625f };
+        private static readonly List<float> EC274780 = new() { 1f, 0.5f, 0.25f, 0.125f, 0.0625f, 0.03125f, 0.015625f, 0.0078125f, 0.00390625f, 0.001953125f };
+        private static readonly List<float> B9B05710 = new() { -1f, 1f };
 
         internal static void Apply()
         {
-            On.PlayerGraphics.Update += (orig, self) => {
+            On.PlayerGraphics.Update += (orig, self) =>
+            {
                 orig(self);
 
                 if (self.player.Consious && self.objectLooker.currentMostInteresting != null && self.objectLooker.currentMostInteresting is Creature)
@@ -121,6 +117,7 @@ namespace Slugpack
                         sLeaser.sprites[0].scaleX = 0.96f + Mathf.Lerp(Mathf.Lerp(Mathf.Lerp(-0.05f, -0.15f, self.malnourished), 0.05f, num) * num2, 0.15f, self.player.sleepCurlUp);
                         sLeaser.sprites[1].scaleX = 0.93f + self.player.sleepCurlUp * 0.2f + 0.05f * num - 0.05f * self.malnourished;
                         break;
+
                     case "voyager":
                         sLeaser.sprites[0].scaleX = 1.17f + Mathf.Lerp(Mathf.Lerp(Mathf.Lerp(-0.05f, -0.15f, self.malnourished), 0.05f, num) * num2, 0.15f, self.player.sleepCurlUp);
                         sLeaser.sprites[1].scaleX = 1.2f + self.player.sleepCurlUp * 0.2f + 0.05f * num - 0.05f * self.malnourished;

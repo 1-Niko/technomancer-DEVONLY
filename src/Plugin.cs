@@ -1,25 +1,31 @@
 ﻿using BepInEx;
 using Fisobs.Core;
 using Slugpack;
-using System;
-using System.IO;
-using System.Security;
-using System.Security.Permissions;
-using UnityEngine;
 
 namespace SlugpackPlugin;
 
 [BepInPlugin(_ID, nameof(SlugpackPlugin), "1.0.0")]
-
 public class Plugin : BaseUnityPlugin
 {
-    const string _ID = "splugpack";
+    private const string _ID = "splugpack";
 
     public bool IsInit;
 
     public void OnEnable()
     {
-        On.RainWorld.OnModsInit += RainWorld_OnModsInit;
+        try
+        {
+            Debug.LogWarning("Technonancer is loading...");
+
+            ApplyCreatures();
+
+            On.RainWorld.OnModsInit += RainWorld_OnModsInit;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex);
+            Debug.LogException(ex);
+        }
     }
 
     private void RainWorld_OnModsInit(On.RainWorld.orig_OnModsInit orig, RainWorld self)
@@ -30,6 +36,8 @@ public class Plugin : BaseUnityPlugin
             if (IsInit) return;
             IsInit = true;
 
+            TnEnums.Init();
+
             GameHooks.Apply();
             PlayerGraphicsHooks.Apply();
             PlayerHooks.Apply();
@@ -39,14 +47,7 @@ public class Plugin : BaseUnityPlugin
             InitializeObjects.Apply();
             RoomScripts.Apply();
 
-            //Now loading all with method
             LoadAtlases();
-
-            //Futile.atlasManager.LoadAtlas("atlases/slugpackatlas");
-            //Futile.atlasManager.LoadAtlas("atlases/hologramatlas");
-            //Futile.atlasManager.LoadAtlas("atlases/trainatlas");
-
-            // Futile.atlasManager.LoadAtlas("atlases/train_accessory_top_atlas");
 
             if (Constants.shaders_enabled)
             {
@@ -55,7 +56,6 @@ public class Plugin : BaseUnityPlugin
 
                 if (Constants.SlugpackShaders.TryGetValue(self, out var Shaders))
                 {
-                    // AssetBundle SlugShaders = Utilities.LoadFromEmbeddedResource("Slugpack.slugpack");
                     Shaders.SlugShaders = Utilities.LoadFromEmbeddedResource("Slugpack.slugpack");
 
                     if (Shaders.SlugShaders != null)
@@ -88,30 +88,7 @@ public class Plugin : BaseUnityPlugin
                 }
             }
 
-            // glizard is dead
-
-            _ = CreatureTemplateType.PastGreen;
-            LizardHooks.Apply();
-
-            // Creature initialization
-            On.RainWorld.OnModsDisabled += (orig, self, newlyDisabledMods) =>
-            {
-                orig(self, newlyDisabledMods);
-                for (var i = 0; i < newlyDisabledMods.Length; i++)
-                {
-                    if (newlyDisabledMods[i].id == _ID)
-                    {
-                        if (MultiplayerUnlocks.CreatureUnlockList.Contains(SandboxUnlockID.PastGreen))
-                            MultiplayerUnlocks.CreatureUnlockList.Remove(SandboxUnlockID.PastGreen);
-                        CreatureTemplateType.UnregisterValues();
-                        SandboxUnlockID.UnregisterValues();
-                        break;
-                    }
-                }
-            };
-            Content.Register(new PastGreenCritob());
-
-
+            On.RainWorld.OnModsDisabled += RainWorld_OnModsDisabled;
         }
         catch (Exception ex)
         {
@@ -121,20 +98,45 @@ public class Plugin : BaseUnityPlugin
         }
     }
 
+    private void RainWorld_OnModsDisabled(On.RainWorld.orig_OnModsDisabled orig, RainWorld self, ModManager.Mod[] newlyDisabledMods)
+    {
+        orig(self, newlyDisabledMods);
+        for (var i = 0; i < newlyDisabledMods.Length; i++)
+        {
+            if (newlyDisabledMods[i].id == _ID)
+            {
+                Debug.LogWarning($"Unregistering Creatures from {_ID}");
+                TnEnums.Unregister();
+                break;
+            }
+        }
+    }
+
+    private void ApplyCreatures()
+    {
+        Debug.LogWarning("Loading Creatures from Technomancer");
+
+        HiveQueenHooks.Apply();
+        LizardHooks.Apply();
+
+        Content.Register(
+            new HiveQueenCritob(),
+            new PastGreenCritob());
+    }
+
     private void LoadAtlases()
     {
-        foreach (var file in AssetManager.ListDirectory("tn_atlases"))
+        foreach (var file in from string file in AssetManager.ListDirectory("tn_atlases")
+                             where ".png".Equals(Path.GetExtension(file))
+                             select file)
         {
-            if (".png".Equals(Path.GetExtension(file)))
+            if (File.Exists(Path.ChangeExtension(file, ".txt")))
             {
-                if (File.Exists(Path.ChangeExtension(file, ".txt")))
-                {
-                    Futile.atlasManager.LoadAtlas(Path.ChangeExtension(file, null));
-                }
-                else
-                {
-                    Futile.atlasManager.LoadImage(Path.ChangeExtension(file, null));
-                }
+                Futile.atlasManager.LoadAtlas(Path.ChangeExtension(file, null));
+            }
+            else
+            {
+                Futile.atlasManager.LoadImage(Path.ChangeExtension(file, null));
             }
         }
     }

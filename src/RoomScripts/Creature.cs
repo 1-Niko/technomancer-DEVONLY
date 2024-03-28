@@ -1,6 +1,6 @@
 namespace Slugpack
 {
-    static class CreatureHooks
+    internal static class CreatureHooks
     {
         internal static void Apply()
         {
@@ -55,7 +55,6 @@ namespace Slugpack
 
                     self.stun = 45;
                     self.landingBrake = vulturestuff.timer;
-
 
                     if (self.IsKing)
                     {

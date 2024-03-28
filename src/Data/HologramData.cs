@@ -1,8 +1,8 @@
 namespace Slugpack;
 
-static class Holograms
+internal static class Holograms
 {
-    public static readonly long[] PipeLock = 
+    public static readonly long[] PipeLock =
     [
         0x00001FF0000, 0x0000F01E000, 0x00070001C00,
         0x000C0000600, 0x00100000100, 0x006000000C0,

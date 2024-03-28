@@ -1,5 +1,3 @@
-using System.Linq;
-using UnityEngine;
 using static Pom.Pom;
 
 namespace Slugpack
@@ -25,7 +23,7 @@ namespace Slugpack
         {
             base.Update(eu);
             // Debug.Log(RWCustom.Custom.Dist(Vector2.zero, (this.placedObject.data as HypothermiaRadiusData).rad));
-            
+
             foreach (var player in this.room.world.game.Players)
             {
                 if (player != null && player.Room.realizedRoom == room)
@@ -54,6 +52,6 @@ namespace Slugpack
             base.Destroy();
         }
 
-        PlacedObject placedObject;
+        private PlacedObject placedObject;
     }
 }

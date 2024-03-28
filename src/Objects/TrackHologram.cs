@@ -1,7 +1,5 @@
 ﻿using static Pom.Pom;
-using UnityEngine;
 using static Pom.Pom.Vector2ArrayField;
-using System;
 
 namespace Slugpack
 {

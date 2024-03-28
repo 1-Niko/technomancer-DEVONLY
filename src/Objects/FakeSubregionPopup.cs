@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using System.Linq;
-using IL.MoreSlugcats;
-using UnityEngine;
 using static Pom.Pom;
 
 namespace Slugpack
@@ -100,7 +96,7 @@ namespace Slugpack
                     // if (previousRegionID == 1 && regionID == 0) { } // nothing
                     // if (previousRegionID == 1 && regionID == 2) { primed = true; Debug.Log("Primed!"); } // prime
                     // if (previousRegionID == 2 && regionID == 1) { primed = false; Debug.Log("Unprimed"); } // unprime
-                    
+
                     // It should also automatically supress if you enter the room with your last seen subregion being its display
 
                     if (previousRegionID == 0 && regionID == 2 && !triggered && !suppressed) // supress
@@ -144,24 +140,24 @@ namespace Slugpack
             base.Destroy();
         }
 
-        PlacedObject placedObject;
+        private PlacedObject placedObject;
 
-        List<string> subRegions;
+        private List<string> subRegions;
 
-        string name;
+        private string name;
 
-        bool inRadius;
+        private bool inRadius;
 
-        bool inRegion;
+        private bool inRegion;
 
-        int regionID;
+        private int regionID;
 
-        int previousRegionID;
+        private int previousRegionID;
 
-        bool suppressed;
+        private bool suppressed;
 
-        bool triggered;
+        private bool triggered;
 
-        int counter;
+        private int counter;
     }
 }
