@@ -2,7 +2,7 @@
 
 namespace Slugpack;
 
-public class HiveQueenHooks
+public static class HiveQueenHooks
 {
     internal static void Apply()
     {
@@ -11,11 +11,11 @@ public class HiveQueenHooks
         //On.Lizard.ctor += Lizard_ctor;
         On.LizardBreeds.BreedTemplate_Type_CreatureTemplate_CreatureTemplate_CreatureTemplate_CreatureTemplate += (orig, type, lizardAncestor, pinkTemplate, blueTemplate, greenTemplate) =>
         {
-            List<TileTypeResistance> list = new List<TileTypeResistance>();
-            List<TileConnectionResistance> list2 = new List<TileConnectionResistance>();
+            List<TileTypeResistance> list = [];
+            List<TileConnectionResistance> list2 = [];
             if (type == TnEnums.CreatureType.HiveQueen)
             {
-                var temp = orig(CreatureTemplate.Type.YellowLizard, lizardAncestor, pinkTemplate, blueTemplate, greenTemplate);
+                var temp = orig(CreatureType.YellowLizard, lizardAncestor, pinkTemplate, blueTemplate, greenTemplate);
                 var breedParams = (temp.breedParameters as LizardBreedParams)!;
                 breedParams.terrainSpeeds[1] = new LizardBreedParams.SpeedMultiplier(1f, 1f, 1f, 1f);
                 list.Add(new TileTypeResistance(AItile.Accessibility.Floor, 1f, PathCost.Legality.Allowed));
@@ -57,10 +57,12 @@ public class HiveQueenHooks
 
                 temp.preBakedPathingAncestor = StaticWorld.GetCreatureTemplate(CreatureType.GreenLizard);
 
-                CreatureTemplate creatureTemplate = new(type, lizardAncestor, list, list2, new CreatureTemplate.Relationship(CreatureTemplate.Relationship.Type.Ignores, 0f));
-                creatureTemplate.breedParameters = breedParams;
-                creatureTemplate.baseDamageResistance = breedParams.toughness * 2f;
-                creatureTemplate.baseStunResistance = breedParams.toughness;
+                CreatureTemplate creatureTemplate = new(type, lizardAncestor, list, list2, new CreatureTemplate.Relationship(CreatureTemplate.Relationship.Type.Ignores, 0f))
+                {
+                    breedParameters = breedParams,
+                    baseDamageResistance = breedParams.toughness * 2f,
+                    baseStunResistance = breedParams.toughness
+                };
                 creatureTemplate.damageRestistances[(int)Creature.DamageType.Bite, 0] = 2.5f;
                 creatureTemplate.damageRestistances[(int)Creature.DamageType.Bite, 1] = 3f;
                 creatureTemplate.meatPoints = 12;
@@ -101,10 +103,12 @@ public class HiveQueenHooks
             self.ivarBodyColor = Color.white;
             for (int j = 0; j < 2; j++)
             {
-                MultipleAntennae g = new MultipleAntennae(self, num, j);
-                g.length = Random.value + ((j == 0) ? 10 : 4);
+                MultipleAntennae g = new(self, num, j)
+                {
+                    length = Random.value + ((j == 0) ? 10 : 4)
+                };
                 g.segments = Mathf.FloorToInt(Mathf.Lerp(3f, 8f, Mathf.Pow(g.length, Mathf.Lerp(1f, 6f, g.length))));
-                g.alpha = g.length * 0.9f + Random.value * 0.1f;
+                g.alpha = (g.length * 0.9f) + (Random.value * 0.1f);
                 g.antennae = new GenericBodyPart[2, g.segments];
                 for (int i = 0; i < g.segments; i++)
                 {
@@ -114,7 +118,7 @@ public class HiveQueenHooks
                 num = self.AddCosmetic(num, g);
             }
 
-            num = self.AddCosmetic(num, new LongShoulderScales(self, num));
+            _ = self.AddCosmetic(num, new LongShoulderScales(self, num));
             //num = self.AddCosmetic(num, new LongBodyScales(self, num));
 
             /*self.tongue = new GenericBodyPart[self.lizard.lizardParams.tongueSegments];

@@ -80,8 +80,8 @@ internal static class WeakTables
 
         public bool generatedIcons = false;
 
-        public List<HighlightSprite> TechIcons = new List<HighlightSprite>();
-        public List<ConnectingLine> TechConnections = new List<ConnectingLine>();
+        public List<HighlightSprite> TechIcons = [];
+        public List<ConnectingLine> TechConnections = [];
 
         public Vector2 screenPosition = Vector2.zero;
 
@@ -111,7 +111,7 @@ internal static class WeakTables
 
     public class ShortcutList
     {
-        public List<DataStructures.Lock> locks = new();
+        public List<Lock> locks = [];
         public int camPosition = 0;
     }
 

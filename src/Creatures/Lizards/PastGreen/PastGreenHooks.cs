@@ -6,8 +6,6 @@ public static class PastGreenHooks
     {
         On.LizardBreeds.BreedTemplate_Type_CreatureTemplate_CreatureTemplate_CreatureTemplate_CreatureTemplate += LizardBreeds_BreedTemplate_Type_CreatureTemplate_CreatureTemplate_CreatureTemplate_CreatureTemplate;
         On.Lizard.ctor += Lizard_ctor;
-
-        Debug.LogWarning("Loading Green Past Lizard from Technomancer");
     }
 
     private static void Lizard_ctor(On.Lizard.orig_ctor orig, Lizard self, AbstractCreature abstractCreature, World world)

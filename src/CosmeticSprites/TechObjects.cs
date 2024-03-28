@@ -2,247 +2,238 @@ namespace Slugpack;
 
 public class RoomController : CosmeticSprite
 {
-    public List<HighlightSprite> nodes { get; }
-    public bool scheduledRegenerateConnections { get; set; }
-    public Color colour { get; set; }
-    public SlugArrow arrow { get; }
+    public List<HighlightSprite> Nodes { get; }
+    public bool ScheduledRegenerateConnections { get; set; }
+    public Color Colour { get; set; }
+    public SlugArrow Arrow { get; }
+    public int PreviousNodeCount { get; set; }
 
     public RoomController(Room room, Color colour, SlugArrow arrow)
     {
         this.room = room;
-        this.colour = colour;
-        this.arrow = arrow;
-        this.nodes = new List<HighlightSprite>();
-        this.previousNodeCount = 0;
-        this.generateEmptyNodes();
+        Colour = colour;
+        Arrow = arrow;
+        Nodes = [];
+        PreviousNodeCount = 0;
+        GenerateEmptyNodes();
+
     }
 
     public override void Update(bool eu)
     {
         base.Update(eu);
-        this.generateEmptyNodes();
+        GenerateEmptyNodes();
         // if (this.nodes.Count == 0 || this.nodes.Count != this.previousNodeCount)
-        this.forceUninitiatedNodesToGenerateConnections();
-        this.previousNodeCount = this.nodes.Count;
-        if (this.scheduledRegenerateConnections)
+        ForceUninitiatedNodesToGenerateConnections();
+        PreviousNodeCount = Nodes.Count;
+        if (ScheduledRegenerateConnections)
         {
-            this.regenerateConnectionsForAllNodes();
-            this.scheduledRegenerateConnections = false;
+            RegenerateConnectionsForAllNodes();
+            ScheduledRegenerateConnections = false;
         }
-        // Debug.Log(this.nodes.Count);
-        this.purgeMarkedNodes();
+        PurgeMarkedNodes();
     }
 
     public override void Destroy()
     {
-        for (int i = 0; i < this.nodes.Count; i++)
-            this.nodes[i].Destroy();
-        this.room.RemoveObject(this);
+        for (int i = 0; i < Nodes.Count; i++)
+            Nodes[i].Destroy();
+        room.RemoveObject(this);
         base.Destroy();
     }
 
-    public void purgeMarkedNodes()
+    public void PurgeMarkedNodes()
     {
         int purged_nodes = 0;
-        List<HighlightSprite> markedNodes = new List<HighlightSprite>();
-        for (int i = 0; i < this.nodes.Count; i++)
-            if (this.nodes[i].markedForDeletion)
+        List<HighlightSprite> markedNodes = [];
+        for (int i = 0; i < Nodes.Count; i++)
+            if (Nodes[i].MarkedForDeletion)
             {
-                this.nodes[i].Destroy();
-                markedNodes.Add(this.nodes[i]);
+                Nodes[i].Destroy();
+                markedNodes.Add(Nodes[i]);
                 purged_nodes++;
             }
         if (purged_nodes > 0)
         {
             for (int i = 0; i < markedNodes.Count; i++)
-                this.nodes.Remove(markedNodes[i]);
-            this.regenerateConnectionsForAllNodes();
+                _ = Nodes.Remove(markedNodes[i]);
+            RegenerateConnectionsForAllNodes();
         }
     }
 
     // THINGS TO SOLVE:
     // 1. Nodes are continuously generated when a moving node (creature) is in the room!
     // 2. Connections continuously flicker
-    public void generateEmptyNodes()
+    public void GenerateEmptyNodes()
     {
-        List<DataStructures.Node> nodeData = Utilities.GetAllNodeInformation(this.room);
+        List<Node> nodeData = Utilities.GetAllNodeInformation(room);
 
         int addedNodes = 0;
 
         for (int i = 0; i < nodeData.Count; i++)
         {
-            if (!nodes.Any(obj => obj.pos.Equals(nodeData[i].position)) && (nodeData[i].anchor == null || !nodes.Any(obj => obj.anchor == nodeData[i].anchor)))
+            if (!Nodes.Any(obj => obj.pos.Equals(nodeData[i].position)) && (nodeData[i].anchor == null || !Nodes.Any(obj => obj.Anchor == nodeData[i].anchor)) && (room.TileHeight * 20f) > nodeData[i].position.y && (room.TileWidth * 20f) > nodeData[i].position.x && 0 < nodeData[i].position.x && 0 < nodeData[i].position.y)
             {
-                // Added so it doesn't immediately get marked for deletion
-                if (((this.room.TileHeight * 20f) > nodeData[i].position.y && (this.room.TileWidth * 20f) > nodeData[i].position.x && 0 < nodeData[i].position.x && 0 < nodeData[i].position.y))
-                {
-                    // going to have to make something to allow for nodes to track their parent object
-                    // at least the functionality for the connections is already in place
-                    HighlightSprite node = new HighlightSprite(nodeData[i].position, nodeData[i].level, nodeData[i].protection, this.room, this, nodeData[i].anchor);
-                    this.nodes.Add(node);
-                    this.room.AddObject(node);
-                    addedNodes++;
-                }
+                // going to have to make something to allow for nodes to track their parent object
+                // at least the functionality for the connections is already in place
+                HighlightSprite node = new(nodeData[i].position, nodeData[i].level, nodeData[i].protection, room, this, nodeData[i].anchor);
+                Nodes.Add(node);
+                room.AddObject(node);
+                addedNodes++;
             }
         }
         if (addedNodes > 0)
-            this.regenerateConnectionsForAllNodes();
+            RegenerateConnectionsForAllNodes();
     }
 
-    public void regenerateConnectionsForAllNodes()
+    public void RegenerateConnectionsForAllNodes()
     {
-        for (int i = 0; i < this.nodes.Count; i++)
+        for (int i = 0; i < Nodes.Count; i++)
         {
-            this.nodes[i].regenerateConnections();
+            Nodes[i].RegenerateConnections();
         }
     }
 
-    public void forceUninitiatedNodesToGenerateConnections()
+    public void ForceUninitiatedNodesToGenerateConnections()
     {
-        for (int i = 0; i < this.nodes.Count; i++)
+        for (int i = 0; i < Nodes.Count; i++)
         {
-            if (this.nodes[i].connections.Count == 0)
+            if (Nodes[i].Connections.Count == 0)
             {
-                this.nodes[i].regenerateConnections();
+                Nodes[i].RegenerateConnections();
             }
         }
     }
-
-    private Room room;
-
-    private int previousNodeCount;
 }
 
 public class HighlightSprite : CosmeticSprite
 {
-    public float padding { get; set; }
-    public List<ConnectingLine> connections { get; set; }
-    public float age { get; }
-    public int connectionCount { get; set; }
-    public PhysicalObject anchor { get; }
-    public bool markedForDeletion { get; set; }
-    public RoomController owner { get; }
-    public Dictionary<HighlightSprite, ConnectingLine> connectionTable { get; }
-    public bool isSmall { get; set; }
-    public bool selected { get; set; }
+    public float Padding { get; set; }
+    public List<ConnectingLine> Connections { get; set; }
+    public float Age { get; }
+    public int ConnectionCount { get; set; }
+    public PhysicalObject Anchor { get; }
+    public bool MarkedForDeletion { get; set; }
+    public RoomController Owner { get; }
+    public Dictionary<HighlightSprite, ConnectingLine> ConnectionTable { get; }
+    public bool IsSmall { get; set; }
+    public bool Selected { get; set; }
 
     public HighlightSprite(Vector2 pos, int nodeLevel, int protectionLevels, Room room, RoomController owner, PhysicalObject anchor)
     {
-        this.age = Utilities.Timestamp();
-        this.markedForDeletion = false;
-        this.isSmall = false;
-        this.connectionCount = 0;
+        Age = Utilities.Timestamp();
+        MarkedForDeletion = false;
+        IsSmall = false;
+        ConnectionCount = 0;
         this.pos = pos;
-        this.lastPos = pos;
+        lastPos = pos;
         this.nodeLevel = nodeLevel;
         this.protectionLevels = protectionLevels;
         this.room = room;
-        this.anchor = anchor;
-        this.owner = owner;
-        this.connections = new List<ConnectingLine>();
-        this.connectionTable = new Dictionary<HighlightSprite, ConnectingLine>();
-        this.regenerateConnections();
+        Anchor = anchor;
+        Owner = owner;
+        Connections = [];
+        ConnectionTable = [];
+        RegenerateConnections();
     }
 
     public override void Destroy()
     {
         // this.owner.scheduledRegenerateConnections = true;
         // this.owner.nodes.Remove(this);
-        for (int i = 0; i < this.connections.Count; i++)
-            this.connections[i].Destroy();
-        for (int i = 0; i < this.spriteLeaser.sprites.Length; i++)
-            this.spriteLeaser.sprites[i].RemoveFromContainer();
-        this.room.RemoveObject(this);
+        for (int i = 0; i < Connections.Count; i++)
+            Connections[i].Destroy();
+        for (int i = 0; i < spriteLeaser.sprites.Length; i++)
+            spriteLeaser.sprites[i].RemoveFromContainer();
+        room.RemoveObject(this);
         base.Destroy();
     }
 
     public override void Update(bool eu)
     {
         base.Update(eu);
-        this.lastStepTimer = this.stepTimer;
-        this.stepTimer++;
+        lastStepTimer = stepTimer;
+        stepTimer++;
 
-        if (this.anchor != null)
-            if (this.anchor is Creature)
-                this.pos = (this.anchor as Creature).mainBodyChunk.pos;
+        if (Anchor is Creature)
+            pos = (Anchor as Creature).mainBodyChunk.pos;
 
-        if (this.connections.Count == 0)
-            this.regenerateConnections();
-        this.calculateConnections();
+        if (Connections.Count == 0)
+            RegenerateConnections();
+        CalculateConnections();
 
-        this.enableValid();
-        this.calculateSmallness();
+        EnableValid();
+        CalculateSmallness();
 
-        this.selected = RWCustom.Custom.Dist(this.owner.arrow.pos, this.pos) < 1;
+        Selected = RWCustom.Custom.Dist(Owner.Arrow.pos, pos) < 1;
 
-        // Debug.Log($"({this.room.TileHeight * 20f}, {this.room.TileWidth * 20f}) ({this.pos.x - 300f}, {this.pos.y})");
-        if ((this.room.TileHeight * 20f) < this.pos.y || (this.room.TileWidth * 20f) < this.pos.x || 0 > this.pos.x || 0 > this.pos.y)
-            this.markedForDeletion = true;
+        if ((room.TileHeight * 20f) < pos.y || (room.TileWidth * 20f) < pos.x || 0 > pos.x || 0 > pos.y)
+            MarkedForDeletion = true;
     }
 
-    public void regenerateConnections()
+    public void RegenerateConnections()
     {
-        for (int i = 0; i < this.connections.Count; i++)
-            this.room.RemoveObject(this.connections[i]);
+        for (int i = 0; i < Connections.Count; i++)
+            room.RemoveObject(Connections[i]);
 
-        this.connections.Clear();
-        this.connectionTable.Clear();
+        Connections.Clear();
+        ConnectionTable.Clear();
 
-        for (int i = 0; i < this.owner.nodes.Count; i++)
+        for (int i = 0; i < Owner.Nodes.Count; i++)
         {
-            ConnectingLine connection = new ConnectingLine((this.pos + this.owner.nodes[i].pos) / 2, Utilities.CalculateAngleBetweenVectorsForLineSegment(this.pos, this.owner.nodes[i].pos),
-                                                     RWCustom.Custom.Dist(this.pos, this.owner.nodes[i].pos) - (this.padding * 2), this.padding, this, this.owner.nodes[i]);
-            this.connections.Add(connection);
-            this.room.AddObject(this.connections[i]);
-            if (!this.connectionTable.ContainsKey(this.owner.nodes[i]))
-                this.connectionTable.Add(this.owner.nodes[i], connection);
+            ConnectingLine connection = new((pos + Owner.Nodes[i].pos) / 2, Utilities.CalculateAngleBetweenVectorsForLineSegment(pos, Owner.Nodes[i].pos),
+                                                     RWCustom.Custom.Dist(pos, Owner.Nodes[i].pos) - (Padding * 2), Padding, this, Owner.Nodes[i]);
+            Connections.Add(connection);
+            room.AddObject(Connections[i]);
+            if (!ConnectionTable.ContainsKey(Owner.Nodes[i]))
+                ConnectionTable.Add(Owner.Nodes[i], connection);
         }
 
-        this.enableValid();
+        EnableValid();
     }
 
-    public void calculateConnections()
+    public void CalculateConnections()
     {
-        this.connectionCount = 0;
-        for (int i = 0; i < this.connections.Count; i++)
-            if (this.connections[i].shouldBeEnabled)
-                this.connectionCount++;
+        ConnectionCount = 0;
+        for (int i = 0; i < Connections.Count; i++)
+            if (Connections[i].ShouldBeEnabled)
+                ConnectionCount++;
     }
 
-    public bool returnValid(HighlightSprite node)
+    public bool ReturnValid(HighlightSprite node)
     {
-        return node != null && (node.connectionTable != null && (!node.connectionTable.ContainsKey(this) || !node.connectionTable[this].enabled || (node.connectionTable[this].enabled && this.age > node.age)));
+        return node != null && node.ConnectionTable != null && (!node.ConnectionTable.ContainsKey(this) || !node.ConnectionTable[this].Enabled || (node.ConnectionTable[this].Enabled && Age > node.Age));
     }
 
-    public void calculateSmallness()
+    public void CalculateSmallness()
     {
-        this.isSmall = false;
-        for (int i = 0; i < this.owner.nodes.Count; i++)
-            if (this.owner.nodes[i] != this && RWCustom.Custom.Dist(this.pos, this.owner.nodes[i].pos) < 45)
-                this.isSmall = true;
+        IsSmall = false;
+        for (int i = 0; i < Owner.Nodes.Count; i++)
+            if (Owner.Nodes[i] != this && RWCustom.Custom.Dist(pos, Owner.Nodes[i].pos) < 45)
+                IsSmall = true;
     }
 
     // enableValid isn't working as expected, will work on after i get the lerping problem with connections sorted
     // sorted and solved :)
-    public void enableValid()
+    public void EnableValid()
     {
-        for (int i = 0; i < this.owner.nodes.Count; i++)
-            this.connectionTable[this.owner.nodes[i]].enabled = false;
+        for (int i = 0; i < Owner.Nodes.Count; i++)
+            ConnectionTable[Owner.Nodes[i]].Enabled = false;
 
         //if (Utilities.CheckIfOnScreen(this.pos, this.room))
         //{
         // At least one is bound to be valid
-        var (up, left, right, down) = Utilities.GetNearestNodesInAllDirections(this, this.owner.nodes, this.room);
+        var (up, left, right, down) = Utilities.GetNearestNodesInAllDirections(this, Owner.Nodes, room);
 
         // Must also check to see if partner has theirs enabled
-        if (returnValid(up)) { this.connectionTable[up].enabled = true; }
-        if (returnValid(left)) { this.connectionTable[left].enabled = true; }
-        if (returnValid(right)) { this.connectionTable[right].enabled = true; }
-        if (returnValid(down)) { this.connectionTable[down].enabled = true; }
-        if (up != null && up.connectionTable != null) { this.connectionTable[up].shouldBeEnabled = true; }
-        if (left != null && left.connectionTable != null) { this.connectionTable[left].shouldBeEnabled = true; }
-        if (right != null && right.connectionTable != null) { this.connectionTable[right].shouldBeEnabled = true; }
-        if (down != null && down.connectionTable != null) { this.connectionTable[down].shouldBeEnabled = true; }
+        if (ReturnValid(up)) { ConnectionTable[up].Enabled = true; }
+        if (ReturnValid(left)) { ConnectionTable[left].Enabled = true; }
+        if (ReturnValid(right)) { ConnectionTable[right].Enabled = true; }
+        if (ReturnValid(down)) { ConnectionTable[down].Enabled = true; }
+        if (up != null && up.ConnectionTable != null) { ConnectionTable[up].ShouldBeEnabled = true; }
+        if (left != null && left.ConnectionTable != null) { ConnectionTable[left].ShouldBeEnabled = true; }
+        if (right != null && right.ConnectionTable != null) { ConnectionTable[right].ShouldBeEnabled = true; }
+        if (down != null && down.ConnectionTable != null) { ConnectionTable[down].ShouldBeEnabled = true; }
         //}
     }
 
@@ -250,9 +241,9 @@ public class HighlightSprite : CosmeticSprite
     {
         base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
 
-        string sVar = (this.isSmall) ? "A" : "B";
+        string sVar = IsSmall ? "A" : "B";
 
-        sLeaser.sprites[0].element = Futile.atlasManager.GetElementWithName($"karma_{sVar}{this.nodeLevel}");
+        sLeaser.sprites[0].element = Futile.atlasManager.GetElementWithName($"karma_{sVar}{nodeLevel}");
         sLeaser.sprites[1].element = Futile.atlasManager.GetElementWithName("protection_1");
         sLeaser.sprites[2].element = Futile.atlasManager.GetElementWithName("protection_2");
         sLeaser.sprites[3].element = Futile.atlasManager.GetElementWithName("protection_3");
@@ -265,9 +256,9 @@ public class HighlightSprite : CosmeticSprite
         sLeaser.sprites[3].scale = 1.0002f;
 
         sLeaser.sprites[0].isVisible = true;
-        sLeaser.sprites[1].isVisible = this.protectionLevels > 0;
-        sLeaser.sprites[2].isVisible = this.protectionLevels > 1;
-        sLeaser.sprites[3].isVisible = this.protectionLevels > 2;
+        sLeaser.sprites[1].isVisible = protectionLevels > 0;
+        sLeaser.sprites[2].isVisible = protectionLevels > 1;
+        sLeaser.sprites[3].isVisible = protectionLevels > 2;
 
         Vector2 currentPos = Vector2.Lerp(lastPos, pos, timeStacker);
 
@@ -276,53 +267,52 @@ public class HighlightSprite : CosmeticSprite
         sLeaser.sprites[2].SetPosition(currentPos - rCam.pos);
         sLeaser.sprites[3].SetPosition(currentPos - rCam.pos);
 
-        sLeaser.sprites[0].color = new Color(0, 0, (this.selected) ? 1 : 0, 0);
-        sLeaser.sprites[1].color = new Color(0, 0, (this.selected) ? 1 : 0, 0);
-        sLeaser.sprites[2].color = new Color(0, 0, (this.selected) ? 1 : 0, 0);
-        sLeaser.sprites[3].color = new Color(0, 0, (this.selected) ? 1 : 0, 0);
+        sLeaser.sprites[0].color = new Color(0, 0, Selected ? 1 : 0, 0);
+        sLeaser.sprites[1].color = new Color(0, 0, Selected ? 1 : 0, 0);
+        sLeaser.sprites[2].color = new Color(0, 0, Selected ? 1 : 0, 0);
+        sLeaser.sprites[3].color = new Color(0, 0, Selected ? 1 : 0, 0);
 
-        if (Constants.shaders_enabled)
-            if (Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var Shaders))
-            {
-                sLeaser.sprites[0].shader = Shaders.SelectionShader;
-                sLeaser.sprites[1].shader = Shaders.SelectionShader;
-                sLeaser.sprites[2].shader = Shaders.SelectionShader;
-                sLeaser.sprites[3].shader = Shaders.SelectionShader;
+        if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var Shaders))
+        {
+            sLeaser.sprites[0].shader = Shaders.SelectionShader;
+            sLeaser.sprites[1].shader = Shaders.SelectionShader;
+            sLeaser.sprites[2].shader = Shaders.SelectionShader;
+            sLeaser.sprites[3].shader = Shaders.SelectionShader;
 
-                sLeaser.sprites[0]._renderLayer?._material?.SetFloat("_RandomOffset", Mathf.Lerp(this.lastStepTimer, this.stepTimer, timeStacker));
-                sLeaser.sprites[1]._renderLayer?._material?.SetFloat("_RandomOffset", Mathf.Lerp(this.lastStepTimer, this.stepTimer, timeStacker));
-                sLeaser.sprites[2]._renderLayer?._material?.SetFloat("_RandomOffset", Mathf.Lerp(this.lastStepTimer, this.stepTimer, timeStacker));
-                sLeaser.sprites[3]._renderLayer?._material?.SetFloat("_RandomOffset", Mathf.Lerp(this.lastStepTimer, this.stepTimer, timeStacker));
+            sLeaser.sprites[0]._renderLayer?._material?.SetFloat("_RandomOffset", Mathf.Lerp(lastStepTimer, stepTimer, timeStacker));
+            sLeaser.sprites[1]._renderLayer?._material?.SetFloat("_RandomOffset", Mathf.Lerp(lastStepTimer, stepTimer, timeStacker));
+            sLeaser.sprites[2]._renderLayer?._material?.SetFloat("_RandomOffset", Mathf.Lerp(lastStepTimer, stepTimer, timeStacker));
+            sLeaser.sprites[3]._renderLayer?._material?.SetFloat("_RandomOffset", Mathf.Lerp(lastStepTimer, stepTimer, timeStacker));
 
-                // if (!Constants.ScanLineMemory.TryGetValue(this.technomancer, out var scanline)) Constants.ScanLineMemory.Add(this.technomancer, scanline = new WeakTables.ScanLine());
+            // if (!Constants.ScanLineMemory.TryGetValue(this.technomancer, out var scanline)) Constants.ScanLineMemory.Add(this.technomancer, scanline = new WeakTables.ScanLine());
 
-                sLeaser.sprites[0]._renderLayer?._material?.SetVector("_PlayerPosition", new Vector4(Shaders.position.x, Shaders.position.y, 0, 0));
-                sLeaser.sprites[1]._renderLayer?._material?.SetVector("_PlayerPosition", new Vector4(Shaders.position.x, Shaders.position.y, 0, 0));
-                sLeaser.sprites[2]._renderLayer?._material?.SetVector("_PlayerPosition", new Vector4(Shaders.position.x, Shaders.position.y, 0, 0));
-                sLeaser.sprites[3]._renderLayer?._material?.SetVector("_PlayerPosition", new Vector4(Shaders.position.x, Shaders.position.y, 0, 0));
-            }
+            sLeaser.sprites[0]._renderLayer?._material?.SetVector("_PlayerPosition", new Vector4(Shaders.position.x, Shaders.position.y, 0, 0));
+            sLeaser.sprites[1]._renderLayer?._material?.SetVector("_PlayerPosition", new Vector4(Shaders.position.x, Shaders.position.y, 0, 0));
+            sLeaser.sprites[2]._renderLayer?._material?.SetVector("_PlayerPosition", new Vector4(Shaders.position.x, Shaders.position.y, 0, 0));
+            sLeaser.sprites[3]._renderLayer?._material?.SetVector("_PlayerPosition", new Vector4(Shaders.position.x, Shaders.position.y, 0, 0));
+        }
     }
 
     public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     {
         sLeaser.sprites = new FSprite[4];
 
-        string sVar = (this.isSmall) ? "A" : "B";
+        string sVar = IsSmall ? "A" : "B";
 
-        sLeaser.sprites[0] = new FSprite($"karma_{sVar}{this.nodeLevel}", true);
+        sLeaser.sprites[0] = new FSprite($"karma_{sVar}{nodeLevel}", true);
         sLeaser.sprites[1] = new FSprite("protection_1", true);
         sLeaser.sprites[2] = new FSprite("protection_2", true);
         sLeaser.sprites[3] = new FSprite("protection_3", true);
 
         sLeaser.sprites[0].isVisible = true;
-        sLeaser.sprites[1].isVisible = this.protectionLevels > 0;
-        sLeaser.sprites[2].isVisible = this.protectionLevels > 1;
-        sLeaser.sprites[3].isVisible = this.protectionLevels > 2;
+        sLeaser.sprites[1].isVisible = protectionLevels > 0;
+        sLeaser.sprites[2].isVisible = protectionLevels > 1;
+        sLeaser.sprites[3].isVisible = protectionLevels > 2;
 
-        sLeaser.sprites[0].SetPosition(this.pos - rCam.pos);
-        sLeaser.sprites[1].SetPosition(this.pos - rCam.pos);
-        sLeaser.sprites[2].SetPosition(this.pos - rCam.pos);
-        sLeaser.sprites[3].SetPosition(this.pos - rCam.pos);
+        sLeaser.sprites[0].SetPosition(pos - rCam.pos);
+        sLeaser.sprites[1].SetPosition(pos - rCam.pos);
+        sLeaser.sprites[2].SetPosition(pos - rCam.pos);
+        sLeaser.sprites[3].SetPosition(pos - rCam.pos);
 
         AddToContainer(sLeaser, rCam, null);
     }
@@ -330,7 +320,7 @@ public class HighlightSprite : CosmeticSprite
     public override void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
         // Same here, gotta solve an NRE
-        this.spriteLeaser ??= sLeaser;
+        spriteLeaser ??= sLeaser;
         newContatiner ??= rCam.ReturnFContainer("HUD");
         foreach (FSprite fsprite in sLeaser.sprites)
         {
@@ -339,96 +329,93 @@ public class HighlightSprite : CosmeticSprite
         }
     }
 
-    private int nodeLevel;
+    private readonly int nodeLevel;
 
-    private int protectionLevels;
+    private readonly int protectionLevels;
 
     private float stepTimer;
 
     private float lastStepTimer;
-
-    private Room room;
 
     private RoomCamera.SpriteLeaser spriteLeaser;
 }
 
 public class ConnectingLine : CosmeticSprite
 {
-    public Color colour { get; set; }
-    public Vector2 pos { get; set; }
-    public float rot { get; set; }
-    public float length { get; set; }
-    public float padding { get; set; }
-    public bool enabled { get; set; }
-    public bool shouldBeEnabled { get; set; }
-    public HighlightSprite mother { get; }
-    public HighlightSprite father { get; }
+    public Color Colour { get; set; }
+    public Vector2 Pos { get; set; }
+    public float Rot { get; set; }
+    public float Length { get; set; }
+    public float Padding { get; set; }
+    public bool Enabled { get; set; }
+    public bool ShouldBeEnabled { get; set; }
+    public HighlightSprite Mother { get; }
+    public HighlightSprite Father { get; }
 
     public ConnectingLine(Vector2 pos, float rot, float len, float padding, HighlightSprite mother, HighlightSprite father)
     {
-        this.enabled = false;
-        this.shouldBeEnabled = false;
-        this.pos = pos;
-        this.rot = rot;
-        this.length = length;
-        this.padding = 30;
+        Enabled = false;
+        ShouldBeEnabled = false;
+        Pos = pos;
+        Rot = rot;
+        Length = Length;
+        Padding = 30;
 
-        this.lastPos = pos;
-        this.lastRot = rot;
-        this.lastLen = len;
-        this.lastPadding = padding;
+        lastPos = pos;
+        lastRot = rot;
+        lastLen = len;
+        lastPadding = padding;
 
-        this.mother = mother;
-        this.father = father;
+        Mother = mother;
+        Father = father;
     }
 
     public override void Update(bool eu)
     {
         base.Update(eu);
-        this.lastStepTimer = this.stepTimer;
-        this.stepTimer++;
+        lastStepTimer = stepTimer;
+        stepTimer++;
 
-        this.lastPos = this.pos; // shouldnt have to add this but it's being a bitch
-        this.lastLen = this.length;
-        this.lastRot = this.rot;
-        this.lastPadding = this.padding;
+        lastPos = Pos; // shouldnt have to add this but it's being a bitch
+        lastLen = Length;
+        lastRot = Rot;
+        lastPadding = Padding;
 
-        this.pos = (this.mother.pos + this.father.pos) / 2;
-        this.rot = Utilities.CalculateAngleBetweenVectorsForLineSegment(this.mother.pos, this.father.pos);
-        this.length = RWCustom.Custom.Dist(this.mother.pos, this.father.pos);// - (this.padding * 2);
-        this.padding = this.padding;
+        Pos = (Mother.pos + Father.pos) / 2;
+        Rot = Utilities.CalculateAngleBetweenVectorsForLineSegment(Mother.pos, Father.pos);
+        Length = RWCustom.Custom.Dist(Mother.pos, Father.pos);// - (this.padding * 2);
     }
 
     public override void Destroy()
     {
         try
         {
-            for (int i = 0; i < this.spriteLeaser.sprites.Length; i++)
-                this.spriteLeaser.sprites[i].RemoveFromContainer();
-            this.room.RemoveObject(this);
+            for (int i = 0; i < spriteLeaser.sprites.Length; i++)
+                spriteLeaser.sprites[i].RemoveFromContainer();
+            room.RemoveObject(this);
         }
-        catch (System.NullReferenceException ex)
+        catch
         {
             // ignore the problem :)
         }
         base.Destroy();
     }
 
-    public bool determineWhoGetsToExist(bool isEnabled)
+    public bool DetermineWhoGetsToExist(bool isEnabled)
     {
         if (!isEnabled)
             return false;
         //else if (!getParentConnectionState(this.father) && this.mother.age < this.father.age)
-        else if ((!getParentConnectionState(this.father)) || (getParentConnectionState(this.father) && this.mother.age < this.father.age))
+        else if ((!GetParentConnectionState(Father)) || (GetParentConnectionState(Father) && Mother.Age < Father.Age))
             return true;
         return false;
     }
 
-    public bool getParentConnectionState(HighlightSprite to)
+    public bool GetParentConnectionState(HighlightSprite to)
     {
-        for (int i = 0; i < to.connections.Count; i++)
-            if (to.connections[i] == this)
-                return to.connections[i].enabled;
+        for (int i = 0; i < to.Connections.Count; i++)
+            if (to.Connections[i] == this)
+                return to.Connections[i].Enabled;
         return false;
     }
 
@@ -438,27 +425,27 @@ public class ConnectingLine : CosmeticSprite
 
         sLeaser.sprites[0].element = Futile.atlasManager.GetElementWithName("connecting_line");
 
-        Vector2 currentPos = Vector2.Lerp(this.lastPos, this.pos, timeStacker);
+        Vector2 currentPos = Vector2.Lerp(lastPos, Pos, timeStacker);
 
-        float currentRot = Mathf.Lerp(this.lastRot, this.rot, timeStacker);
+        float currentRot = Mathf.Lerp(lastRot, Rot, timeStacker);
         float leniency = 1.5f;
-        if ((currentRot > this.lastRot + leniency || currentRot < this.lastRot - leniency) && (currentRot > this.rot + leniency || currentRot < this.rot - leniency))
-            currentRot = this.rot;
-        float currentLength = Mathf.Lerp(this.lastLen, this.length, timeStacker);
-        float currentPadding = Mathf.Lerp(this.lastPadding, this.padding, timeStacker) * 2;
+        if ((currentRot > lastRot + leniency || currentRot < lastRot - leniency) && (currentRot > Rot + leniency || currentRot < Rot - leniency))
+            currentRot = Rot;
+        float currentLength = Mathf.Lerp(lastLen, Length, timeStacker);
+        float currentPadding = Mathf.Lerp(lastPadding, Padding, timeStacker) * 2;
 
         // This is required to not get any strange artifacts. No idea why, but it's 100% required
 
-        sLeaser.sprites[0].scaleX = (1.0002f / 1024f * (currentLength - currentPadding));
+        sLeaser.sprites[0].scaleX = 1.0002f / 1024f * (currentLength - currentPadding);
         sLeaser.sprites[0].scaleY = 1.0002f; // 1.0002f;
 
         sLeaser.sprites[0].SetPosition(currentPos - rCam.pos);
 
-        sLeaser.sprites[0].alpha = (this.mother.connectionCount / 8f) % 1;
+        sLeaser.sprites[0].alpha = Mother.ConnectionCount / 8f % 1;
 
         bool allowedToExist = (currentLength - currentPadding) > 0;
 
-        sLeaser.sprites[0].isVisible = (allowedToExist && determineWhoGetsToExist(allowedToExist)) ? this.enabled : false;
+        sLeaser.sprites[0].isVisible = allowedToExist && DetermineWhoGetsToExist(allowedToExist) && Enabled;
 
         // Disable nodes which are offscreen to attempt to save memory? Maybe? It probably won't do anything, but it will give me peace of mind.
         // Nevermind this breaks the game
@@ -468,17 +455,16 @@ public class ConnectingLine : CosmeticSprite
 
         sLeaser.sprites[0].rotation = currentRot;
 
-        if (Constants.shaders_enabled)
-            if (Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var Shaders))
-            {
-                sLeaser.sprites[0].shader = Shaders.ConnectingLine;
+        if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var Shaders))
+        {
+            sLeaser.sprites[0].shader = Shaders.ConnectingLine;
 
-                sLeaser.sprites[0]._renderLayer?._material?.SetFloat("_RandomOffset", Mathf.Lerp(this.lastStepTimer, this.stepTimer, 1));// timeStacker));
+            sLeaser.sprites[0]._renderLayer?._material?.SetFloat("_RandomOffset", Mathf.Lerp(lastStepTimer, stepTimer, 1));// timeStacker));
 
-                sLeaser.sprites[0]._renderLayer?._material?.SetVector("_PlayerPosition", new Vector4(Shaders.position.x, Shaders.position.y, 0, 0));
+            sLeaser.sprites[0]._renderLayer?._material?.SetVector("_PlayerPosition", new Vector4(Shaders.position.x, Shaders.position.y, 0, 0));
 
-                // sLeaser.sprites[0]._renderLayer?._material?.SetVector("_Colour", new Vector4(this.mother.owner.colour.r, this.mother.owner.colour.g, this.mother.owner.colour.b, 0));
-            }
+            // sLeaser.sprites[0]._renderLayer?._material?.SetVector("_Colour", new Vector4(this.mother.owner.colour.r, this.mother.owner.colour.g, this.mother.owner.colour.b, 0));
+        }
     }
 
     public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
@@ -487,7 +473,7 @@ public class ConnectingLine : CosmeticSprite
 
         sLeaser.sprites[0] = new FSprite("connecting_line", true);
 
-        sLeaser.sprites[0].SetPosition(this.pos - rCam.pos);
+        sLeaser.sprites[0].SetPosition(Pos - rCam.pos);
 
         AddToContainer(sLeaser, rCam, null);
     }
@@ -495,7 +481,7 @@ public class ConnectingLine : CosmeticSprite
     public override void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
         // I know it looks bad, but I need to clear these on Destroy()
-        this.spriteLeaser ??= sLeaser;
+        spriteLeaser ??= sLeaser;
         newContatiner ??= rCam.ReturnFContainer("HUD");
         foreach (FSprite fsprite in sLeaser.sprites)
         {

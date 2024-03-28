@@ -22,11 +22,11 @@ public class HiveQueenCritob : Critob
 
     public override IEnumerable<string> WorldFileAliases() => ["hivequeen"];
 
-    public override IEnumerable<RoomAttractivenessPanel.Category> DevtoolsRoomAttraction() => new[]
-    {
+    public override IEnumerable<RoomAttractivenessPanel.Category> DevtoolsRoomAttraction() =>
+    [
         RoomAttractivenessPanel.Category.Lizards,
         RoomAttractivenessPanel.Category.LikesInside
-    };
+    ];
 
     public override CreatureTemplate CreateTemplate() => LizardBreeds.BreedTemplate(Type, StaticWorld.GetCreatureTemplate(CreatureType.LizardTemplate), null, null, null);
 

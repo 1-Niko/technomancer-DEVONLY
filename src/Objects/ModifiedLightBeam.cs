@@ -3,7 +3,7 @@ using static Pom.Pom.Vector2ArrayField;
 
 namespace Slugpack
 {
-    public class ModifiedLightBeamData : ManagedData
+    public class ModifiedLightBeamData(PlacedObject owner) : ManagedData(owner, null)
     {
         [Vector2ArrayField("LightBeam", 4, true, Vector2ArrayRepresentationType.Polygon, new float[8] { 0, 0, 0, 50, 50, 50, 50, 0 })]
         public Vector2[] BeamPosition;
@@ -37,109 +37,82 @@ namespace Slugpack
 
         [BooleanField("H", false, ManagedFieldWithPanel.ControlType.button, "Set Screen B To Current")]
         public bool setScreenB;
-
-        public ModifiedLightBeamData(PlacedObject owner) : base(owner, null)
-        {
-        }
     }
 
-    public class ModifiedLightBeam : UpdatableAndDeletable
+    public class ModifiedLightBeam(PlacedObject placedObject, Room room) : UpdatableAndDeletable
     {
-        public ModifiedLightBeam(PlacedObject placedObject, Room room)
-        {
-            this.placedObject = placedObject;
-        }
-
         public override void Update(bool eu)
         {
             base.Update(eu);
 
-            if (this.LightBeam == null)
+            if (LightBeam == null)
             {
-                this.LightBeam = new ModifiedLightBeamSprite(placedObject, placedObject.pos);
-                this.room.AddObject(this.LightBeam);
+                LightBeam = new ModifiedLightBeamSprite(placedObject, placedObject.pos);
+                room.AddObject(LightBeam);
             }
-            this.LightBeam.pos = this.placedObject.pos;
+            LightBeam.pos = placedObject.pos;
 
-            this.LightBeam.depth = (this.placedObject.data as ModifiedLightBeamData).depth;
-            this.LightBeam.opacity = (this.placedObject.data as ModifiedLightBeamData).alpha;
-            this.LightBeam.whiteness = (this.placedObject.data as ModifiedLightBeamData).white;
-            this.LightBeam.colour = Utilities.HexToColor((this.placedObject.data as ModifiedLightBeamData).hex);
+            LightBeam.depth = (placedObject.data as ModifiedLightBeamData).depth;
+            LightBeam.opacity = (placedObject.data as ModifiedLightBeamData).alpha;
+            LightBeam.whiteness = (placedObject.data as ModifiedLightBeamData).white;
+            LightBeam.colour = Utilities.HexToColor((placedObject.data as ModifiedLightBeamData).hex);
 
-            if (Constants.DamagedShortcuts.TryGetValue(this.room.game, out var CameraPosition))
+            if (Constants.DamagedShortcuts.TryGetValue(room.game, out var CameraPosition))
             {
-                if ((this.placedObject.data as ModifiedLightBeamData).screenA == CameraPosition.camPosition)
+                if ((placedObject.data as ModifiedLightBeamData).screenA == CameraPosition.camPosition)
                 {
-                    Vector2[] vertices = (this.placedObject.data as ModifiedLightBeamData).BeamPosition;
-                    this.LightBeam.verts = new Vector2[] { vertices[0], vertices[3], vertices[1], vertices[2] };
+                    Vector2[] vertices = (placedObject.data as ModifiedLightBeamData).BeamPosition;
+                    LightBeam.verts = [vertices[0], vertices[3], vertices[1], vertices[2]];
                 }
-                else if ((this.placedObject.data as ModifiedLightBeamData).screenB == CameraPosition.camPosition)
+                else if ((placedObject.data as ModifiedLightBeamData).screenB == CameraPosition.camPosition)
                 {
-                    Vector2[] vertices = (this.placedObject.data as ModifiedLightBeamData).AlternateBeamPosition;
-                    this.LightBeam.verts = new Vector2[] { vertices[4], vertices[1], vertices[3], vertices[2] };
-                }
-
-                if ((this.placedObject.data as ModifiedLightBeamData).setScreenA)
-                {
-                    (this.placedObject.data as ModifiedLightBeamData).screenA = CameraPosition.camPosition;
-                    (this.placedObject.data as ModifiedLightBeamData).setScreenA = false;
+                    Vector2[] vertices = (placedObject.data as ModifiedLightBeamData).AlternateBeamPosition;
+                    LightBeam.verts = [vertices[4], vertices[1], vertices[3], vertices[2]];
                 }
 
-                if ((this.placedObject.data as ModifiedLightBeamData).setScreenB)
+                if ((placedObject.data as ModifiedLightBeamData).setScreenA)
                 {
-                    (this.placedObject.data as ModifiedLightBeamData).screenB = CameraPosition.camPosition;
-                    (this.placedObject.data as ModifiedLightBeamData).setScreenB = false;
+                    (placedObject.data as ModifiedLightBeamData).screenA = CameraPosition.camPosition;
+                    (placedObject.data as ModifiedLightBeamData).setScreenA = false;
+                }
+
+                if ((placedObject.data as ModifiedLightBeamData).setScreenB)
+                {
+                    (placedObject.data as ModifiedLightBeamData).screenB = CameraPosition.camPosition;
+                    (placedObject.data as ModifiedLightBeamData).setScreenB = false;
                 }
             }
-        }
-
-        public override void Destroy()
-        {
-            base.Destroy();
         }
 
         private ModifiedLightBeamSprite LightBeam;
 
-        private PlacedObject placedObject;
+        private PlacedObject placedObject = placedObject;
     }
 
-    public class ModifiedLightBeamSprite : CosmeticSprite
+    public class ModifiedLightBeamSprite(PlacedObject placedObject, Vector2 pos) : CosmeticSprite
     {
-        private readonly PlacedObject placedObject;
-
-        public ModifiedLightBeamSprite(PlacedObject placedObject, Vector2 pos)
-        {
-            this.placedObject = placedObject;
-        }
-
-        public override void Update(bool eu)
-        {
-            base.Update(eu);
-        }
-
         public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
             base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
 
             sLeaser.sprites[0].isVisible = true;
 
-            Color sky = this.colour;
+            Color sky = colour;
 
             sLeaser.sprites[0].color = new Color(sky.r, sky.g, sky.b, Utilities.EncodeFloats(depth, opacity, whiteness) / 32767f);
 
-            if (sLeaser.sprites[0] != null && (sLeaser.sprites[0] as TriangleMesh) != null && this.verts != null)
+            if ((sLeaser.sprites[0] is TriangleMesh) && verts != null)
             {
                 for (int i = 0; i < 4; i++)
                 {
-                    (sLeaser.sprites[0] as TriangleMesh).MoveVertice(i, (this.pos - rCam.pos) + this.verts[i]);
+                    (sLeaser.sprites[0] as TriangleMesh).MoveVertice(i, pos - rCam.pos + verts[i]);
                 }
             }
 
-            if (Constants.shaders_enabled)
-                if (Constants.SlugpackShaders.TryGetValue(rCam?.room?.world?.game?.rainWorld, out var Shaders))
-                {
-                    sLeaser.sprites[0].shader = Shaders.ModifiedLightBeamShader;
-                }
+            if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rCam?.room?.world?.game?.rainWorld, out var Shaders))
+            {
+                sLeaser.sprites[0].shader = Shaders.ModifiedLightBeamShader;
+            }
         }
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)

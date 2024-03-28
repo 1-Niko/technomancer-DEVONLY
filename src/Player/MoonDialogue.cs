@@ -18,7 +18,7 @@ namespace Slugpack
                 self.lastPearlPickedUp = false;
 
                 if (!Constants.OracleInfo.TryGetValue(self.oracle, out var oracleinfo))
-                { Constants.OracleInfo.Add(self.oracle, oracleinfo = new WeakTables.OracleData()); }
+                { Constants.OracleInfo.Add(self.oracle, oracleinfo = new OracleData()); }
 
                 if (oracleinfo.unlockShortcuts)
                 {
@@ -45,7 +45,6 @@ namespace Slugpack
                     if (!oracleinfo.endMain)
                     {
                         oracleinfo.timer++;
-                        //Debug.Log($"TIMER INFORMATION : {oracleinfo.timer}");
 
                         if (oracleinfo.timer == 280)
                         {
@@ -60,14 +59,11 @@ namespace Slugpack
                             self.NewAction(SSOracleBehavior.Action.General_GiveMark);
                         }
 
-                        if (oracleinfo.timer > 320 && self.action != SSOracleBehavior.Action.General_GiveMark)
+                        if (oracleinfo.timer > 320 && self.action != SSOracleBehavior.Action.General_GiveMark && !oracleinfo.setTimer)
                         {
-                            if (!oracleinfo.setTimer)
-                            {
-                                oracleinfo.timerOffset = oracleinfo.timer;
-                                oracleinfo.setTimer = true;
-                                self.action = null;
-                            }
+                            oracleinfo.timerOffset = oracleinfo.timer;
+                            oracleinfo.setTimer = true;
+                            self.action = null;
                         }
                         if (oracleinfo.setTimer)
                         {

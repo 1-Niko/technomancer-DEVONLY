@@ -33,14 +33,14 @@ internal static class GameHooks
         string tMaskImageFileName = $"{roomName}_{camPos + 1}_TMASK.png";
 
         // Initialize a default 1x1 black pixel image
-        Texture2D tMaskImage = new Texture2D(1, 1);
+        Texture2D tMaskImage = new(1, 1);
         tMaskImage.SetPixel(0, 0, Color.black);
         tMaskImage.Apply();
 
         // Resolve the file path
-        string filePath = AssetManager.ResolveFilePath($"world/{(roomName.Split('_')[0]).ToLower()}-rooms/{tMaskImageFileName}");
+        string filePath = AssetManager.ResolveFilePath($"world/{roomName.Split('_')[0].ToLower()}-rooms/{tMaskImageFileName}");
 
-        Debug.Log(filePath);
+        //Debug.Log(filePath);
 
         // Check if the TMASK image file exists and load it
         if (File.Exists(filePath))
@@ -48,7 +48,7 @@ internal static class GameHooks
             // Load the image from the file
             byte[] fileData = File.ReadAllBytes(filePath);
             tMaskImage = new Texture2D(2, 2); // Width and height are placeholders
-            tMaskImage.LoadImage(fileData); // LoadImage auto-resizes the texture dimensions
+            _ = tMaskImage.LoadImage(fileData); // LoadImage auto-resizes the texture dimensions
         }
 
         // Here it will be added to the shaders
@@ -75,7 +75,7 @@ internal static class GameHooks
         {
             orig(self);
         }
-        catch (System.NullReferenceException ex)
+        catch
         {
             if (self != null && self.sprites != null && self.sprites.Length > 0)
             {
@@ -102,7 +102,7 @@ internal static class GameHooks
         {
             if (Constants.DamagedShortcuts.TryGetValue(self.room.game, out var ShortcutTable) && ShortcutTable.locks.Any(lockObj => lockObj.shortcuts.Contains(self.room.shortcuts[i])))
             {
-                self.entranceSpriteColors[i] = RWCustom.Custom.RGB2RGBA(new Color(0f, 0f, 0f), Mathf.Max(self.entranceSpriteColors[i].a, 32 / (ShortcutTable.locks.FirstOrDefault(lockObj => lockObj.shortcuts.Contains(self.room.shortcuts[i])).sinceFlicker + 32)));
+                self.entranceSpriteColors[i] = RWCustom.Custom.RGB2RGBA(new Color(0f, 0f, 0f), Mathf.Max(self.entranceSpriteColors[i].a, (float)32 / (ShortcutTable.locks.FirstOrDefault(lockObj => lockObj.shortcuts.Contains(self.room.shortcuts[i])).sinceFlicker + 32)));
             }
         }
     }
@@ -151,17 +151,14 @@ internal static class GameHooks
                     ShortcutTable.locks[i].sinceFlicker++;
                     for (int r = 0; r < 2; r++)
                     {
-                        if (UnityEngine.Random.Range(0, 20) == 0)
+                        if (Random.Range(0, 20) == 0 && ShortcutTable.locks[i].rooms[r].abstractRoom.realizedRoom != null)
                         {
-                            if (ShortcutTable.locks[i].rooms[r].abstractRoom.realizedRoom != null)
+                            for (int j = 0; j < Random.Range(10, 30); j++)
                             {
-                                for (int j = 0; j < UnityEngine.Random.Range(10, 30); j++)
-                                {
-                                    Vector2 a = RWCustom.Custom.RNV();
-                                    ShortcutTable.locks[i].rooms[r].AddObject(new Spark(ShortcutTable.locks[i].rooms[r].MiddleOfTile(ShortcutTable.locks[i].shortcuts[r].StartTile) + a * UnityEngine.Random.value * 40f, a * Mathf.Lerp(4f, 30f, UnityEngine.Random.value), new Color(0.9f, 0.9f, 1f), null, 16, 30));
-                                }
-                                ShortcutTable.locks[i].sinceFlicker = 0;
+                                Vector2 a = RWCustom.Custom.RNV();
+                                ShortcutTable.locks[i].rooms[r].AddObject(new Spark(ShortcutTable.locks[i].rooms[r].MiddleOfTile(ShortcutTable.locks[i].shortcuts[r].StartTile) + (a * Random.value * 40f), a * Mathf.Lerp(4f, 30f, Random.value), new Color(0.9f, 0.9f, 1f), null, 16, 30));
                             }
+                            ShortcutTable.locks[i].sinceFlicker = 0;
                         }
                     }
                 }
@@ -185,8 +182,8 @@ internal static class GameHooks
                 .Where(File.Exists)
                 .SelectMany(p => File.ReadAllText(p).Trim().Split(',')))
             {
-                var parts = path.Contains("-") ? path.Split('-') : new[] { path };
-                if (parts[0] == baseAcronym && (parts.Length == 1 || character.value.Equals(parts[1], System.StringComparison.OrdinalIgnoreCase)))
+                var parts = path.Contains("-") ? path.Split('-') : [path];
+                if (parts[0] == baseAcronym && (parts.Length == 1 || character.value.Equals(parts[1], StringComparison.OrdinalIgnoreCase)))
                 {
                     text = Path.GetFileName(path).ToUpper();
                     break;
@@ -202,8 +199,8 @@ internal static class GameHooks
                 .Where(File.Exists)
                 .SelectMany(p => File.ReadAllText(p).Trim().Split(',')))
             {
-                var parts = path.Contains("-") ? path.Split('-') : new[] { path };
-                if (parts[0] == baseAcronym && (parts.Length == 1 || character.value.Equals(parts[1], System.StringComparison.OrdinalIgnoreCase)))
+                var parts = path.Contains("-") ? path.Split('-') : [path];
+                if (parts[0] == baseAcronym && (parts.Length == 1 || character.value.Equals(parts[1], StringComparison.OrdinalIgnoreCase)))
                 {
                     text = Path.GetFileName(path).ToUpper();
                     break;

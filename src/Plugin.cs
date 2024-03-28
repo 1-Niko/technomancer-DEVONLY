@@ -15,7 +15,7 @@ public class Plugin : BaseUnityPlugin
     {
         try
         {
-            Debug.LogWarning("MyMod is loading...");
+            Debug.LogWarning("Technomancer is loading...");
 
             ApplyCreatures();
 
@@ -130,14 +130,9 @@ public class Plugin : BaseUnityPlugin
                              where ".png".Equals(Path.GetExtension(file))
                              select file)
         {
-            if (File.Exists(Path.ChangeExtension(file, ".txt")))
-            {
-                Futile.atlasManager.LoadAtlas(Path.ChangeExtension(file, null));
-            }
-            else
-            {
-                Futile.atlasManager.LoadImage(Path.ChangeExtension(file, null));
-            }
+            _ = File.Exists(Path.ChangeExtension(file, ".txt"))
+                ? Futile.atlasManager.LoadAtlas(Path.ChangeExtension(file, null))
+                : Futile.atlasManager.LoadImage(Path.ChangeExtension(file, null));
         }
     }
 }

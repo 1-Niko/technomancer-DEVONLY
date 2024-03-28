@@ -11,7 +11,7 @@ public class LockHologram : CosmeticSprite
 
     public override void Update(bool eu)
     {
-        if (this.lifetime < 0)
+        if (lifetime < 0)
         {
             //this.RemoveFromRoom();
             //this.room.RemoveObject(this);
@@ -19,8 +19,8 @@ public class LockHologram : CosmeticSprite
         }
         else
         {
-            this.scanline += 0.3f;
-            this.lifetime--;
+            scanline += 0.3f;
+            lifetime--;
         }
     }
 
@@ -43,20 +43,16 @@ public class LockHologram : CosmeticSprite
         int i = 0;
         for (int index = 0; index < Holograms.PipeLock.Length; index++)
         {
-            Int40 bitArray = new Int40(Holograms.PipeLock[index]);
-
-            //Debug.Log($"Examining Array : {bitArray}");
+            Int40 bitArray = new(Holograms.PipeLock[index]);
 
             for (int bitIndex = 0; bitIndex < 41; bitIndex++)
             {
-                //Debug.Log($"Indexing bit : {bitArray.GetBit(bitIndex)}");
-
                 if (bitArray.GetBit(bitIndex))
                 {
                     sLeaser.sprites[i].element = Futile.atlasManager.GetElementWithName("pixel");
                     sLeaser.sprites[i].color = colour;
 
-                    sLeaser.sprites[i].isVisible = (Math.Sin(1.5f * (scanline + bitIndex - (sLeaser.sprites[i].GetPosition().x / 3))) - UnityEngine.Random.value < 0);
+                    sLeaser.sprites[i].isVisible = Math.Sin(1.5f * (scanline + bitIndex - (sLeaser.sprites[i].GetPosition().x / 3))) - Random.value < 0;
 
                     sLeaser.sprites[i].SetPosition(pos - rCam.pos - new Vector2(index - 20f, bitIndex - 20f));// + new Vector2(((pos - rCam.pos).x - 683) / 0f, ((pos - rCam.pos).y - 384) / 0f));
                     i++;
@@ -124,25 +120,25 @@ public class SlugArrow : CosmeticSprite
         item = stickToItem;
     }
 
-    private float RoundToNearest(float x, float n) => (float)Math.Round(x / n) * n;
+    //private float RoundToNearest(float x, float n) => (float)Math.Round(x / n) * n;
 
     public override void Update(bool eu)
     {
         scanline += 0.3f;
-        if (sLeaser != null && room.ViewedByAnyCamera(this.pos, 20f))
+        if (sLeaser != null && room.ViewedByAnyCamera(pos, 20f))
         {
-            if (this.creature != null)
+            if (creature != null)
             {
-                this.pos = this.creature.mainBodyChunk.pos;// + new Vector2(0f, 35f);
+                pos = creature.mainBodyChunk.pos;// + new Vector2(0f, 35f);
 
-                if (this.creature.inShortcut)
+                if (creature.inShortcut)
                 {
                     Destroy();
                 }
             }
-            else if (this.item != null)
+            else if (item != null)
             {
-                this.pos = this.item.firstChunk.pos;// + new Vector2(0f, 15f);
+                pos = item.firstChunk.pos;// + new Vector2(0f, 15f);
             }
             /*else if (this._object != null)
             {
@@ -168,65 +164,6 @@ public class SlugArrow : CosmeticSprite
     public float shapeX = 0;//5;
     public float shapeY = 0;//18;
     public float separation = 0;//1;
-
-    public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
-    {
-        /*int rimCount = (int)Math.Abs(Math.Ceiling(2 * (shapeX / separation)));
-        int slantCount = (int)Math.Ceiling(Math.Sqrt(Math.Pow(2 * shapeX, 2) + Math.Pow(shapeY, 2)) / separation);
-
-        List<Vector3> points = new();
-
-        for (int i = 1; i < (2 * rimCount) - 1; i++)
-        {
-            float x = (shapeX / rimCount) * i - shapeX;
-            // x, y, depth
-            points.Add(new Vector3(x, -shapeY, -shapeX));
-            points.Add(new Vector3(x, -shapeY, shapeX));
-            points.Add(new Vector3(-shapeX, -shapeY, x));
-            points.Add(new Vector3(shapeX, -shapeY, x));
-        }
-
-        points.Add(new Vector3(0, 0, 0));
-
-        for (int i = 1; i < slantCount; i++)
-        {
-            float x = shapeX * ((float)i / slantCount);
-            float y = -(shapeY / shapeX) * (shapeX * ((float)i / slantCount));
-
-            points.Add(new Vector3(x, y, x));
-            points.Add(new Vector3(x, y, -x));
-            points.Add(new Vector3(-x, y, x));
-            points.Add(new Vector3(-x, y, -x));
-        }
-
-        this.sLeaser ??= sLeaser;
-        for (int i = 0; i < points.Count; i++)
-        {
-            sLeaser.sprites[i].element = Futile.atlasManager.GetElementWithName("pixel");
-            sLeaser.sprites[i].color = colour;
-
-            /*
-            float R1 = RoundToNearest(i, 4);
-            float R2 = R1 / 8;
-
-            float depth = (i < 2) ? 4 * (2 * i - 1) : Math.Min(R2, (-R1 * 0.0275f) + 4.73f) * (float)Math.Cos(Math.PI * i);
-
-            float newXValue = Math.Min((-R1 * 0.0277325f) + 4.777f, ((i < 2) ? 0 : 4)) * ((i == 3) ? -1 : -1.42f * (float)Math.Sin(1.57079f * (i + 0.5f)));
-
-            float newYValue = Math.Max(R2 - 25, -18);
-
-            float addToScanline = (i < 2) ? 4 * (2 * i - 1) : ((i > 1 && i < 30) || i == 31) ? R2 * (float)Math.Cos(Math.PI * i) : -R2 + 21.5f;
-
-            Debug.Log($"INDEX {i} : {((i < 2) ? 9 : 1)}, {depth}, {newXValue}, {newYValue}, {addToScanline}");
-            *
-
-            /*sLeaser.sprites[i].isVisible = false;// (Math.Sin(1.5f * (scanline + (points[i].x / 3) + points[i].y - (points[i].z / 6))) - UnityEngine.Random.value > 0);
-
-            Vector2 hologramPos = (pos - rCam.pos);
-            sLeaser.sprites[i].SetPosition(pos - rCam.pos - new Vector2(points[i].x, points[i].y) + new Vector2((hologramPos.x - 683) / 750f * points[i].z, (hologramPos.y - 384) / 450f * points[i].z));*/
-        //}
-        base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
-    }
 
     public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     {

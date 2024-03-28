@@ -2,7 +2,7 @@ using static Pom.Pom;
 
 namespace Slugpack
 {
-    public class FakeSubregionPopupData : ManagedData
+    public class FakeSubregionPopupData(PlacedObject owner) : ManagedData(owner, null)
     {
         [Vector2Field("radius", 50, -50, Vector2Field.VectorReprType.circle)]
         public Vector2 dir;
@@ -10,61 +10,49 @@ namespace Slugpack
         // If somebody adds more subregions than the 16 bit integer limit I will NOT be making this compatable
         [IntegerField("A", 1, 65535, 1, ManagedFieldWithPanel.ControlType.arrows, "Index")]
         public int index;
-
-        // [StringField("B", "None", "Subregion")]
-        // public string name;
-
-        public FakeSubregionPopupData(PlacedObject owner) : base(owner, null)
-        {
-        }
     }
 
-    public class FakeSubregionPopupObject : UpdatableAndDeletable
+    public class FakeSubregionPopupObject(PlacedObject placedObject, Room room) : UpdatableAndDeletable
     {
-        public FakeSubregionPopupObject(PlacedObject placedObject, Room room)
-        {
-            this.placedObject = placedObject;
-        }
-
         public override void Update(bool eu)
         {
             base.Update(eu);
 
-            FakeSubregionPopupData dataObj = this.placedObject.data as FakeSubregionPopupData;
+            FakeSubregionPopupData dataObj = placedObject.data as FakeSubregionPopupData;
 
-            bool nothingNull = this.room != null && this.room.world != null && this.room.world.region != null && this.room.world.region.subRegions != null;
+            bool nothingNull = room != null && room.world != null && room.world.region != null && room.world.region.subRegions != null;
 
-            if (nothingNull && this.subRegions == null)
+            if (nothingNull && subRegions == null)
             {
-                this.subRegions = this.room.world.region.subRegions;
+                subRegions = room.world.region.subRegions;
             }
 
-            if (dataObj.index > this.subRegions.Count)
-                dataObj.index = this.subRegions.Count - 1;
+            if (dataObj.index > subRegions.Count)
+                dataObj.index = subRegions.Count - 1;
 
             // So that it loops
-            if (dataObj.index == this.subRegions.Count)
+            if (dataObj.index == subRegions.Count)
                 dataObj.index = 1;
 
-            if (name != this.subRegions[dataObj.index])
+            if (name != subRegions[dataObj.index])
             {
-                name = this.subRegions[dataObj.index];
-                Debug.Log($"Region set to {this.subRegions[dataObj.index]}");
+                name = subRegions[dataObj.index];
+                //Debug.Log($"Region set to {subRegions[dataObj.index]}");
             }
 
-            if (nothingNull && this.room == this.room.game.Players[0].realizedCreature.room && this.room.game.cameras[0].hud.textPrompt.subregionTracker.lastShownRegion != dataObj.index)
+            if (nothingNull && room == room.game.Players[0].realizedCreature.room && room.game.cameras[0].hud.textPrompt.subregionTracker.lastShownRegion != dataObj.index)
             {
                 Vector2 a = dataObj.dir;
 
-                Vector2 c = this.placedObject.pos;
-                Vector2 d = this.room.game.Players[0].realizedCreature.mainBodyChunk.pos;
+                Vector2 c = placedObject.pos;
+                Vector2 d = room.game.Players[0].realizedCreature.mainBodyChunk.pos;
 
                 Vector2 b = d - c;
 
-                a = a / a.magnitude;
-                b = b / b.magnitude;
+                a /= a.magnitude;
+                b /= b.magnitude;
 
-                float dot = a.x * b.x + a.y * b.y;
+                float dot = (a.x * b.x) + (a.y * b.y);
 
                 inRadius = inRegion = false;
 
@@ -102,12 +90,10 @@ namespace Slugpack
                     if (previousRegionID == 0 && regionID == 2 && !triggered && !suppressed) // supress
                     {
                         suppressed = true;
-                        // Debug.Log("Suppressed");
                     }
                     if (previousRegionID == 2 && regionID == 0 && !suppressed && !triggered) // trigger
                     {
                         triggered = true;
-                        // Debug.Log("Triggered");
                     }
 
                     previousRegionID = regionID;
@@ -121,13 +107,18 @@ namespace Slugpack
                     }
                     if (counter == 81)
                     {
-                        this.room.game.cameras[0].hud.textPrompt.AddMessage(this.subRegions[dataObj.index], 0, 160, false, true);
-                        this.room.game.cameras[0].hud.textPrompt.subregionTracker.lastShownRegion = dataObj.index;
+                        room.game.cameras[0].hud.textPrompt.AddMessage(subRegions[dataObj.index], 0, 160, false, true);
+                        room.game.cameras[0].hud.textPrompt.subregionTracker.lastShownRegion = dataObj.index;
                     }
                 }
             }
 
-            if (this.room != this.room.game.Players[0].realizedCreature.room)
+            if (room is null)
+            {
+                return;
+            }
+
+            if (room != room.game.Players[0].realizedCreature.room)
             {
                 inRadius = inRegion = suppressed = triggered = false;
 
@@ -135,12 +126,7 @@ namespace Slugpack
             }
         }
 
-        public override void Destroy()
-        {
-            base.Destroy();
-        }
-
-        private PlacedObject placedObject;
+        private PlacedObject placedObject = placedObject;
 
         private List<string> subRegions;
 

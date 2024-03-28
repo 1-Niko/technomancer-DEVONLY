@@ -3,7 +3,7 @@ using static Pom.Pom.Vector2ArrayField;
 
 namespace Slugpack
 {
-    public class SpinningFanData : ManagedData
+    public class SpinningFanData(PlacedObject owner) : ManagedData(owner, null)
     {
         [Vector2ArrayField("CHAIN1", 2, true, Vector2ArrayRepresentationType.Chain, new float[4] { 0, 0, -50, 0 })]
         public Vector2[] FrontBladeCamOffset;
@@ -46,10 +46,6 @@ namespace Slugpack
 
         [BooleanField("K", false, ManagedFieldWithPanel.ControlType.button, "Toggle Fan (Placement)")]
         public bool debugging_backfan_enabled;
-
-        public SpinningFanData(PlacedObject owner) : base(owner, null)
-        {
-        }
     }
 
     public class SpinningFan : UpdatableAndDeletable
@@ -66,37 +62,37 @@ namespace Slugpack
 
             if (dynamicSprite == null)
             {
-                dynamicSprite = new SpinningFanObject(this.placedObject.pos);
-                this.room.AddObject(dynamicSprite);
+                dynamicSprite = new SpinningFanObject(placedObject.pos);
+                room.AddObject(dynamicSprite);
             }
 
-            if ((this.placedObject.data as SpinningFanData).randomize)
+            if ((placedObject.data as SpinningFanData).randomize)
             {
-                (this.placedObject.data as SpinningFanData).frontspeed = UnityEngine.Random.Range(-40f, 40f);
-                (this.placedObject.data as SpinningFanData).backspeed = UnityEngine.Random.Range(-40f, 40f);
-                (this.placedObject.data as SpinningFanData).randomize = false;
+                (placedObject.data as SpinningFanData).frontspeed = Random.Range(-40f, 40f);
+                (placedObject.data as SpinningFanData).backspeed = Random.Range(-40f, 40f);
+                (placedObject.data as SpinningFanData).randomize = false;
             }
 
-            this.dynamicSprite.rotSpeed = (this.placedObject.data as SpinningFanData).frontspeed;
-            this.dynamicSprite.rotSpeed2 = (this.placedObject.data as SpinningFanData).backspeed;
+            dynamicSprite.rotSpeed = (placedObject.data as SpinningFanData).frontspeed;
+            dynamicSprite.rotSpeed2 = (placedObject.data as SpinningFanData).backspeed;
 
-            this.dynamicSprite.chain1 = (this.placedObject.data as SpinningFanData).FrontBladeCamOffset;
-            this.dynamicSprite.chain2 = (this.placedObject.data as SpinningFanData).BackBladeCamOffset;
+            dynamicSprite.chain1 = (placedObject.data as SpinningFanData).FrontBladeCamOffset;
+            dynamicSprite.chain2 = (placedObject.data as SpinningFanData).BackBladeCamOffset;
 
-            this.dynamicSprite.fanDepthA = (this.placedObject.data as SpinningFanData).fan1depth;
-            this.dynamicSprite.fanDepthB = (this.placedObject.data as SpinningFanData).fan2depth;
-            this.dynamicSprite.depth = (this.placedObject.data as SpinningFanData).layer;
+            dynamicSprite.fanDepthA = (placedObject.data as SpinningFanData).fan1depth;
+            dynamicSprite.fanDepthB = (placedObject.data as SpinningFanData).fan2depth;
+            dynamicSprite.depth = (placedObject.data as SpinningFanData).layer;
 
-            this.dynamicSprite.shadow = (this.placedObject.data as SpinningFanData).shadowPlaceholder;
-            this.dynamicSprite.placementMode = (this.placedObject.data as SpinningFanData).debugging_enabled;
-            this.dynamicSprite.whichBlade = (this.placedObject.data as SpinningFanData).debugging_backfan_enabled;
+            dynamicSprite.shadow = (placedObject.data as SpinningFanData).shadowPlaceholder;
+            dynamicSprite.placementMode = (placedObject.data as SpinningFanData).debugging_enabled;
+            dynamicSprite.whichBlade = (placedObject.data as SpinningFanData).debugging_backfan_enabled;
 
-            if (Constants.DamagedShortcuts.TryGetValue(this.room.game, out var CameraPosition))
+            if (Constants.DamagedShortcuts.TryGetValue(room.game, out var CameraPosition))
             {
-                if ((this.placedObject.data as SpinningFanData).setScreenA)
+                if ((placedObject.data as SpinningFanData).setScreenA)
                 {
-                    (this.placedObject.data as SpinningFanData).screenA = CameraPosition.camPosition;
-                    (this.placedObject.data as SpinningFanData).setScreenA = false;
+                    (placedObject.data as SpinningFanData).screenA = CameraPosition.camPosition;
+                    (placedObject.data as SpinningFanData).setScreenA = false;
                 }
 
                 // If you are ever in a situation where you need more than two positions to define the position of a fan, you have bigger issues
@@ -105,14 +101,13 @@ namespace Slugpack
                 // four?
                 // But then again why are you putting that in the camera intersection there?
                 // Just alter the room, silly
-                this.dynamicSprite.fanToggle = (CameraPosition.camPosition != (this.placedObject.data as SpinningFanData).screenA);
+                dynamicSprite.fanToggle = CameraPosition.camPosition != (placedObject.data as SpinningFanData).screenA;
             }
 
-            dynamicSprite.pos = this.placedObject.pos;
+            dynamicSprite.pos = placedObject.pos;
         }
 
         private PlacedObject placedObject;
-        private Room room;
         private SpinningFanObject dynamicSprite;
     }
 
@@ -129,8 +124,8 @@ namespace Slugpack
 
             lastRot = rot;
             lastRot2 = rot2;
-            rot = rot + rotSpeed;
-            rot2 = rot2 + rotSpeed2;
+            rot += rotSpeed;
+            rot2 += rotSpeed2;
         }
 
         public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
@@ -141,24 +136,23 @@ namespace Slugpack
             float currentRot2 = Mathf.Lerp(lastRot2, rot2, timeStacker);
 
             sLeaser.sprites[0].element = Futile.atlasManager.GetElementWithName(placementMode ? "debugCircle" : "FanBlade");
-            sLeaser.sprites[0].SetPosition(this.pos + chain1[0 + ((fanToggle) ? 1 : 0)] - rCam.pos);
+            sLeaser.sprites[0].SetPosition(pos + chain1[0 + (fanToggle ? 1 : 0)] - rCam.pos);
             sLeaser.sprites[0].rotation = placementMode ? 0 : currentRot;
             sLeaser.sprites[0].color = new Color(placementMode ? 1f : 0f, whichBlade ? 0f : 1f, 1f, (fanDepthA / 3f) + (depth / 3f));
 
             sLeaser.sprites[1].element = Futile.atlasManager.GetElementWithName(placementMode ? "debugCircle" : "FanBlade");
-            sLeaser.sprites[1].SetPosition(this.pos + chain2[1 + ((fanToggle) ? 1 : 0)] - rCam.pos);
+            sLeaser.sprites[1].SetPosition(pos + chain2[1 + (fanToggle ? 1 : 0)] - rCam.pos);
             sLeaser.sprites[1].rotation = placementMode ? 0 : currentRot2;
             sLeaser.sprites[1].color = new Color(placementMode ? 1f : 0f, whichBlade ? 1f : 0f, 1f, (fanDepthB / 3f) + (depth / 3f));
 
-            if (Constants.shaders_enabled)
-                if (Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var shaders))
-                {
-                    sLeaser.sprites[0].shader = shaders.SpinningFan;
-                    sLeaser.sprites[0]._renderLayer?._material?.SetTexture("_ShadowMask", shaders._shadowMask);
+            if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var shaders))
+            {
+                sLeaser.sprites[0].shader = shaders.SpinningFan;
+                sLeaser.sprites[0]._renderLayer?._material?.SetTexture("_ShadowMask", shaders._shadowMask);
 
-                    sLeaser.sprites[1].shader = shaders.SpinningFan;
-                    sLeaser.sprites[1]._renderLayer?._material?.SetTexture("_ShadowMask", shaders._shadowMask);
-                }
+                sLeaser.sprites[1].shader = shaders.SpinningFan;
+                sLeaser.sprites[1]._renderLayer?._material?.SetTexture("_ShadowMask", shaders._shadowMask);
+            }
 
             // Shadow Sprites
             if (shadow)
@@ -167,24 +161,23 @@ namespace Slugpack
                 sLeaser.sprites[3].isVisible = true;
 
                 sLeaser.sprites[2].element = Futile.atlasManager.GetElementWithName(placementMode ? "debugCircle" : "FanBlade");
-                sLeaser.sprites[2].SetPosition(this.pos + chain1[0 + ((fanToggle) ? 1 : 0)] - rCam.pos);
+                sLeaser.sprites[2].SetPosition(pos + chain1[0 + (fanToggle ? 1 : 0)] - rCam.pos);
                 sLeaser.sprites[2].rotation = placementMode ? 0 : currentRot;
                 sLeaser.sprites[2].color = new Color(placementMode ? 1f : 0f, whichBlade ? 0f : 1f, 1f, 1f);
 
                 sLeaser.sprites[3].element = Futile.atlasManager.GetElementWithName(placementMode ? "debugCircle" : "FanBlade");
-                sLeaser.sprites[3].SetPosition(this.pos + chain2[1 + ((fanToggle) ? 1 : 0)] - rCam.pos);
+                sLeaser.sprites[3].SetPosition(pos + chain2[1 + (fanToggle ? 1 : 0)] - rCam.pos);
                 sLeaser.sprites[3].rotation = placementMode ? 0 : currentRot2;
                 sLeaser.sprites[3].color = new Color(placementMode ? 1f : 0f, whichBlade ? 1f : 0f, 1f, 1f);
 
-                if (Constants.shaders_enabled)
-                    if (Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var shadowShaders))
-                    {
-                        sLeaser.sprites[2].shader = shadowShaders.SpinningFan;
-                        sLeaser.sprites[2]._renderLayer?._material?.SetTexture("_ShadowMask", shadowShaders._shadowMask);
+                if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var shadowShaders))
+                {
+                    sLeaser.sprites[2].shader = shadowShaders.SpinningFan;
+                    sLeaser.sprites[2]._renderLayer?._material?.SetTexture("_ShadowMask", shadowShaders._shadowMask);
 
-                        sLeaser.sprites[3].shader = shadowShaders.SpinningFan;
-                        sLeaser.sprites[3]._renderLayer?._material?.SetTexture("_ShadowMask", shadowShaders._shadowMask);
-                    }
+                    sLeaser.sprites[3].shader = shadowShaders.SpinningFan;
+                    sLeaser.sprites[3]._renderLayer?._material?.SetTexture("_ShadowMask", shadowShaders._shadowMask);
+                }
             }
             else
             {
@@ -203,7 +196,7 @@ namespace Slugpack
             AddToContainer(sLeaser, rCam, null);
         }
 
-        public override void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContainer)
+        public override void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
         {
             FContainer midContainer = rCam.ReturnFContainer("Water");
             FContainer shadowContainer = rCam.ReturnFContainer("Midground");

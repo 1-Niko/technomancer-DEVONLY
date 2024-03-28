@@ -4,11 +4,11 @@ public static class DataStructures
 {
     public class Int40 : IEnumerable<bool>
     {
-        private long value;
+        private readonly long value;
 
         public Int40(long value)
         {
-            if (value < 0 || value > 0x7FFFFFFFFFF)
+            if (value is < 0 or > 0x7FFFFFFFFFF)
                 throw new System.ArgumentOutOfRangeException(nameof(value), "Value must be a 40-bit integer.");
 
             this.value = value;
@@ -16,10 +16,9 @@ public static class DataStructures
 
         public bool GetBit(int index)
         {
-            if (index < 0 || index > 40)
-                throw new System.ArgumentOutOfRangeException(nameof(index), "Index must be between 0 and 40.");
-
-            return ((value >> index) & 1) == 1;
+            return index is < 0 or > 40
+                ? throw new System.ArgumentOutOfRangeException(nameof(index), "Index must be between 0 and 40.")
+                : ((value >> index) & 1) == 1;
         }
 
         public IEnumerator<bool> GetEnumerator()
@@ -30,7 +29,7 @@ public static class DataStructures
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        public override string ToString() => System.Convert.ToString(value, 2).PadLeft(41, '0');
+        public override string ToString() => Convert.ToString(value, 2).PadLeft(41, '0');
     }
 
     public class TexturePool
@@ -74,11 +73,9 @@ public static class DataStructures
         public Color Color { get; set; }
     }
 
-    public class ScreenSlice
+    public class ScreenSlice(WWW image)
     {
-        public ScreenSlice(WWW image) => Screen = image;
-
-        public WWW Screen { get; set; }
+        public WWW Screen { get; set; } = image;
     }
 
     public class Anchorpoint
@@ -109,7 +106,7 @@ public static class DataStructures
     public class Lock
     {
         public Lock(ShortcutData[] shortcuts, Room[] rooms, int time, LockHologram[] holograms) =>
-            (this.shortcuts, this.rooms, this.time, this.holograms, this.sinceFlicker) = (shortcuts, rooms, time, holograms, 0);
+            (this.shortcuts, this.rooms, this.time, this.holograms, sinceFlicker) = (shortcuts, rooms, time, holograms, 0);
 
         public ShortcutData[] shortcuts { get; set; }
         public Room[] rooms { get; set; }

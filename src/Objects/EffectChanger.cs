@@ -2,7 +2,7 @@ using static Pom.Pom;
 
 namespace Slugpack
 {
-    public class EffectChangerData : ManagedData
+    public class EffectChangerData(PlacedObject owner) : ManagedData(owner, null)
     {
         [Vector2Field("A", 100, 100, Vector2Field.VectorReprType.rect)]
         public Vector2 EffectArea;
@@ -27,51 +27,37 @@ namespace Slugpack
 
         [FloatField("H", 0, 1, 0, 0.01f, ManagedFieldWithPanel.ControlType.slider, "Value")]
         public float brightness;
-
-        public EffectChangerData(PlacedObject owner) : base(owner, null)
-        {
-        }
     }
 
-    public class EffectChanger : UpdatableAndDeletable
+    public class EffectChanger(PlacedObject placedObject, Room room) : UpdatableAndDeletable
     {
-        public EffectChanger(PlacedObject placedObject, Room room)
-        {
-            this.placedObject = placedObject;
-        }
-
         public override void Update(bool eu)
         {
             base.Update(eu);
 
-            if (this.EffectObject == null)
+            if (EffectObject == null)
             {
-                this.EffectObject = new EffectChangerObject(placedObject, placedObject.pos);
-                this.room.AddObject(this.EffectObject);
+                EffectObject = new EffectChangerObject(placedObject, placedObject.pos);
+                room.AddObject(EffectObject);
             }
-            this.EffectObject.pos = this.placedObject.pos;
-            this.EffectObject.colour = (this.placedObject.data as EffectChangerData).colour;
-            this.EffectObject.effectA = (this.placedObject.data as EffectChangerData).effectA;
-            this.EffectObject.effectB = (this.placedObject.data as EffectChangerData).effectB;
-            this.EffectObject.fade = (this.placedObject.data as EffectChangerData).fade;
-            this.EffectObject.hue = (this.placedObject.data as EffectChangerData).hue;
-            this.EffectObject.saturation = (this.placedObject.data as EffectChangerData).saturation;
-            this.EffectObject.brightness = (this.placedObject.data as EffectChangerData).brightness;
-        }
-
-        public override void Destroy()
-        {
-            base.Destroy();
+            EffectObject.pos = placedObject.pos;
+            EffectObject.colour = (placedObject.data as EffectChangerData).colour;
+            EffectObject.effectA = (placedObject.data as EffectChangerData).effectA;
+            EffectObject.effectB = (placedObject.data as EffectChangerData).effectB;
+            EffectObject.fade = (placedObject.data as EffectChangerData).fade;
+            EffectObject.hue = (placedObject.data as EffectChangerData).hue;
+            EffectObject.saturation = (placedObject.data as EffectChangerData).saturation;
+            EffectObject.brightness = (placedObject.data as EffectChangerData).brightness;
         }
 
         private EffectChangerObject EffectObject;
 
-        private PlacedObject placedObject;
+        private PlacedObject placedObject = placedObject;
     }
 
-    public class EffectChangerObject : CosmeticSprite
+    public class EffectChangerObject(PlacedObject placedObject, Vector2 pos) : CosmeticSprite
     {
-        private readonly PlacedObject placedObject;
+        private readonly PlacedObject placedObject = placedObject;
         public int colour { get; set; }
         public bool effectA { get; set; }
         public bool effectB { get; set; }
@@ -81,26 +67,16 @@ namespace Slugpack
         public float saturation { get; set; }
         public float brightness { get; set; }
 
-        public EffectChangerObject(PlacedObject placedObject, Vector2 pos)
-        {
-            this.placedObject = placedObject;
-        }
-
-        public override void Update(bool eu)
-        {
-            base.Update(eu);
-        }
-
         public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
             base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
 
             sLeaser.sprites[0].element = Futile.atlasManager.GetElementWithName("pixel");
 
-            float[] xCoordinates = new float[2] { this.pos.x, this.pos.x + (this.placedObject.data as EffectChangerData).EffectArea.x };
-            float[] yCoordinates = new float[2] { this.pos.y, this.pos.y + (this.placedObject.data as EffectChangerData).EffectArea.y };
+            float[] xCoordinates = [pos.x, pos.x + (placedObject.data as EffectChangerData).EffectArea.x];
+            float[] yCoordinates = [pos.y, pos.y + (placedObject.data as EffectChangerData).EffectArea.y];
 
-            Vector2 position = new Vector2((xCoordinates.Min() + xCoordinates.Max()) / 2f, (yCoordinates.Min() + yCoordinates.Max()) / 2f);
+            Vector2 position = new((xCoordinates.Min() + xCoordinates.Max()) / 2f, (yCoordinates.Min() + yCoordinates.Max()) / 2f);
 
             float scaleX = xCoordinates.Max() - xCoordinates.Min();
             float scaleY = yCoordinates.Max() - yCoordinates.Min();
@@ -114,16 +90,15 @@ namespace Slugpack
 
             sLeaser.sprites[0].isVisible = true;
 
-            sLeaser.sprites[0].color = new Color(Utilities.EncodeBools(effectA, effectB), (1f - (this.colour / 21f)) % 1f, Utilities.EncodeFloats(fade, hue, saturation, brightness), 0f);
+            sLeaser.sprites[0].color = new Color(Utilities.EncodeBools(effectA, effectB), (1f - (colour / 21f)) % 1f, Utilities.EncodeFloats(fade, hue, saturation, brightness), 0f);
 
-            if (Constants.shaders_enabled)
-                if (Constants.SlugpackShaders.TryGetValue(rCam?.room?.world?.game?.rainWorld, out var Shaders))
-                {
-                    sLeaser.sprites[0].shader = Shaders.ColourChangerShader;
-                    sLeaser.sprites[0]._renderLayer?._material?.SetTexture("_EffectMask", Shaders._effectMask);
-                    sLeaser.sprites[0]._renderLayer?._material?.SetTexture("_RGB2HSL", Shaders._RGB2HSL);
-                    sLeaser.sprites[0]._renderLayer?._material?.SetTexture("_HSL2RGB", Shaders._HSL2RGB);
-                }
+            if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rCam.room?.world?.game?.rainWorld, out var Shaders))
+            {
+                sLeaser.sprites[0].shader = Shaders.ColourChangerShader;
+                sLeaser.sprites[0]._renderLayer?._material?.SetTexture("_EffectMask", Shaders._effectMask);
+                sLeaser.sprites[0]._renderLayer?._material?.SetTexture("_RGB2HSL", Shaders._RGB2HSL);
+                sLeaser.sprites[0]._renderLayer?._material?.SetTexture("_HSL2RGB", Shaders._HSL2RGB);
+            }
         }
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)

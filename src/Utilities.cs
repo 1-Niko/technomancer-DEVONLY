@@ -1,6 +1,6 @@
 namespace Slugpack;
 
-public class Utilities
+public static class Utilities
 {
     public static float BinaryToFloat(int minValue, string chunk, List<float> values)
     {
@@ -12,7 +12,7 @@ public class Utilities
         }
 
         if (values[0] == -1)
-            result *= (-2 * int.Parse(chunk[minValue].ToString()) + 1);
+            result *= (-2 * int.Parse(chunk[minValue].ToString())) + 1;
 
         return result;
     }
@@ -46,12 +46,12 @@ public class Utilities
 
     public static float CalculateFurRotation(float defaultRotation, float minRotation, float maxRotation, float wetness, float danger, float breathingFactor)
     {
-        return (1 - wetness) * (danger * maxRotation + (1 - danger) * (defaultRotation - (2 * breathingFactor))) + wetness * minRotation;
+        return ((1 - wetness) * ((danger * maxRotation) + ((1 - danger) * (defaultRotation - (2 * breathingFactor))))) + (wetness * minRotation);
     }
 
     public static float FluffWax(float A, float B, float period, float x)
     {
-        return (A - B) / 2f * (float)Math.Sin(2f * (float)Math.PI / period * x) + ((A + B) / 2f);
+        return ((A - B) / 2f * (float)Math.Sin(2f * (float)Math.PI / period * x)) + ((A + B) / 2f);
     }
 
     public static int MaxScreen(string roomName)
@@ -87,7 +87,7 @@ public class Utilities
             .SelectMany(p => File.ReadAllText(p).Trim().Split(',')))
         {
             var parts = path.Contains("-") ? path.Split('-') : [path];
-            if (parts[0] == baseAcronym && (parts.Length == 1 || character.value.Equals(parts[1], System.StringComparison.OrdinalIgnoreCase)))
+            if (parts[0] == baseAcronym && (parts.Length == 1 || character.value.Equals(parts[1], StringComparison.OrdinalIgnoreCase)))
             {
                 text = Path.GetFileName(path).ToUpper();
                 break;
@@ -109,7 +109,7 @@ public class Utilities
         float distance = Vector2.Distance(pointA, pointB);
 
         // Calculate the position of point C along the same line in the direction from A to B
-        Vector2 pointC = pointA + direction * distance;
+        Vector2 pointC = pointA + (direction * distance);
 
         return pointC;
     }
@@ -142,8 +142,8 @@ public class Utilities
         float radians = (float)(degrees * Math.PI / 180.0);
         float cos = (float)Math.Cos(radians);
         float sin = (float)Math.Sin(radians);
-        float x = (offset.x - center.x) * cos - (offset.y - center.y) * sin + center.x;
-        float y = (offset.x - center.x) * sin + (offset.y - center.y) * cos + center.y;
+        float x = ((offset.x - center.x) * cos) - ((offset.y - center.y) * sin) + center.x;
+        float y = ((offset.x - center.x) * sin) + ((offset.y - center.y) * cos) + center.y;
         return new Vector2(x, y);
     }
 
@@ -170,23 +170,23 @@ public class Utilities
             .ToList();
 
         var creatures = room.physicalObjects[1]
-            .Where(element => (element as Creature) is MirosBird || (element as Creature) is VultureGrub || (element as Creature) is Vulture || (element as Creature) is MoreSlugcats.Inspector || (element as Creature) is Overseer)
+            .Where(element => element as Creature is MirosBird or VultureGrub or Vulture or MoreSlugcats.Inspector or Overseer)
             .Where(element => room.ViewedByAnyCamera((element as Creature).mainBodyChunk.pos, 0f))
             .Where(element => !(element as Creature).dead)
             .ToList();
 
         var items = room.physicalObjects[2]
-            .Where(element => (element as PlayerCarryableItem) is DataPearl || (element as PlayerCarryableItem) is OverseerCarcass)
+            .Where(element => element as PlayerCarryableItem is DataPearl or OverseerCarcass)
             .Where(element => room.ViewedByAnyCamera((element as PlayerCarryableItem).firstChunk.pos, 0f))
             .ToList();
 
         items.AddRange(room.physicalObjects[0]
-            .Where(element => (element is SSOracleSwarmer))
+            .Where(element => element is SSOracleSwarmer)
             .Where(element => room.ViewedByAnyCamera(element.firstChunk.pos, 0f))
             .ToList());
 
         var objects = room.roomSettings.placedObjects
-            .Where(element => element.type.ToString() == "TrackHologram" || element.type.ToString() == "TrainBell")
+            .Where(element => element.type.ToString() is "TrackHologram" or "TrainBell")
             .Where(element => room.ViewedByAnyCamera(element.pos, 0f))
             .ToList();
 
@@ -202,7 +202,6 @@ public class Utilities
 
         foreach (var shortcut in room.shortcuts)
         {
-            //Debug.Log($"LOOK HERE : FUNCTION CALL : SHORTCUT : {room.MiddleOfTile(shortcut.StartTile)} : {position}");
             if (room.MiddleOfTile(shortcut.StartTile) == position)
             {
                 return ("shortcut", null, null, shortcut, null, position);
@@ -211,16 +210,14 @@ public class Utilities
 
         foreach (var creature in creatures)
         {
-            //Debug.Log($"LOOK HERE : FUNCTION CALL : CREATURE : {(creature as Creature).mainBodyChunk.pos} : {position}");
             if ((creature as Creature).mainBodyChunk.pos == position)
             {
-                return ("creature", (creature as Creature), null, new ShortcutData(), null, position);
+                return ("creature", creature as Creature, null, new ShortcutData(), null, position);
             }
         }
 
         foreach (var item in items)
         {
-            //Debug.Log($"LOOK HERE : FUNCTION CALL : ITEM : {(item as PlayerCarryableItem).firstChunk.pos} : {position}");
             if (item.firstChunk.pos == position)
             {
                 return ("item", null, item, new ShortcutData(), null, position);
@@ -229,7 +226,6 @@ public class Utilities
 
         foreach (var _object in objects)
         {
-            //Debug.Log($"LOOK HERE : FUNCTION CALL : ITEM : {(item as PlayerCarryableItem).firstChunk.pos} : {position}");
             if (_object.pos == position)
             {
                 return ("object", null, null, new ShortcutData(), _object, position);
@@ -250,9 +246,7 @@ public class Utilities
             var delta = searchPosition - position;
             var angle = Vector2.Angle(delta, direction);
 
-            //Debug.Log($"LOOK HERE : FUNCTIONCALL : {direction} : {searchPosition} : {position}");
-
-            if ((angle <= 45f || angle >= 315f)) // within 45 degrees either way of the direction
+            if (angle is <= 45f or >= 315f) // within 45 degrees either way of the direction
             {
                 result.Add(searchPosition);
             }
@@ -263,15 +257,15 @@ public class Utilities
 
     public static (Vector2 up, Vector2 left, Vector2 right, Vector2 down) GetNearestPointsInAllDirections(Vector2 position, List<Vector2> searchPositions, Room room)
     {
-        Vector2 up = Vector2.zero;
-        Vector2 left = Vector2.zero;
-        Vector2 right = Vector2.zero;
-        Vector2 down = Vector2.zero;
+        _ = Vector2.zero;
+        _ = Vector2.zero;
+        _ = Vector2.zero;
+        _ = Vector2.zero;
 
-        up = Utilities.FindNearest(position, Utilities.GetPointsInDirection(position, Vector2.up, searchPositions), room);
-        left = Utilities.FindNearest(position, Utilities.GetPointsInDirection(position, Vector2.left, searchPositions), room);
-        right = Utilities.FindNearest(position, Utilities.GetPointsInDirection(position, Vector2.right, searchPositions), room);
-        down = Utilities.FindNearest(position, Utilities.GetPointsInDirection(position, Vector2.down, searchPositions), room);
+        Vector2 up = FindNearest(position, GetPointsInDirection(position, Vector2.up, searchPositions), room);
+        Vector2 left = FindNearest(position, GetPointsInDirection(position, Vector2.left, searchPositions), room);
+        Vector2 right = FindNearest(position, GetPointsInDirection(position, Vector2.right, searchPositions), room);
+        Vector2 down = FindNearest(position, GetPointsInDirection(position, Vector2.down, searchPositions), room);
 
         return (up, left, right, down);
     }
@@ -287,9 +281,7 @@ public class Utilities
             var delta = searchPosition.pos - position.pos;
             var angle = Vector2.Angle(delta, direction);
 
-            //Debug.Log($"LOOK HERE : FUNCTIONCALL : {direction} : {searchPosition} : {position}");
-
-            if ((angle <= 45f || angle >= 315f)) // within 45 degrees either way of the direction
+            if (angle is <= 45f or >= 315f) // within 45 degrees either way of the direction
             {
                 result.Add(searchPosition);
             }
@@ -332,8 +324,8 @@ public class Utilities
     public static float CalculateAngleBetweenVectorsForLineSegment(Vector2 vector1, Vector2 vector2)
     {
         // Calculate the average point between the two vectors
-        float averageX = (vector1.x + vector2.x) / 2.0f;
-        float averageY = (vector1.y + vector2.y) / 2.0f;
+        _ = (vector1.x + vector2.x) / 2.0f;
+        _ = (vector1.y + vector2.y) / 2.0f;
 
         // Calculate the angle of the line segment passing through the average point
         float angleRadians = (float)Math.Atan2(vector2.y - vector1.y, vector2.x - vector1.x);
@@ -363,7 +355,7 @@ public class Utilities
         // Use this one when shortcut support is added
         // foreach (var shortcut in room.shortcuts.Where(element => (element.destNode != -1 && element.destNode < room.abstractRoom.connections.Length && room.abstractRoom.connections[element.destNode] != -1) || element.shortCutType == ShortcutData.Type.Normal).ToList())
 
-        foreach (var shortcut in room.shortcuts.Where(element => (element.destNode != -1)).ToList())
+        foreach (var shortcut in room.shortcuts.Where(element => element.destNode != -1).ToList())
         {
             NodeInfo.Add(new DataStructures.Node(room.MiddleOfTile(shortcut.StartTile), 1, 0, null));
             //room.MiddleOfTile(shortcut.StartTile), 1, 0, null));
@@ -371,21 +363,16 @@ public class Utilities
 
         foreach (var creature in creatures)
         {
-            if (((creature as Creature) is MirosBird || (creature as Creature) is VultureGrub || (creature as Creature) is Vulture ||
-                (creature as Creature) is MoreSlugcats.Inspector || (creature as Creature) is Overseer) && (room.ViewedByAnyCamera((creature as Creature).mainBodyChunk.pos, 0f)) &&
+            if ((creature as Creature is MirosBird || creature as Creature is VultureGrub || creature as Creature is Vulture ||
+                creature as Creature is MoreSlugcats.Inspector || creature as Creature is Overseer) && room.ViewedByAnyCamera((creature as Creature).mainBodyChunk.pos, 0f) &&
                 (!(creature as Creature).dead))
             {
                 NodeInfo.Add(new DataStructures.Node((creature as Creature).mainBodyChunk.pos, 2, 0, creature));
             }
         }
-
-        foreach (var item in items)
-        {
-            if ((item as PlayerCarryableItem) is DataPearl || (item as PlayerCarryableItem) is OverseerCarcass)
-            {
-                NodeInfo.Add(new DataStructures.Node((item as PlayerCarryableItem).firstChunk.pos, 1, 0, item));
-            }
-        }
+        NodeInfo.AddRange(from item in items
+                          where item as PlayerCarryableItem is DataPearl or OverseerCarcass
+                          select new DataStructures.Node((item as PlayerCarryableItem).firstChunk.pos, 1, 0, item));
 
         // There's a bug with these at the moment
         /*foreach (var _object in objects.Where(element => element.type.ToString() == "TrackHologram" || element.type.ToString() == "TrainBell"))
@@ -517,15 +504,15 @@ public class Utilities
     /// <returns></returns>
     public static AssetBundle LoadFromEmbeddedResource_OLD(string fullyQualifiedPath)
     {
-        Debug.Log($"Loading embedded asset bundle: {fullyQualifiedPath}");
+        //Debug.Log($"Loading embedded asset bundle: {fullyQualifiedPath}");
         using MemoryStream mstr = new();
         Stream str = Assembly.GetExecutingAssembly().GetManifestResourceStream(fullyQualifiedPath);
         str.CopyTo(mstr);
         str.Flush();
         str.Close();
-        Debug.Log("Bundle loaded into memory as byte[], processing with Unity...");
+        //Debug.Log("Bundle loaded into memory as byte[], processing with Unity...");
         AssetBundle bundle = AssetBundle.LoadFromMemory(mstr.ToArray());
-        Debug.Log("Unity has successfully loaded this asset bundle from memory.");
+        //Debug.Log("Unity has successfully loaded this asset bundle from memory.");
         return bundle;
     }
 
@@ -536,16 +523,16 @@ public class Utilities
 
     public static FShader CreateFromAsset(AssetBundle bundle, string shortName)
     {
-        Debug.Log($"Loading shader \"{shortName}\"...");
+        //Debug.Log($"Loading shader \"{shortName}\"...");
         Shader target = bundle.LoadAsset<Shader>($"assets/{shortName}.shader");
-        Debug.Log($"Implementing shader \"{shortName}\" into Futile...");
+        //Debug.Log($"Implementing shader \"{shortName}\" into Futile...");
         return FShader.CreateShader(shortName, target);
     }
 
     public static Vector4 Lerp(Vector4 start, Vector4 end, float t)
     {
         t = Mathf.Clamp(t, 0f, 1f); // Ensure t is within the range [0, 1]
-        return start + (end - start) * t;
+        return start + ((end - start) * t);
     }
 
     public static Vector4 ColourFade(Vector4 vector1, Vector4 vector2, float t)
@@ -569,7 +556,7 @@ public class Utilities
         while (n > 1)
         {
             n--;
-            int k = UnityEngine.Random.Range(0, n + 1);
+            int k = Random.Range(0, n + 1);
             (list[n], list[k]) = (list[k], list[n]);
         }
     }
@@ -583,7 +570,7 @@ public class Utilities
         }
 
         // Normalize the value
-        float normalizedValue = (oldValue - oldMin) / (oldMax - oldMin) * (newMax - newMin) + newMin;
+        float normalizedValue = ((oldValue - oldMin) / (oldMax - oldMin) * (newMax - newMin)) + newMin;
 
         // Make sure the normalized value doesn't exceed the new range
         normalizedValue = Math.Max(newMin, Math.Min(newMax, normalizedValue));
@@ -609,18 +596,12 @@ public class Utilities
 
     public static float EncodeBools(bool a, bool b)
     {
-        if (!a && !b) { return 0.25f; }
-        else if (a && !b) { return 0.5f; }
-        else if (!a && b) { return 0.75f; }
-        else if (a && b) { return 1f; }
-        else return 0f;
+        return !a && !b ? 0.25f : a && !b ? 0.5f : !a && b ? 0.75f : a && b ? 1f : 0f;
     }
 
     public static int BinStep(int N)
     {
-        if (N >= 0)
-            return 1;
-        return 0;
+        return N >= 0 ? 1 : 0;
     }
 
     public static List<float> IntFloatListBinaryEncoding(int N)
@@ -631,10 +612,10 @@ public class Utilities
 
     public static float FloatListBinaryEncoding(List<float> a, List<float> b, List<float> c, List<float> d)
     {
-        return (float)((a[0] * Mathf.Pow(2, 19)) + (a[1] * Mathf.Pow(2, 18)) + (a[2] * Mathf.Pow(2, 17)) + (a[3] * Mathf.Pow(2, 16)) + (a[4] * Mathf.Pow(2, 15)) +
+        return (a[0] * Mathf.Pow(2, 19)) + (a[1] * Mathf.Pow(2, 18)) + (a[2] * Mathf.Pow(2, 17)) + (a[3] * Mathf.Pow(2, 16)) + (a[4] * Mathf.Pow(2, 15)) +
                        (b[0] * Mathf.Pow(2, 14)) + (b[1] * Mathf.Pow(2, 13)) + (b[2] * Mathf.Pow(2, 12)) + (b[3] * Mathf.Pow(2, 11)) + (b[4] * Mathf.Pow(2, 10)) +
                        (c[0] * Mathf.Pow(2, 9)) + (c[1] * Mathf.Pow(2, 8)) + (c[2] * Mathf.Pow(2, 7)) + (c[3] * Mathf.Pow(2, 6)) + (c[4] * Mathf.Pow(2, 5)) +
-                       (d[0] * Mathf.Pow(2, 4)) + (d[1] * Mathf.Pow(2, 3)) + (d[2] * Mathf.Pow(2, 2)) + (d[3] * Mathf.Pow(2, 1)) + (d[4] * Mathf.Pow(2, 0)));
+                       (d[0] * Mathf.Pow(2, 4)) + (d[1] * Mathf.Pow(2, 3)) + (d[2] * Mathf.Pow(2, 2)) + (d[3] * Mathf.Pow(2, 1)) + (d[4] * Mathf.Pow(2, 0));
     }
 
     public static int ConvertFloat(float N)
@@ -652,9 +633,9 @@ public class Utilities
 
     public static float FloatListBinaryEncoding(List<float> b, List<float> c, List<float> d)
     {
-        return (float)((b[0] * Mathf.Pow(2, 14)) + (b[1] * Mathf.Pow(2, 13)) + (b[2] * Mathf.Pow(2, 12)) + (b[3] * Mathf.Pow(2, 11)) + (b[4] * Mathf.Pow(2, 10)) +
+        return (b[0] * Mathf.Pow(2, 14)) + (b[1] * Mathf.Pow(2, 13)) + (b[2] * Mathf.Pow(2, 12)) + (b[3] * Mathf.Pow(2, 11)) + (b[4] * Mathf.Pow(2, 10)) +
                        (c[0] * Mathf.Pow(2, 9)) + (c[1] * Mathf.Pow(2, 8)) + (c[2] * Mathf.Pow(2, 7)) + (c[3] * Mathf.Pow(2, 6)) + (c[4] * Mathf.Pow(2, 5)) +
-                       (d[0] * Mathf.Pow(2, 4)) + (d[1] * Mathf.Pow(2, 3)) + (d[2] * Mathf.Pow(2, 2)) + (d[3] * Mathf.Pow(2, 1)) + (d[4] * Mathf.Pow(2, 0)));
+                       (d[0] * Mathf.Pow(2, 4)) + (d[1] * Mathf.Pow(2, 3)) + (d[2] * Mathf.Pow(2, 2)) + (d[3] * Mathf.Pow(2, 1)) + (d[4] * Mathf.Pow(2, 0));
     }
 
     public static float EncodeFloats(float a, float b, float c)
@@ -695,7 +676,7 @@ public class Utilities
         }
         catch (Exception ex)
         {
-            Debug.Log(errorMessage.Replace("%ln", $"{lineNumber}"));
+            Debug.LogError(errorMessage.Replace("%ln", $"{lineNumber}"));
             Debug.LogException(ex);
         }
     }
@@ -740,7 +721,7 @@ public class Utilities
             var obj = extEnum.GetValue(null);
             if (obj != null)
             {
-                obj.GetType().GetMethod("Unregister")!.Invoke(obj, null);
+                _ = obj.GetType().GetMethod("Unregister")!.Invoke(obj, null);
                 extEnum.SetValue(null, null);
             }
         }

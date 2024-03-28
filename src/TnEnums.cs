@@ -1,6 +1,6 @@
 ﻿namespace Slugpack;
 
-public class TnEnums
+public static class TnEnums
 {
     public static void Init()
     {

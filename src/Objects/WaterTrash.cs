@@ -2,7 +2,7 @@ using static Pom.Pom;
 
 namespace Slugpack
 {
-    public class WaterTrashData : ManagedData
+    public class WaterTrashData(PlacedObject owner) : ManagedData(owner, null)
     {
         [Vector2Field("TrashArea", 100, 100, Vector2Field.VectorReprType.rect)]
         public Vector2 TrashArea;
@@ -18,38 +18,29 @@ namespace Slugpack
 
         [IntegerField("BackDepth", 0, 30, 30, ManagedFieldWithPanel.ControlType.slider, displayName: "BackDepth")]
         public int BackDepth;
-
-        public WaterTrashData(PlacedObject owner) : base(owner, null)
-        {
-        }
     }
 
-    public class WaterTrash : UpdatableAndDeletable
+    public class WaterTrash(PlacedObject placedObject, Room room) : UpdatableAndDeletable
     {
-        public WaterTrash(PlacedObject placedObject, Room room)
-        {
-            this.placedObject = placedObject;
-        }
-
         public override void Update(bool eu)
         {
             base.Update(eu);
             if (waterTrash == null)
             {
-                waterTrash = new WaterTrashObject(this.placedObject.pos, (this.placedObject.data as WaterTrashData).TrashArea,
-                                                                         (this.placedObject.data as WaterTrashData).RandomSeed,
-                                                                         (this.placedObject.data as WaterTrashData).TrashCount);
+                waterTrash = new WaterTrashObject(placedObject.pos, (placedObject.data as WaterTrashData).TrashArea,
+                                                                         (placedObject.data as WaterTrashData).RandomSeed,
+                                                                         (placedObject.data as WaterTrashData).TrashCount);
 
-                this.room.AddObject(waterTrash);
+                room.AddObject(waterTrash);
             }
 
-            this.waterTrash.frontDepth = (this.placedObject.data as WaterTrashData).FrontDepth;
-            this.waterTrash.backDepth = (this.placedObject.data as WaterTrashData).BackDepth;
+            waterTrash.frontDepth = (placedObject.data as WaterTrashData).FrontDepth;
+            waterTrash.backDepth = (placedObject.data as WaterTrashData).BackDepth;
         }
 
         public WaterTrashObject waterTrash;
 
-        public PlacedObject placedObject;
+        public PlacedObject placedObject = placedObject;
     }
 
     public class WaterTrashObject : CosmeticSprite, IDrawable
@@ -62,11 +53,6 @@ namespace Slugpack
             this.trashCount = trashCount;
         }
 
-        public override void Update(bool eu)
-        {
-            base.Update(eu);
-        }
-
         public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
             base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
@@ -75,11 +61,11 @@ namespace Slugpack
 
             for (int i = 0; i < sLeaser.sprites.Length; i++)
             {
-                Vector2 offset = this.pos + new Vector2(this.trashArea.x / trashCount * i, 0);
+                Vector2 offset = pos + new Vector2(trashArea.x / trashCount * i, 0);
                 sLeaser.sprites[i].isVisible = true;
-                sLeaser.sprites[i].SetPosition(new Vector2(offset.x, this.room.FloatWaterLevel(Mathf.Max(offset.x, 0))) - rCam.pos);
+                sLeaser.sprites[i].SetPosition(new Vector2(offset.x, room.FloatWaterLevel(Mathf.Max(offset.x, 0))) - rCam.pos);
 
-                int depth = (int)Mathf.Round(Utilities.Normalize(depths[i], 0, 30, this.frontDepth, this.backDepth));
+                int depth = (int)Mathf.Round(Utilities.Normalize(depths[i], 0, 30, frontDepth, backDepth));
 
                 sLeaser.sprites[i].color = palette.GetPixel(depth, colour[i] + 2);
                 sLeaser.sprites[i].alpha = depth / 30f;
@@ -88,14 +74,16 @@ namespace Slugpack
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {
-            Random.InitState(this.randomSeed);
+            Random.InitState(randomSeed);
 
             sLeaser.sprites = new FSprite[trashCount];
 
             for (int i = 0; i < trashCount; i++)
             {
-                sLeaser.sprites[i] = new FSprite($"trash_{Random.Range(0, 105)}", true);
-                sLeaser.sprites[i].shader = rCam.game.rainWorld.Shaders["CustomDepth"];
+                sLeaser.sprites[i] = new FSprite($"trash_{Random.Range(0, 105)}", true)
+                {
+                    shader = rCam.game.rainWorld.Shaders["CustomDepth"]
+                };
 
                 depths.Add(Random.Range(0, 30));
                 colour.Add(Random.Range(0, 3));
@@ -108,7 +96,7 @@ namespace Slugpack
         {
             FContainer Midground = rCam.ReturnFContainer("Water");
 
-            Random.InitState(this.randomSeed);
+            Random.InitState(randomSeed);
 
             List<int> numbers = Utilities.GenerateNumbers(sLeaser.sprites.Length - 1);
             Utilities.Shuffle(numbers);
@@ -126,9 +114,9 @@ namespace Slugpack
 
         public int backDepth;
 
-        public List<int> depths = new();
+        public List<int> depths = [];
 
-        public List<int> colour = new();
+        public List<int> colour = [];
 
         public int randomSeed;
 

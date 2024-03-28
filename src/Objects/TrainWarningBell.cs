@@ -3,7 +3,7 @@ using static Pom.Pom.Vector2ArrayField;
 
 namespace Slugpack
 {
-    public class TrainWarningBellData : ManagedData
+    public class TrainWarningBellData(PlacedObject owner) : ManagedData(owner, null)
     {
         [BooleanField("IsCeilingEntranceMarker", true, ManagedFieldWithPanel.ControlType.button, displayName: "Is Marker")]
         public bool EntranceMarker;
@@ -52,139 +52,110 @@ namespace Slugpack
 
         [Vector2ArrayField("ProjectionLinesMarker", 3, true, Vector2ArrayRepresentationType.Polygon, new float[6] { 0, 0, -85, 20, -20, 85 })]
         public Vector2[] projectionLinesMarker;
-
-        public TrainWarningBellData(PlacedObject owner) : base(owner, null)
-        {
-        }
     }
 
-    public class TrainWarningBell : UpdatableAndDeletable
+    public class TrainWarningBell(PlacedObject placedObject, Room room) : UpdatableAndDeletable
     {
-        public TrainWarningBell(PlacedObject placedObject, Room room)
-        {
-            this.placedObject = placedObject;
-        }
-
         public override void Update(bool eu)
         {
             base.Update(eu);
 
-            if (this.bellSprite == null)
+            if (bellSprite == null)
             {
-                this.bellSprite = new TrainBell(placedObject, placedObject.pos, (this.placedObject.data as TrainWarningBellData).TimerDelay, (this.placedObject.data as TrainWarningBellData).ArrowPosition);
-                this.room.AddObject(this.bellSprite);
+                bellSprite = new TrainBell(placedObject, placedObject.pos, (placedObject.data as TrainWarningBellData).TimerDelay, (placedObject.data as TrainWarningBellData).ArrowPosition);
+                room.AddObject(bellSprite);
             }
-            this.bellSprite.pos = placedObject.pos;
-            this.bellSprite.waitCount = (this.placedObject.data as TrainWarningBellData).TimerDelay;
-            this.bellSprite.hardEnabled = (this.placedObject.data as TrainWarningBellData).Enabled;
-            this.bellSprite.hatchMarker = (this.placedObject.data as TrainWarningBellData).EntranceMarker;
-            this.bellSprite.arrowPosition = (this.placedObject.data as TrainWarningBellData).ArrowPosition;
-            this.bellSprite.forceWarning = (this.placedObject.data as TrainWarningBellData).ForceDisplay; // This is also likely what im going to use for the techy action
-            this.bellSprite.projectionLines = (this.placedObject.data as TrainWarningBellData).projectionLines;
-            this.bellSprite.projectionLinesMarker = (this.placedObject.data as TrainWarningBellData).projectionLinesMarker;
-            this.bellSprite.LineSizeA = (this.placedObject.data as TrainWarningBellData).LineSizeA;
-            this.bellSprite.LineSizeB = (this.placedObject.data as TrainWarningBellData).LineSizeB;
-            this.bellSprite.LineSizeC = (this.placedObject.data as TrainWarningBellData).LineSizeC;
-            this.bellSprite.LineSizeD = (this.placedObject.data as TrainWarningBellData).LineSizeD;
-            this.bellSprite.LineCutoffA = (this.placedObject.data as TrainWarningBellData).LowerCutoffA;
-            this.bellSprite.LineCutoffB = (this.placedObject.data as TrainWarningBellData).LowerCutoffB;
-            this.bellSprite.LineCutoffC = (this.placedObject.data as TrainWarningBellData).LowerCutoffC;
-            this.bellSprite.LineCutoffD = (this.placedObject.data as TrainWarningBellData).LowerCutoffD;
-        }
-
-        public override void Destroy()
-        {
-            base.Destroy();
+            bellSprite.pos = placedObject.pos;
+            bellSprite.waitCount = (placedObject.data as TrainWarningBellData).TimerDelay;
+            bellSprite.hardEnabled = (placedObject.data as TrainWarningBellData).Enabled;
+            bellSprite.hatchMarker = (placedObject.data as TrainWarningBellData).EntranceMarker;
+            bellSprite.arrowPosition = (placedObject.data as TrainWarningBellData).ArrowPosition;
+            bellSprite.forceWarning = (placedObject.data as TrainWarningBellData).ForceDisplay; // This is also likely what im going to use for the techy action
+            bellSprite.projectionLines = (placedObject.data as TrainWarningBellData).projectionLines;
+            bellSprite.projectionLinesMarker = (placedObject.data as TrainWarningBellData).projectionLinesMarker;
+            bellSprite.LineSizeA = (placedObject.data as TrainWarningBellData).LineSizeA;
+            bellSprite.LineSizeB = (placedObject.data as TrainWarningBellData).LineSizeB;
+            bellSprite.LineSizeC = (placedObject.data as TrainWarningBellData).LineSizeC;
+            bellSprite.LineSizeD = (placedObject.data as TrainWarningBellData).LineSizeD;
+            bellSprite.LineCutoffA = (placedObject.data as TrainWarningBellData).LowerCutoffA;
+            bellSprite.LineCutoffB = (placedObject.data as TrainWarningBellData).LowerCutoffB;
+            bellSprite.LineCutoffC = (placedObject.data as TrainWarningBellData).LowerCutoffC;
+            bellSprite.LineCutoffD = (placedObject.data as TrainWarningBellData).LowerCutoffD;
         }
 
         private TrainBell bellSprite;
 
-        private PlacedObject placedObject;
+        private PlacedObject placedObject = placedObject;
     }
 
-    public class TrainBell : CosmeticSprite
+    public class TrainBell(PlacedObject placedObject, Vector2 pos, int waitCount, Vector2 ArrowPosition) : CosmeticSprite
     {
-        private readonly PlacedObject placedObject;
-
-        public TrainBell(PlacedObject placedObject, Vector2 pos, int waitCount, Vector2 ArrowPosition)
-        {
-            this.placedObject = placedObject;
-            this.waitCount = waitCount;
-            this.arrowPosition = ArrowPosition;
-
-            block = new MaterialPropertyBlock();
-        }
+        private readonly PlacedObject placedObject = placedObject;
 
         public override void Update(bool eu)
         {
             base.Update(eu);
             stepTimer++;
 
-            List<Player> players = new();
-            foreach (var category in this.room.physicalObjects)
+            List<Player> players = [];
+            foreach (var category in room.physicalObjects)
             {
-                foreach (var physicalObject in category)
-                {
-                    if (physicalObject is Player)
-                    {
-                        players.Add((physicalObject as Player));
-                    }
-                }
+                players.AddRange(from physicalObject in category
+                                 where physicalObject is Player
+                                 select physicalObject as Player);
             }
 
-            this.enabled = false;
+            enabled = false;
             for (int i = 0; i < players.Count; i++)
             {
-                if (RWCustom.Custom.Dist(this.pos, players[i].mainBodyChunk.pos) < RWCustom.Custom.Dist(this.pos, this.pos + (this.placedObject.data as TrainWarningBellData).rad))
+                if (RWCustom.Custom.Dist(pos, players[i].mainBodyChunk.pos) < RWCustom.Custom.Dist(pos, pos + (placedObject.data as TrainWarningBellData).rad))
                 {
-                    this.enabled = true;
+                    enabled = true;
                     break;
                 }
-                if (this.enabled)
+                if (enabled)
                     break;
             }
 
-            var trackController = room.updateList.Where(element => (element.ToString() == "Slugpack.TrainTrack")).ToList();
+            var trackController = room.updateList.Where(element => element.ToString() == "Slugpack.TrainTrack").ToList();
 
             if (trackController.Count == 0)
-            { this.enabled = false; } // There are no trains, why is this in this room?
+            { enabled = false; } // There are no trains, why is this in this room?
             else if (trackController.Count == 1)
             {
                 // This is where normal logic goes
-                TrainTrack trainController = (trackController[0] as TrainTrack);
+                TrainTrack trainController = trackController[0] as TrainTrack;
 
-                var trainPositions = this.room.updateList
+                var trainPositions = room.updateList
                     .OfType<TrainObject>()
                     .Select(trainObject => trainObject.pos)
                     .ToList();
                 if (trainController.train_spawn_timer >= (trainController.placedObject.data as TrainTrackData).TrainDelay * 35f) // This '35' determines how soon before the train triggers it will switch
-                    this.warning = true;
+                    warning = true;
                 else if (trainController.car_queue == 0 && trainPositions.Count == 0) // No more cars being spawned or in the room
                 {
-                    if (this.hatchMarker)
-                        this.warning = false;
+                    if (hatchMarker)
+                        warning = false;
                     else
-                        this.enabled = false;
+                        enabled = false;
                 }
             }
             else
-            { this.enabled = false; } // Either there's a negative amount of track controllers, or more than 1. Either way, something has gone wrong
+            { enabled = false; } // Either there's a negative amount of track controllers, or more than 1. Either way, something has gone wrong
 
-            if (this.forceWarning)
-                this.warning = true;
+            if (forceWarning)
+                warning = true;
 
             int bellLength = 32;
+
             for (int i = 0; i < players.Count; i++)
             {
-                if (RWCustom.Custom.Dist(this.pos, players[i].mainBodyChunk.pos) < RWCustom.Custom.Dist(this.pos, this.pos + (this.placedObject.data as TrainWarningBellData).rad))
+                if (RWCustom.Custom.Dist(pos, players[i].mainBodyChunk.pos) < RWCustom.Custom.Dist(pos, pos + (placedObject.data as TrainWarningBellData).rad) && ((enabled && warning) || forceWarning))
                 {
-                    if ((this.enabled && this.warning) || this.forceWarning)
-                    {
-                        if (stepTimer % bellLength == bellLength / 2)
-                            this.room.PlaySound(SoundID.Spear_Bounce_Off_Wall, this.pos, 1, 0.9f);
-                        else if (stepTimer % bellLength == 0)
-                            this.room.PlaySound(SoundID.Spear_Bounce_Off_Wall, this.pos, 1, 0.5f);
-                    }
+                    if (stepTimer % bellLength == bellLength / 2)
+                        room.PlaySound(SoundID.Spear_Bounce_Off_Wall, pos, 1, 0.9f);
+                    else if (stepTimer % bellLength == 0)
+                        room.PlaySound(SoundID.Spear_Bounce_Off_Wall, pos, 1, 0.5f);
                 }
                 break;
             }
@@ -209,8 +180,8 @@ namespace Slugpack
             sLeaser.sprites[4].isVisible = false;
             sLeaser.sprites[5].isVisible = false;
 
-            float[] xCoordinates = new float[5] { this.pos.x + this.arrowPosition.x, this.pos.x + this.projectionLines[1].x, this.pos.x + this.projectionLines[2].x, this.pos.x + this.projectionLinesMarker[1].x, this.pos.x + this.projectionLinesMarker[2].x };
-            float[] yCoordinates = new float[5] { this.pos.y + this.arrowPosition.y, this.pos.y + this.projectionLines[1].y, this.pos.y + this.projectionLines[2].y, this.pos.y + this.projectionLinesMarker[1].y, this.pos.y + this.projectionLinesMarker[2].y };
+            float[] xCoordinates = [pos.x + arrowPosition.x, pos.x + projectionLines[1].x, pos.x + projectionLines[2].x, pos.x + projectionLinesMarker[1].x, pos.x + projectionLinesMarker[2].x];
+            float[] yCoordinates = [pos.y + arrowPosition.y, pos.y + projectionLines[1].y, pos.y + projectionLines[2].y, pos.y + projectionLinesMarker[1].y, pos.y + projectionLinesMarker[2].y];
 
             float image_size = 256f;
 
@@ -230,80 +201,76 @@ namespace Slugpack
             sLeaser.sprites[5].scaleX = ((xCoordinates[4] > xCoordinates[0]) ? -1 : 1) * ((Mathf.Max(xCoordinates[4], xCoordinates[0]) - Mathf.Min(xCoordinates[4], xCoordinates[0])) / image_size);
             sLeaser.sprites[5].scaleY = ((yCoordinates[4] > yCoordinates[0]) ? -1 : 1) * ((Mathf.Max(yCoordinates[4], yCoordinates[0]) - Mathf.Min(yCoordinates[4], yCoordinates[0])) / image_size);
 
-            if (this.hardEnabled && (this.enabled || this.forceWarning))
+            if (hardEnabled && (enabled || forceWarning) && Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var Shaders))
             {
-                if (Constants.shaders_enabled)
-                    if (Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var Shaders))
+                if (!(warning || forceWarning))
+                {
+                    sLeaser.sprites[0].SetPosition(pos - rCam.pos);
+                    sLeaser.sprites[0].isVisible = true;
+                    sLeaser.sprites[1].isVisible = false;
+
+                    sLeaser.sprites[0].shader = Shaders.HologramA;
+                    sLeaser.sprites[1]._renderLayer?._material?.SetInt("_Radial", 1);
+                    sLeaser.sprites[0]._renderLayer?._material?.SetFloat("_Offset", stepTimer * 2);
+                    sLeaser.sprites[0]._renderLayer?._material?.SetFloat("_RandomOffset", stepTimer);
+                    sLeaser.sprites[0]._renderLayer?._material?.SetVector("_ColourA", Utilities.ColourFade(new Vector4(0f, 1f, 0f, 1f), new Vector4(0f, 1f, 1f, 1f), (-Mathf.Cos(3.141f * (stepTimer / 10f) / 4) + 1) / 2));
+
+                    sLeaser.sprites[4].shader = Shaders.ProjectionLinesC;
+                    sLeaser.sprites[5].shader = Shaders.ProjectionLinesD;
+                    for (int i = 0; i < 2; i++)
                     {
-                        if (!(this.warning || this.forceWarning))
-                        {
-                            sLeaser.sprites[0].SetPosition(this.pos - rCam.pos);
-                            sLeaser.sprites[0].isVisible = true;
-                            sLeaser.sprites[1].isVisible = false;
+                        sLeaser.sprites[i + 4].isVisible = true;
 
-                            sLeaser.sprites[0].shader = Shaders.HologramA;
-                            sLeaser.sprites[1]._renderLayer?._material?.SetInt("_Radial", 1);
-                            sLeaser.sprites[0]._renderLayer?._material?.SetFloat("_Offset", stepTimer * 2);
-                            sLeaser.sprites[0]._renderLayer?._material?.SetFloat("_RandomOffset", stepTimer);
-                            sLeaser.sprites[0]._renderLayer?._material?.SetVector("_ColourA", Utilities.ColourFade(new Vector4(0f, 1f, 0f, 1f), new Vector4(0f, 1f, 1f, 1f), (-Mathf.Cos((3.141f * (stepTimer / 10f)) / 4) + 1) / 2));
+                        sLeaser.sprites[i + 4]._renderLayer?._material?.SetVector("_PointA", new Vector4(1, 0, 0, 0)); // Left Anchor
+                        sLeaser.sprites[i + 4]._renderLayer?._material?.SetVector("_PointB", new Vector4(0, 1, 0, 0)); // Origin
 
-                            sLeaser.sprites[4].shader = Shaders.ProjectionLinesC;
-                            sLeaser.sprites[5].shader = Shaders.ProjectionLinesD;
-                            for (int i = 0; i < 2; i++)
-                            {
-                                sLeaser.sprites[i + 4].isVisible = true;
-
-                                sLeaser.sprites[i + 4]._renderLayer?._material?.SetVector("_PointA", new Vector4(1, 0, 0, 0)); // Left Anchor
-                                sLeaser.sprites[i + 4]._renderLayer?._material?.SetVector("_PointB", new Vector4(0, 1, 0, 0)); // Origin
-
-                                sLeaser.sprites[i + 4]._renderLayer?._material?.SetFloat("_Width", sLeaser.sprites[i + 4].scaleX);
-                                sLeaser.sprites[i + 4]._renderLayer?._material?.SetFloat("_Height", sLeaser.sprites[i + 4].scaleY);
-                                sLeaser.sprites[i + 4]._renderLayer?._material?.SetFloat("_Offset", stepTimer * 2);
-                                sLeaser.sprites[i + 4]._renderLayer?._material?.SetFloat("_RandomOffset", stepTimer);
-                            }
-                            sLeaser.sprites[4]._renderLayer?._material?.SetFloat("_Cutoff", this.LineCutoffC);
-                            sLeaser.sprites[5]._renderLayer?._material?.SetFloat("_Cutoff", this.LineCutoffD);
-                            sLeaser.sprites[4]._renderLayer?._material?.SetFloat("_Size", this.LineSizeC);
-                            sLeaser.sprites[5]._renderLayer?._material?.SetFloat("_Size", this.LineSizeD);
-
-                            sLeaser.sprites[4]._renderLayer?._material?.SetVector("_Colour", Utilities.ColourFade(new Vector4(0f, 1f, 0f, 1f), new Vector4(0f, 1f, 1f, 1f), (-Mathf.Cos((3.141f * (stepTimer / 4f)) / 4) + 1) / 2));
-                            sLeaser.sprites[5]._renderLayer?._material?.SetVector("_Colour", Utilities.ColourFade(new Vector4(0f, 1f, 0f, 1f), new Vector4(0f, 1f, 1f, 1f), (-Mathf.Cos((3.141f * (stepTimer / 4f)) / 4) + 1) / 2));
-                        }
-                        else
-                        {
-                            sLeaser.sprites[1].SetPosition(this.pos - rCam.pos);
-                            sLeaser.sprites[0].isVisible = false;
-                            sLeaser.sprites[1].isVisible = true;
-
-                            sLeaser.sprites[1].shader = Shaders.HologramB;
-                            sLeaser.sprites[1]._renderLayer?._material?.SetInt("_Radial", 0);
-                            sLeaser.sprites[1]._renderLayer?._material?.SetFloat("_Offset", stepTimer * 2);
-                            sLeaser.sprites[1]._renderLayer?._material?.SetFloat("_RandomOffset", stepTimer);
-                            sLeaser.sprites[1]._renderLayer?._material?.SetVector("_ColourA", Utilities.ColourFade(new Vector4(1f, 0f, 0f, 1f), new Vector4(1f, 1f, 0f, 1f), (-Mathf.Cos((3.141f * (stepTimer / 4f)) / 4) + 1) / 2));
-
-                            sLeaser.sprites[2].shader = Shaders.ProjectionLinesA;
-                            sLeaser.sprites[3].shader = Shaders.ProjectionLinesB;
-                            for (int i = 0; i < 2; i++)
-                            {
-                                sLeaser.sprites[i + 2].isVisible = true;
-
-                                sLeaser.sprites[i + 2]._renderLayer?._material?.SetVector("_PointA", new Vector4(1, 0, 0, 0)); // Left Anchor
-                                sLeaser.sprites[i + 2]._renderLayer?._material?.SetVector("_PointB", new Vector4(0, 1, 0, 0)); // Origin
-
-                                sLeaser.sprites[i + 2]._renderLayer?._material?.SetFloat("_Width", sLeaser.sprites[i + 2].scaleX);
-                                sLeaser.sprites[i + 2]._renderLayer?._material?.SetFloat("_Height", sLeaser.sprites[i + 2].scaleY);
-                                sLeaser.sprites[i + 2]._renderLayer?._material?.SetFloat("_Offset", stepTimer * 2);
-                                sLeaser.sprites[i + 2]._renderLayer?._material?.SetFloat("_RandomOffset", stepTimer);
-                            }
-                            sLeaser.sprites[2]._renderLayer?._material?.SetFloat("_Cutoff", this.LineCutoffA);
-                            sLeaser.sprites[3]._renderLayer?._material?.SetFloat("_Cutoff", this.LineCutoffB);
-                            sLeaser.sprites[2]._renderLayer?._material?.SetFloat("_Size", this.LineSizeA);
-                            sLeaser.sprites[3]._renderLayer?._material?.SetFloat("_Size", this.LineSizeB);
-
-                            sLeaser.sprites[2]._renderLayer?._material?.SetVector("_Colour", Utilities.ColourFade(new Vector4(1f, 0f, 0f, 1f), new Vector4(1f, 1f, 0f, 1f), (-Mathf.Cos((3.141f * (stepTimer / 4f)) / 4) + 1) / 2));
-                            sLeaser.sprites[3]._renderLayer?._material?.SetVector("_Colour", Utilities.ColourFade(new Vector4(1f, 0f, 0f, 1f), new Vector4(1f, 1f, 0f, 1f), (-Mathf.Cos((3.141f * (stepTimer / 4f)) / 4) + 1) / 2));
-                        }
+                        sLeaser.sprites[i + 4]._renderLayer?._material?.SetFloat("_Width", sLeaser.sprites[i + 4].scaleX);
+                        sLeaser.sprites[i + 4]._renderLayer?._material?.SetFloat("_Height", sLeaser.sprites[i + 4].scaleY);
+                        sLeaser.sprites[i + 4]._renderLayer?._material?.SetFloat("_Offset", stepTimer * 2);
+                        sLeaser.sprites[i + 4]._renderLayer?._material?.SetFloat("_RandomOffset", stepTimer);
                     }
+                    sLeaser.sprites[4]._renderLayer?._material?.SetFloat("_Cutoff", LineCutoffC);
+                    sLeaser.sprites[5]._renderLayer?._material?.SetFloat("_Cutoff", LineCutoffD);
+                    sLeaser.sprites[4]._renderLayer?._material?.SetFloat("_Size", LineSizeC);
+                    sLeaser.sprites[5]._renderLayer?._material?.SetFloat("_Size", LineSizeD);
+
+                    sLeaser.sprites[4]._renderLayer?._material?.SetVector("_Colour", Utilities.ColourFade(new Vector4(0f, 1f, 0f, 1f), new Vector4(0f, 1f, 1f, 1f), (-Mathf.Cos(3.141f * (stepTimer / 4f) / 4) + 1) / 2));
+                    sLeaser.sprites[5]._renderLayer?._material?.SetVector("_Colour", Utilities.ColourFade(new Vector4(0f, 1f, 0f, 1f), new Vector4(0f, 1f, 1f, 1f), (-Mathf.Cos(3.141f * (stepTimer / 4f) / 4) + 1) / 2));
+                }
+                else
+                {
+                    sLeaser.sprites[1].SetPosition(pos - rCam.pos);
+                    sLeaser.sprites[0].isVisible = false;
+                    sLeaser.sprites[1].isVisible = true;
+
+                    sLeaser.sprites[1].shader = Shaders.HologramB;
+                    sLeaser.sprites[1]._renderLayer?._material?.SetInt("_Radial", 0);
+                    sLeaser.sprites[1]._renderLayer?._material?.SetFloat("_Offset", stepTimer * 2);
+                    sLeaser.sprites[1]._renderLayer?._material?.SetFloat("_RandomOffset", stepTimer);
+                    sLeaser.sprites[1]._renderLayer?._material?.SetVector("_ColourA", Utilities.ColourFade(new Vector4(1f, 0f, 0f, 1f), new Vector4(1f, 1f, 0f, 1f), (-Mathf.Cos(3.141f * (stepTimer / 4f) / 4) + 1) / 2));
+
+                    sLeaser.sprites[2].shader = Shaders.ProjectionLinesA;
+                    sLeaser.sprites[3].shader = Shaders.ProjectionLinesB;
+                    for (int i = 0; i < 2; i++)
+                    {
+                        sLeaser.sprites[i + 2].isVisible = true;
+
+                        sLeaser.sprites[i + 2]._renderLayer?._material?.SetVector("_PointA", new Vector4(1, 0, 0, 0)); // Left Anchor
+                        sLeaser.sprites[i + 2]._renderLayer?._material?.SetVector("_PointB", new Vector4(0, 1, 0, 0)); // Origin
+
+                        sLeaser.sprites[i + 2]._renderLayer?._material?.SetFloat("_Width", sLeaser.sprites[i + 2].scaleX);
+                        sLeaser.sprites[i + 2]._renderLayer?._material?.SetFloat("_Height", sLeaser.sprites[i + 2].scaleY);
+                        sLeaser.sprites[i + 2]._renderLayer?._material?.SetFloat("_Offset", stepTimer * 2);
+                        sLeaser.sprites[i + 2]._renderLayer?._material?.SetFloat("_RandomOffset", stepTimer);
+                    }
+                    sLeaser.sprites[2]._renderLayer?._material?.SetFloat("_Cutoff", LineCutoffA);
+                    sLeaser.sprites[3]._renderLayer?._material?.SetFloat("_Cutoff", LineCutoffB);
+                    sLeaser.sprites[2]._renderLayer?._material?.SetFloat("_Size", LineSizeA);
+                    sLeaser.sprites[3]._renderLayer?._material?.SetFloat("_Size", LineSizeB);
+
+                    sLeaser.sprites[2]._renderLayer?._material?.SetVector("_Colour", Utilities.ColourFade(new Vector4(1f, 0f, 0f, 1f), new Vector4(1f, 1f, 0f, 1f), (-Mathf.Cos(3.141f * (stepTimer / 4f) / 4) + 1) / 2));
+                    sLeaser.sprites[3]._renderLayer?._material?.SetVector("_Colour", Utilities.ColourFade(new Vector4(1f, 0f, 0f, 1f), new Vector4(1f, 1f, 0f, 1f), (-Mathf.Cos(3.141f * (stepTimer / 4f) / 4) + 1) / 2));
+                }
             }
         }
 
@@ -335,7 +302,7 @@ namespace Slugpack
 
         public int stepTimer;
 
-        public int waitCount;
+        public int waitCount = waitCount;
 
         public bool warning;
 
@@ -363,12 +330,12 @@ namespace Slugpack
 
         public float LineCutoffD;
 
-        public Vector2 arrowPosition;
+        public Vector2 arrowPosition = ArrowPosition;
 
         public Vector2[] projectionLines;
 
         public Vector2[] projectionLinesMarker;
 
-        public MaterialPropertyBlock block;
+        public MaterialPropertyBlock block = new MaterialPropertyBlock();
     }
 }

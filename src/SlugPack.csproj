@@ -39,7 +39,6 @@
 
 	<ItemGroup>
 	  <Folder Include="Creatures\Leeches\" />
-	  <Folder Include="Shaders\" />
 	</ItemGroup>
     
 

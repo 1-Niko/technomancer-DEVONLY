@@ -5,12 +5,12 @@ namespace Slugpack
 {
     internal static class PlayerGraphicsHooks
     {
-        private static readonly List<float> FEAFD765 = new() { 64f, 32f, 16f, 8f, 4f, 2f, 1f };
-        private static readonly List<float> D266428E = new() { -1f, 4f, 2f, 1f, 0.5f, 0.25f, 0.125f, 0.0625f, 0.03125f, 0.015625f, 0.0078125f, 0.00390625f, 0.001953125f };
-        private static readonly List<float> E6AB2708 = new() { -1f, 8f, 4f, 2f, 1f, 0.5f, 0.25f, 0.125f, 0.0625f, 0.03125f, 0.015625f, 0.0078125f, 0.00390625f, 0.001953125f };
-        private static readonly List<float> CCFC91A1 = new() { -1f, 256f, 128f, 64f, 32f, 16f, 8f, 4f, 2f, 1f, 0.5f, 0.25f, 0.125f, 0.0625f };
-        private static readonly List<float> EC274780 = new() { 1f, 0.5f, 0.25f, 0.125f, 0.0625f, 0.03125f, 0.015625f, 0.0078125f, 0.00390625f, 0.001953125f };
-        private static readonly List<float> B9B05710 = new() { -1f, 1f };
+        private static readonly List<float> FEAFD765 = [64f, 32f, 16f, 8f, 4f, 2f, 1f];
+        private static readonly List<float> D266428E = [-1f, 4f, 2f, 1f, 0.5f, 0.25f, 0.125f, 0.0625f, 0.03125f, 0.015625f, 0.0078125f, 0.00390625f, 0.001953125f];
+        private static readonly List<float> E6AB2708 = [-1f, 8f, 4f, 2f, 1f, 0.5f, 0.25f, 0.125f, 0.0625f, 0.03125f, 0.015625f, 0.0078125f, 0.00390625f, 0.001953125f];
+        private static readonly List<float> CCFC91A1 = [-1f, 256f, 128f, 64f, 32f, 16f, 8f, 4f, 2f, 1f, 0.5f, 0.25f, 0.125f, 0.0625f];
+        private static readonly List<float> EC274780 = [1f, 0.5f, 0.25f, 0.125f, 0.0625f, 0.03125f, 0.015625f, 0.0078125f, 0.00390625f, 0.001953125f];
+        private static readonly List<float> B9B05710 = [-1f, 1f];
 
         internal static void Apply()
         {
@@ -62,9 +62,9 @@ namespace Slugpack
                 }
 
                 List<BodyPart> list = Enumerable.ToList(self.bodyParts);
-                list.RemoveAll((BodyPart x) => x is TailSegment);
+                _ = list.RemoveAll((BodyPart x) => x is TailSegment);
                 list.AddRange(self.tail);
-                self.bodyParts = list.ToArray();
+                self.bodyParts = [.. list];
 
                 string binaryString = ConvertNumbersToBinaryString(FurData, 64);
                 List<string> chunks = SplitStringIntoChunks(binaryString, 102);
@@ -78,15 +78,16 @@ namespace Slugpack
                 {
                     if (slug == ((chunks[i][0] == '0') ? "technomancer" : "voyager") && sLeaser.sprites[index + 13] == null)
                     {
-                        sLeaser.sprites[index + 13] = new FSprite($"FurTuft{BinaryToFloat(2, chunks[i], FEAFD765)}", true);
+                        sLeaser.sprites[index + 13] = new FSprite($"FurTuft{BinaryToFloat(2, chunks[i], FEAFD765)}", true)
+                        {
+                            isVisible = true,
 
-                        sLeaser.sprites[index + 13].isVisible = true;
+                            anchorX = BinaryToFloat(50, chunks[i], EC274780),
+                            anchorY = BinaryToFloat(60, chunks[i], EC274780),
 
-                        sLeaser.sprites[index + 13].anchorX = BinaryToFloat(50, chunks[i], EC274780);
-                        sLeaser.sprites[index + 13].anchorY = BinaryToFloat(60, chunks[i], EC274780);
-
-                        sLeaser.sprites[index + 13].scaleX = BinaryToFloat(70, chunks[i], B9B05710);
-                        sLeaser.sprites[index + 13].scaleY = BinaryToFloat(72, chunks[i], B9B05710);
+                            scaleX = BinaryToFloat(70, chunks[i], B9B05710),
+                            scaleY = BinaryToFloat(72, chunks[i], B9B05710)
+                        };
 
                         index++;
                     }
@@ -109,18 +110,18 @@ namespace Slugpack
                 if (!new List<string> { "voyager", "technomancer" }.Contains(slug))
                     return;
 
-                float num = 0.5f + 0.5f * Mathf.Sin(Mathf.Lerp(self.lastBreath, self.breath, timeStacker) * 3.1415927f * 2f);
+                float num = 0.5f + (0.5f * Mathf.Sin(Mathf.Lerp(self.lastBreath, self.breath, timeStacker) * 3.1415927f * 2f));
                 float num2 = Mathf.InverseLerp(0.3f, 0.5f, Mathf.Abs(RWCustom.Custom.DirVec(Vector2.Lerp(self.drawPositions[1, 1], self.drawPositions[1, 0], timeStacker), Vector2.Lerp(self.drawPositions[0, 1], self.drawPositions[0, 0], timeStacker)).y));
                 switch (slug)
                 {
                     case "technomancer":
                         sLeaser.sprites[0].scaleX = 0.96f + Mathf.Lerp(Mathf.Lerp(Mathf.Lerp(-0.05f, -0.15f, self.malnourished), 0.05f, num) * num2, 0.15f, self.player.sleepCurlUp);
-                        sLeaser.sprites[1].scaleX = 0.93f + self.player.sleepCurlUp * 0.2f + 0.05f * num - 0.05f * self.malnourished;
+                        sLeaser.sprites[1].scaleX = 0.93f + (self.player.sleepCurlUp * 0.2f) + (0.05f * num) - (0.05f * self.malnourished);
                         break;
 
                     case "voyager":
                         sLeaser.sprites[0].scaleX = 1.17f + Mathf.Lerp(Mathf.Lerp(Mathf.Lerp(-0.05f, -0.15f, self.malnourished), 0.05f, num) * num2, 0.15f, self.player.sleepCurlUp);
-                        sLeaser.sprites[1].scaleX = 1.2f + self.player.sleepCurlUp * 0.2f + 0.05f * num - 0.05f * self.malnourished;
+                        sLeaser.sprites[1].scaleX = 1.2f + (self.player.sleepCurlUp * 0.2f) + (0.05f * num) - (0.05f * self.malnourished);
                         break;
                 }
 

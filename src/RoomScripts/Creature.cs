@@ -50,33 +50,27 @@ namespace Slugpack
                 {
                     if (vulturestuff.thruster == -1)
                     {
-                        vulturestuff.thruster = UnityEngine.Random.Range(0, 5);
+                        vulturestuff.thruster = Random.Range(0, 5);
                     }
 
                     self.stun = 45;
                     self.landingBrake = vulturestuff.timer;
 
-                    if (self.IsKing)
+                    if (self.IsKing && Random.Range(0, 20) == 0)
                     {
-                        if (UnityEngine.Random.Range(0, 20) == 0)
+                        //self.kingTusks.TryToShoot();
+
+                        int tusk = Random.Range(0, 2);
+
+                        if (self.kingTusks.tusks.ElementAtOrDefault(tusk) != null && self.kingTusks.tusks[tusk] != null && self.kingTusks.tusks[tusk].mode == KingTusks.Tusk.Mode.Attached)
                         {
-                            //self.kingTusks.TryToShoot();
+                            Vector2 vector = RWCustom.Custom.DirVec(self.kingTusks.tusks[tusk].vulture.neck.tChunks[self.kingTusks.tusks[tusk].vulture.neck.tChunks.Length - 1].pos, self.kingTusks.tusks[tusk].vulture.bodyChunks[4].pos);
+                            Vector2 a = RWCustom.Custom.PerpendicularVector(vector);
+                            Vector2 vector2 = self.kingTusks.tusks[tusk].vulture.bodyChunks[4].pos + (vector * -5f);
+                            vector2 += a * self.kingTusks.tusks[tusk].zRot.x * 15f;
+                            vector2 += a * self.kingTusks.tusks[tusk].zRot.y * ((self.kingTusks.tusks[tusk].side == 0) ? -1f : 1f) * 7f;
 
-                            int tusk = UnityEngine.Random.Range(0, 2);
-
-                            if (self.kingTusks.tusks.ElementAtOrDefault(tusk) != null && self.kingTusks.tusks[tusk] != null)
-                            {
-                                if (self.kingTusks.tusks[tusk].mode == KingTusks.Tusk.Mode.Attached)
-                                {
-                                    Vector2 vector = RWCustom.Custom.DirVec(self.kingTusks.tusks[tusk].vulture.neck.tChunks[self.kingTusks.tusks[tusk].vulture.neck.tChunks.Length - 1].pos, self.kingTusks.tusks[tusk].vulture.bodyChunks[4].pos);
-                                    Vector2 a = RWCustom.Custom.PerpendicularVector(vector);
-                                    Vector2 vector2 = self.kingTusks.tusks[tusk].vulture.bodyChunks[4].pos + vector * -5f;
-                                    vector2 += a * self.kingTusks.tusks[tusk].zRot.x * 15f;
-                                    vector2 += a * self.kingTusks.tusks[tusk].zRot.y * ((self.kingTusks.tusks[tusk].side == 0) ? -1f : 1f) * 7f;
-
-                                    self.kingTusks.tusks[tusk].Shoot(vector2);
-                                }
-                            }
+                            self.kingTusks.tusks[tusk].Shoot(vector2);
                         }
                     }
 
@@ -116,12 +110,12 @@ namespace Slugpack
                 return;
             }
             WorldCoordinate worldCoordinate = QuickConnectivity.DefineNodeOfLocalCoordinate(self.parent.pos, self.world, self.parent.creatureTemplate);
-            List<WorldCoordinate> list = new();
+            List<WorldCoordinate> list = [];
             int num = 0;
             for (int i = 0; i < 100; i++)
             {
                 AbstractRoom abstractRoom = self.world.GetAbstractRoom(worldCoordinate.room);
-                List<WorldCoordinate> list2 = new();
+                List<WorldCoordinate> list2 = [];
                 for (int j = 0; j < abstractRoom.connections.Length; j++)
                 {
                     if (abstractRoom.connections[j] > -1)
@@ -140,12 +134,9 @@ namespace Slugpack
                         {
                             WorldCoordinate worldCoordinate2 = new(abstractRoom.connections[j], -1, -1, self.world.GetAbstractRoom(abstractRoom.connections[j]).ExitIndex(abstractRoom.index));
 
-                            if (self.world.GetAbstractRoom(worldCoordinate2.room).nodes.Length < worldCoordinate2.abstractNode)
+                            if (self.world.GetAbstractRoom(worldCoordinate2.room).nodes.Length < worldCoordinate2.abstractNode && abstractRoom.ConnectionAndBackPossible(worldCoordinate.abstractNode, j, self.parent.creatureTemplate) && self.parent.creatureTemplate.AbstractSubmersionLegal(self.world.GetNode(worldCoordinate2).submerged))
                             {
-                                if (abstractRoom.ConnectionAndBackPossible(worldCoordinate.abstractNode, j, self.parent.creatureTemplate) && self.parent.creatureTemplate.AbstractSubmersionLegal(self.world.GetNode(worldCoordinate2).submerged))
-                                {
-                                    list2.Add(worldCoordinate2);
-                                }
+                                list2.Add(worldCoordinate2);
                             }
                         }
                     }
@@ -154,13 +145,13 @@ namespace Slugpack
                 {
                     break;
                 }
-                WorldCoordinate worldCoordinate3 = list2[UnityEngine.Random.Range(0, list2.Count)];
+                WorldCoordinate worldCoordinate3 = list2[Random.Range(0, list2.Count)];
                 float num3 = 0f;
                 for (int k = 0; k < list2.Count; k++)
                 {
                     num3 += self.world.GetAbstractRoom(list2[k]).SizeDependentAttractionValueForCreature(self.parent.creatureTemplate.type);
                 }
-                float num4 = UnityEngine.Random.value * num3;
+                float num4 = Random.value * num3;
                 for (int l = 0; l < list2.Count; l++)
                 {
                     float num5 = self.world.GetAbstractRoom(list2[l]).SizeDependentAttractionValueForCreature(self.parent.creatureTemplate.type);
@@ -173,7 +164,7 @@ namespace Slugpack
                 }
                 list.Insert(0, new WorldCoordinate(abstractRoom.index, -1, -1, abstractRoom.ExitIndex(worldCoordinate3.room)));
                 list.Insert(0, worldCoordinate3);
-                num += ((worldCoordinate.abstractNode == abstractRoom.ExitIndex(worldCoordinate3.room)) ? 0 : abstractRoom.nodes[worldCoordinate.abstractNode].ConnectionLength(abstractRoom.ExitIndex(worldCoordinate3.room), self.parent.creatureTemplate));
+                num += (worldCoordinate.abstractNode == abstractRoom.ExitIndex(worldCoordinate3.room)) ? 0 : abstractRoom.nodes[worldCoordinate.abstractNode].ConnectionLength(abstractRoom.ExitIndex(worldCoordinate3.room), self.parent.creatureTemplate);
                 if (num > maxRoamDistance)
                 {
                     break;

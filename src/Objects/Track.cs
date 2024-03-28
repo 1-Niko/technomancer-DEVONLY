@@ -2,7 +2,7 @@ using static Pom.Pom;
 
 namespace Slugpack
 {
-    public class TrainTrackData : ManagedData
+    public class TrainTrackData(PlacedObject owner) : ManagedData(owner, null)
     {
         [BooleanField("Enabled", true, ManagedFieldWithPanel.ControlType.button, displayName: "Enabled")]
         public bool Enabled;
@@ -21,19 +21,10 @@ namespace Slugpack
 
         [FloatField("TrainSpeed", 1, 150, 100, 1, ManagedFieldWithPanel.ControlType.slider, "Train Speed")]
         public float TrainSpeed;
-
-        public TrainTrackData(PlacedObject owner) : base(owner, null)
-        {
-        }
     }
 
-    public class TrainTrack : UpdatableAndDeletable
+    public class TrainTrack(PlacedObject placedObject, Room room) : UpdatableAndDeletable
     {
-        public TrainTrack(PlacedObject placedObject, Room room)
-        {
-            this.placedObject = placedObject;
-        }
-
         public override void Update(bool eu)
         {
             base.Update(eu);
@@ -41,48 +32,40 @@ namespace Slugpack
             int padding = 160 * 3;
             int vertical_offset = 126;
 
-            if ((this.placedObject.data as TrainTrackData).Enabled)
+            if ((placedObject.data as TrainTrackData).Enabled)
             {
-                if (train_spawn_timer >= (this.placedObject.data as TrainTrackData).TrainDelay * 40)
+                if (train_spawn_timer >= (placedObject.data as TrainTrackData).TrainDelay * 40)
                 {
                     car_queue = Random.Range(90, 140);
                     first_car_index = car_queue;
                     train_spawn_timer = Random.Range(-10, 10);
                 }
 
-                if (car_queue > 0)
+                if (car_queue > 0 && (trainCar == null || trainCar.pos.x >= padding + connector_distance))
                 {
-                    if (trainCar == null || trainCar.pos.x >= padding + connector_distance) // (spawn_timer % 10 == 0)
-                    {
-                        connector_distance = Random.Range(6, 9);
+                    connector_distance = Random.Range(6, 9);
 
-                        int random_choice;
-                        if (car_queue == first_car_index)
-                            random_choice = Random.Range(0, 8);
-                        else
-                            random_choice = Random.Range(0, 25);
+                    int random_choice = car_queue == first_car_index ? Random.Range(0, 8) : Random.Range(0, 25);
+                    trainCar = new TrainObject(new Vector2(placedObject.pos.x - padding - 60, placedObject.pos.y + vertical_offset + Constants.TrainOffsets[random_choice]),
+                                                           (placedObject.data as TrainTrackData).TrainSpeed, random_choice, padding, placedObject.pos.y,
+                                                           placedObject.pos.y + (placedObject.data as TrainTrackData).TrainArea.y,
+                                                           placedObject.pos.x + (placedObject.data as TrainTrackData).TrainArea.x,
+                                                           (placedObject.data as TrainTrackData).RoomName, car_queue > 1, connector_distance);
 
-                        trainCar = new TrainObject(new Vector2(this.placedObject.pos.x - padding - 60, this.placedObject.pos.y + vertical_offset + Constants.TrainOffsets[random_choice]),
-                                                               (this.placedObject.data as TrainTrackData).TrainSpeed, random_choice, padding, this.placedObject.pos.y,
-                                                               this.placedObject.pos.y + (this.placedObject.data as TrainTrackData).TrainArea.y,
-                                                               this.placedObject.pos.x + (this.placedObject.data as TrainTrackData).TrainArea.x,
-                                                               (this.placedObject.data as TrainTrackData).RoomName, car_queue > 1, connector_distance);
+                    /*trainCar = new ProceduralTrain(this.placedObject.pos,
+                                                   Random.Range(0, 65535),
+                                                   Random.Range(28, 38),
+                                                   (this.placedObject.data as TrainTrackData).TrainSpeed,
+                                                   this.placedObject.pos.y,
+                                                   this.placedObject.pos.y + (this.placedObject.data as TrainTrackData).TrainArea.y,
+                                                   this.placedObject.pos.x + (this.placedObject.data as TrainTrackData).TrainArea.x,
+                                                   this.room);*/
 
-                        /*trainCar = new ProceduralTrain(this.placedObject.pos,
-                                                       Random.Range(0, 65535),
-                                                       Random.Range(28, 38),
-                                                       (this.placedObject.data as TrainTrackData).TrainSpeed,
-                                                       this.placedObject.pos.y,
-                                                       this.placedObject.pos.y + (this.placedObject.data as TrainTrackData).TrainArea.y,
-                                                       this.placedObject.pos.x + (this.placedObject.data as TrainTrackData).TrainArea.x,
-                                                       this.room);*/
+                    connector_distance = (connector_distance * 20 / 2) - 20;
 
-                        connector_distance = ((connector_distance * 20) / 2) - 20;
-
-                        this.room.AddObject(trainCar);
-                        train_sprite++;
-                        car_queue--;
-                    }
+                    room.AddObject(trainCar);
+                    train_sprite++;
+                    car_queue--;
                 }
 
                 if (car_queue == 0)
@@ -106,7 +89,7 @@ namespace Slugpack
 
         public int train_sprite;
 
-        public PlacedObject placedObject;
+        public PlacedObject placedObject = placedObject;
 
         public TrainObject trainCar;
     }
@@ -133,13 +116,13 @@ namespace Slugpack
         {
             base.Update(eu);
 
-            var filteredObjects = this.room.physicalObjects
+            var filteredObjects = room.physicalObjects
                 .SelectMany(objectGroup => objectGroup)
                 .Where(physObject =>
                     physObject.bodyChunks.Any(chunk =>
-                        (RWCustom.Custom.Dist(chunk.pos, this.pos) < 453 &&
-                         chunk.pos.y < this.hit_upper_bound &&
-                         chunk.pos.y > hit_lower_bound)
+                        RWCustom.Custom.Dist(chunk.pos, pos) < 453 &&
+                         chunk.pos.y < hit_upper_bound &&
+                         chunk.pos.y > hit_lower_bound
                     )
                 );
 
@@ -147,9 +130,9 @@ namespace Slugpack
             {
                 var targetChunks = physObject.bodyChunks
                     .Where(chunk =>
-                        (RWCustom.Custom.Dist(chunk.pos, this.pos) < 453 &&
-                         chunk.pos.y < this.hit_upper_bound &&
-                         chunk.pos.y > hit_lower_bound)
+                        RWCustom.Custom.Dist(chunk.pos, pos) < 453 &&
+                         chunk.pos.y < hit_upper_bound &&
+                         chunk.pos.y > hit_lower_bound
                     );
 
                 foreach (var chunk in targetChunks)
@@ -161,9 +144,9 @@ namespace Slugpack
                     }
                     else
                     {
-                        chunk.vel = new Vector2(this.velocity * 1.25f, 5);
+                        chunk.vel = new Vector2(velocity * 1.25f, 5);
 
-                        if (!(chunk.owner is Creature))
+                        if (chunk.owner is not Creature)
                         {
                             if (Random.Range(0, 4) == 0)
                             {
@@ -183,25 +166,25 @@ namespace Slugpack
                                 chunk.owner.Destroy();
                             }
                         }
-                        else if (!this.has_connector && chunk.pos.x > this.delete_position)
+                        else if (!has_connector && chunk.pos.x > delete_position)
                         {
                             chunk.owner.RemoveFromRoom();
                             chunk.owner.Destroy();
                         }
 
-                        List<Player> players = this.room.physicalObjects
+                        List<Player> players = room.physicalObjects
                             .SelectMany(category => category)
                             .OfType<Player>()
-                            .Where(player => RWCustom.Custom.Dist(this.pos, player.mainBodyChunk.pos) < 1000f)
+                            .Where(player => RWCustom.Custom.Dist(pos, player.mainBodyChunk.pos) < 1000f)
                             .ToList();
 
                         foreach (var player in players)
                         {
-                            this.room.PlaySound(SoundID.Spear_Bounce_Off_Wall, chunk.pos);
+                            room.PlaySound(SoundID.Spear_Bounce_Off_Wall, chunk.pos);
                             for (int j = 0; j < 4; j++)
                             {
                                 Vector2 a = RWCustom.Custom.RNV();
-                                this.room.AddObject(new Spark(chunk.pos + a * Random.value * 40f, a * Mathf.Lerp(4f, 5f, Random.value), new Color(0.9f, 0.9f, 1f), null, 4, 18));
+                                room.AddObject(new Spark(chunk.pos + (a * Random.value * 40f), a * Mathf.Lerp(4f, 5f, Random.value), new Color(0.9f, 0.9f, 1f), null, 4, 18));
                             }
                             if (physObject is Creature)
                             {
@@ -213,11 +196,11 @@ namespace Slugpack
                 }
             }
 
-            pos += new Vector2(this.velocity, 0);
+            pos += new Vector2(velocity, 0);
 
-            if (pos.x > this.room.PixelWidth + this.padding + 200)
+            if (pos.x > room.PixelWidth + padding + 200)
             {
-                this.Destroy();
+                Destroy();
             }
         }
 
@@ -227,9 +210,9 @@ namespace Slugpack
 
             Vector2 currentPos = Vector2.Lerp(lastPos, pos, timeStacker);
 
-            Vector2 connector_offset = new Vector2(-this.padding, -Constants.ConnectorOffsets[connector_length - 6] - Constants.TrainOffsets[sprite]);
+            Vector2 connector_offset = new(-padding, -Constants.ConnectorOffsets[connector_length - 6] - Constants.TrainOffsets[sprite]);
 
-            if (this.room_name == "TL_V01")
+            if (room_name == "TL_V01")
             {
                 sLeaser.sprites[0].element = Futile.atlasManager.GetElementWithName($"{sprite}_21");
                 sLeaser.sprites[1].element = Futile.atlasManager.GetElementWithName($"{sprite}_68B");
@@ -245,7 +228,7 @@ namespace Slugpack
                     sLeaser.sprites[i].alpha = 1f;
                 }
 
-                if (this.has_connector)
+                if (has_connector)
                 {
                     sLeaser.sprites[2].element = Futile.atlasManager.GetElementWithName($"Tube_{connector_length - 6}_21");
                     sLeaser.sprites[2].isVisible = true;
@@ -256,33 +239,32 @@ namespace Slugpack
                     sLeaser.sprites[3].SetPosition(currentPos - rCam.pos + connector_offset);
                 }
 
-                this.rainWorld = rCam.room.game.rainWorld;
-                if (Constants.shaders_enabled)
-                    if (Constants.SlugpackShaders.TryGetValue(this.rainWorld, out var Shaders))
+                rainWorld = rCam.room.game.rainWorld;
+                if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rainWorld, out var Shaders))
+                {
+                    // Window Light
+                    sLeaser.sprites[0].shader = Shaders.ShadowMask;
+                    sLeaser.sprites[0]._renderLayer?._material?.SetTexture("_ShadowMask", Shaders._shadowMask);
+                    sLeaser.sprites[0]._renderLayer?._material?.SetFloat("_Mode", 0);
+
+                    sLeaser.sprites[0]._renderLayer?._meshRenderer?.GetPropertyBlock(block); // This copies all data that already exists into your block object.
+                    block.SetTexture("_ShadowMask", Shaders._shadowMask);
+                    sLeaser.sprites[0]._renderLayer?._meshRenderer?.SetPropertyBlock(block);
+
+                    if (has_connector)
                     {
                         // Window Light
-                        sLeaser.sprites[0].shader = Shaders.ShadowMask;
-                        sLeaser.sprites[0]._renderLayer?._material?.SetTexture("_ShadowMask", Shaders._shadowMask);
-                        sLeaser.sprites[0]._renderLayer?._material?.SetFloat("_Mode", 0);
+                        sLeaser.sprites[2].shader = Shaders.ShadowMask;
+                        sLeaser.sprites[2]._renderLayer?._material?.SetTexture("_ShadowMask", Shaders._shadowMask);
+                        sLeaser.sprites[2]._renderLayer?._material?.SetFloat("_Mode", 0);
 
-                        sLeaser.sprites[0]._renderLayer?._meshRenderer?.GetPropertyBlock(block); // This copies all data that already exists into your block object.
+                        sLeaser.sprites[2]._renderLayer?._meshRenderer?.GetPropertyBlock(block); // This copies all data that already exists into your block object.
                         block.SetTexture("_ShadowMask", Shaders._shadowMask);
-                        sLeaser.sprites[0]._renderLayer?._meshRenderer?.SetPropertyBlock(block);
-
-                        if (this.has_connector)
-                        {
-                            // Window Light
-                            sLeaser.sprites[2].shader = Shaders.ShadowMask;
-                            sLeaser.sprites[2]._renderLayer?._material?.SetTexture("_ShadowMask", Shaders._shadowMask);
-                            sLeaser.sprites[2]._renderLayer?._material?.SetFloat("_Mode", 0);
-
-                            sLeaser.sprites[2]._renderLayer?._meshRenderer?.GetPropertyBlock(block); // This copies all data that already exists into your block object.
-                            block.SetTexture("_ShadowMask", Shaders._shadowMask);
-                            sLeaser.sprites[2]._renderLayer?._meshRenderer?.SetPropertyBlock(block);
-                        }
+                        sLeaser.sprites[2]._renderLayer?._meshRenderer?.SetPropertyBlock(block);
                     }
+                }
             }
-            else if (this.room_name == "TL_OEGATE")
+            else if (room_name == "TL_OEGATE")
             {
                 sLeaser.sprites[0].element = Futile.atlasManager.GetElementWithName($"{sprite}_19A");
 
@@ -294,7 +276,7 @@ namespace Slugpack
 
                 sLeaser.sprites[0].alpha = 1f;
 
-                if (this.has_connector)
+                if (has_connector)
                 {
                     sLeaser.sprites[1].element = Futile.atlasManager.GetElementWithName($"Tube_{connector_length - 6}_19A");
                     sLeaser.sprites[1].isVisible = true;
@@ -314,12 +296,9 @@ namespace Slugpack
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {
-            if (this.room_name == "TL_V01")
+            if (room_name == "TL_V01")
             {
-                if (this.has_connector)
-                    sLeaser.sprites = new FSprite[4];
-                else
-                    sLeaser.sprites = new FSprite[2];
+                sLeaser.sprites = has_connector ? (new FSprite[4]) : (new FSprite[2]);
 
                 sLeaser.sprites[0] = new FSprite($"{sprite}_21", true);
                 sLeaser.sprites[1] = new FSprite($"{sprite}_68B", true);
@@ -327,56 +306,60 @@ namespace Slugpack
                 sLeaser.sprites[0].isVisible = false;
                 sLeaser.sprites[1].isVisible = false;
 
-                sLeaser.sprites[0].SetPosition(this.pos);
-                sLeaser.sprites[1].SetPosition(this.pos);
+                sLeaser.sprites[0].SetPosition(pos);
+                sLeaser.sprites[1].SetPosition(pos);
 
-                if (this.has_connector)
+                if (has_connector)
                 {
-                    sLeaser.sprites[2] = new FSprite($"Tube_{connector_length - 6}_21", true);
-                    sLeaser.sprites[2].isVisible = false;
-                    sLeaser.sprites[2].SetPosition(this.pos);
+                    sLeaser.sprites[2] = new FSprite($"Tube_{connector_length - 6}_21", true)
+                    {
+                        isVisible = false
+                    };
+                    sLeaser.sprites[2].SetPosition(pos);
 
-                    sLeaser.sprites[3] = new FSprite($"Tube_{connector_length - 6}_68B", true);
-                    sLeaser.sprites[3].isVisible = false;
-                    sLeaser.sprites[3].SetPosition(this.pos);
+                    sLeaser.sprites[3] = new FSprite($"Tube_{connector_length - 6}_68B", true)
+                    {
+                        isVisible = false
+                    };
+                    sLeaser.sprites[3].SetPosition(pos);
                 }
             }
-            else if (this.room_name == "TL_OEGATE")
+            if (room_name == "TL_OEGATE")
             {
-                if (this.has_connector)
-                    sLeaser.sprites = new FSprite[2];
-                else
-                    sLeaser.sprites = new FSprite[1];
+                sLeaser.sprites = has_connector ? (new FSprite[2]) : (new FSprite[1]);
 
-                sLeaser.sprites[0] = new FSprite($"{sprite}_19A", true);
-
-                sLeaser.sprites[0].isVisible = false;
-                sLeaser.sprites[0].SetPosition(this.pos);
-
-                if (this.has_connector)
+                sLeaser.sprites[0] = new FSprite($"{sprite}_19A", true)
                 {
-                    sLeaser.sprites[1] = new FSprite($"Tube_{connector_length - 6}_19A", true);
-                    sLeaser.sprites[1].isVisible = false;
-                    sLeaser.sprites[1].SetPosition(this.pos);
+                    isVisible = false
+                };
+                sLeaser.sprites[0].SetPosition(pos);
+
+                if (has_connector)
+                {
+                    sLeaser.sprites[1] = new FSprite($"Tube_{connector_length - 6}_19A", true)
+                    {
+                        isVisible = false
+                    };
+                    sLeaser.sprites[1].SetPosition(pos);
                 }
             }
-            else if (this.room_name == "TL_AC01")
+            if (room_name == "TL_AC01")
             {
-                if (this.has_connector)
-                    sLeaser.sprites = new FSprite[2];
-                else
-                    sLeaser.sprites = new FSprite[1];
+                sLeaser.sprites = has_connector ? (new FSprite[2]) : (new FSprite[1]);
 
-                sLeaser.sprites[0] = new FSprite($"{sprite}_19A", true);
-
-                sLeaser.sprites[0].isVisible = false;
-                sLeaser.sprites[0].SetPosition(this.pos);
-
-                if (this.has_connector)
+                sLeaser.sprites[0] = new FSprite($"{sprite}_19A", true)
                 {
-                    sLeaser.sprites[1] = new FSprite($"Tube_{connector_length - 6}_19A", true);
-                    sLeaser.sprites[1].isVisible = false;
-                    sLeaser.sprites[1].SetPosition(this.pos);
+                    isVisible = false
+                };
+                sLeaser.sprites[0].SetPosition(pos);
+
+                if (has_connector)
+                {
+                    sLeaser.sprites[1] = new FSprite($"Tube_{connector_length - 6}_19A", true)
+                    {
+                        isVisible = false
+                    };
+                    sLeaser.sprites[1].SetPosition(pos);
                 }
             }
 

@@ -3,7 +3,7 @@ using static Pom.Pom.Vector2ArrayField;
 
 namespace Slugpack
 {
-    public class TrackHologramData : ManagedData
+    public class TrackHologramData(PlacedObject owner) : ManagedData(owner, null)
     {
         // [Vector2Field("size", 100, 100, Vector2Field.VectorReprType.rect)]
         // public Vector2 size;
@@ -34,18 +34,10 @@ namespace Slugpack
 
         [IntegerField("hologram", 0, 2, 0, ManagedFieldWithPanel.ControlType.arrows, displayName: "Hologram")]
         public int hologram;
-
-        public TrackHologramData(PlacedObject owner) : base(owner, null)
-        {
-        }
     }
 
-    public class Hologram : ExtEnum<Hologram>
+    public class Hologram(string value, bool register = false) : ExtEnum<Hologram>(value, register)
     {
-        public Hologram(string value, bool register = false) : base(value, register)
-        {
-        }
-
         public static readonly Hologram None = new(nameof(None), true);
     }
 
@@ -62,10 +54,8 @@ namespace Slugpack
         public static ForcedEyePlayerData Get(PlayerGraphics pg) => _cwt.GetValue(pg, _ => new());
     }*/
 
-    public class TrackHologramObject : UpdatableAndDeletable
+    public class TrackHologramObject(PlacedObject placedObject, Room room) : UpdatableAndDeletable
     {
-        private readonly PlacedObject placedObject;
-
         public static void Apply()
         {
             // On.PlayerGraphics.Update += PlayerGraphics_Update;
@@ -74,57 +64,6 @@ namespace Slugpack
         public static void Undo()
         {
             // On.PlayerGraphics.Update -= PlayerGraphics_Update;
-        }
-
-        public TrackHologramObject(PlacedObject placedObject, Room room)
-        {
-            this.placedObject = placedObject;
-        }
-
-        public override void Update(bool eu)
-        {
-            base.Update(eu);
-
-            /*var data = (placedObject.data as SlugcatEyeSelectorData)!;
-
-            var pos = placedObject.pos;
-
-            if (data.size.x < 0)
-            {
-                data.size.x = -data.size.x;
-                pos.x -= data.size.x;
-            }
-            if (data.size.y < 0)
-            {
-                data.size.y = -data.size.y;
-                pos.y -= data.size.y;
-            }
-
-            var affectedRect = new Rect(pos, data.size);
-
-            var cycleProgression = 1 - room.game.world.rainCycle.AmountLeft;
-            foreach (var player in room.PlayersInRoom)
-            {
-                if (player?.graphicsModule is not PlayerGraphics pg) continue;
-
-                var pgData = ForcedEyePlayerData.Get(pg);
-
-                //-- Don't apply more than once in the same update, in case there is overlap between multiple objects
-                if (pgData.eu == eu) continue;
-
-                if ((data.afterCycle == 0 || cycleProgression > data.afterCycle) && (data.beforeCycle == 0 || cycleProgression < data.beforeCycle) && affectedRect.Contains(player.mainBodyChunk.pos))
-                {
-                    pgData.mode = data.mode;
-                    pgData.frequency = data.customFrequency;
-                    pgData.durationMin = data.customDurationMin;
-                    pgData.durationMin = data.customDurationMax;
-                    pgData.eu = eu;
-                }
-                else
-                {
-                    pgData.mode = null;
-                }
-            }*/
         }
     }
 }

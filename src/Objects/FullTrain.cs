@@ -2,47 +2,33 @@ using static Pom.Pom;
 
 namespace Slugpack
 {
-    public class TrainObjectData : ManagedData
+    public class TrainObjectData(PlacedObject owner) : ManagedData(owner, null)
     {
         [IntegerField("A", 0, 65535, 1, ManagedFieldWithPanel.ControlType.slider, displayName: "Seed")]
         public int seed;
-
-        public TrainObjectData(PlacedObject owner) : base(owner, null)
-        {
-        }
     }
 
-    public class ProceduralTrainObject : UpdatableAndDeletable
+    public class ProceduralTrainObject(PlacedObject placedObject, Room room) : UpdatableAndDeletable
     {
-        public ProceduralTrainObject(PlacedObject placedObject, Room room)
-        {
-            this.placedObject = placedObject;
-        }
-
         public override void Update(bool eu)
         {
             base.Update(eu);
 
             if (dynamicSprite == null)
             {
-                dynamicSprite = new ProceduralTrain(this.placedObject.pos, (this.placedObject.data as TrainObjectData).seed, 28, 0f, 0f, 0f, 0f, this.room); // (this.placedObject.data as TrainObjectData).seed);
-                this.room.AddObject(dynamicSprite);
+                dynamicSprite = new ProceduralTrain(placedObject.pos, (placedObject.data as TrainObjectData).seed, 28, 0f, 0f, 0f, 0f, room); // (this.placedObject.data as TrainObjectData).seed);
+                room.AddObject(dynamicSprite);
             }
-            dynamicSprite.pos = this.placedObject.pos;
-            this.dynamicSprite.seed = (this.placedObject.data as TrainObjectData).seed;
+            dynamicSprite.pos = placedObject.pos;
+            dynamicSprite.seed = (placedObject.data as TrainObjectData).seed;
         }
 
-        public override void Destroy()
-        {
-            base.Destroy();
-        }
-
-        private PlacedObject placedObject;
+        private PlacedObject placedObject = placedObject;
 
         private ProceduralTrain dynamicSprite;
     }
 
-    public class ProceduralTrain : CosmeticSprite
+    public class ProceduralTrain(Vector2 pos, int seed, int length, float velocity, float hit_lower_bound, float hit_upper_bound, float delete_position, Room room) : CosmeticSprite
     {
         private static readonly string[,] spriteNames = new string[,] {
             {
@@ -71,16 +57,7 @@ namespace Slugpack
             }
         };
 
-        private static readonly string[] pipeEntranceNames = new string[] {
-            "tpi_s_u",
-            "tpi_s_d",
-            "tpi_s_r",
-            "tpi_s_l",
-            "tpi_p_h",
-            "tpi_p_v"
-        };
-
-        private static Dictionary<int, float> offsetLengths = new Dictionary<int, float>
+        private static Dictionary<int, float> offsetLengths = new()
         {
             {22, 91.5f}, {24, 112.0f}, {26, 132.0f},
             {28, 153.0f}, {30, 172.0f}, {32, 242.5f},
@@ -89,25 +66,16 @@ namespace Slugpack
             {46, 384.0f}, {48, 404.0f}, {50, 424.0f}
         };
 
-        public ProceduralTrain(Vector2 pos, int seed, int length, float velocity, float hit_lower_bound, float hit_upper_bound, float delete_position, Room room)
-        {
-            this.room = room;
-            this.pos = pos;
-            this.seed = seed;
-            this.length = length;
-            this.velocity = velocity;
-        }
-
         public override void Update(bool eu)
         {
             base.Update(eu);
             // Tried just copying the Update from TrainObject, did not work as intended. Will definitely use it as a guide, but have to rewrite everything
 
-            pos += new Vector2(this.velocity, 0);
+            pos += new Vector2(velocity, 0);
 
-            if (pos.x > this.room.PixelWidth + 200)
+            if (pos.x > room.PixelWidth + 200)
             {
-                this.Destroy();
+                Destroy();
             }
         }
 
@@ -115,10 +83,10 @@ namespace Slugpack
         {
             base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
 
-            length = (int)(length / 2) * 2;
+            length = length / 2 * 2;
 
-            UnityEngine.Random.State state = UnityEngine.Random.state;
-            UnityEngine.Random.InitState(this.seed);
+            UnityEngine.Random.State state = Random.state;
+            Random.InitState(seed);
 
             // Random Value initializations
             // Top Train accessory
@@ -175,75 +143,55 @@ namespace Slugpack
                 {
                     for (int i = 0; i < length; i++)
                     {
-                        int isShadow = ((s == 0 ? 0 : 1) * (length * layer_count));
+                        int isShadow = (s == 0 ? 0 : 1) * length * layer_count;
 
                         // Adjust this for the piece offsets
                         float offsetAmount = 0f;
                         for (int _i = 0; _i < i; _i++)
                             offsetAmount += Mathf.Max(Mathf.Max(20f, (-Mathf.Abs(140f * (_i - (length / 2f) + 0.5f)) + 140f) * (length > centerwheel_threshold ? 1 : 0)), Mathf.Max((-53f * _i) + 123f, (53f * _i) - ((53f * (length - 2)) - 123f)));
-
-                        string element_name = "";
-
                         int tempCase;
 
                         if (i == length - 1)
                             tempCase = -1;  // Use a unique constant to represent the right endcap
                         else if (i == length - 2)
                             tempCase = -2;  // Use a unique constant to represent the right wheel
-                        else if (i == (int)(length / 2) + (length % 2))
+                        else if (i == (length / 2) + (length % 2))
                             tempCase = -3;  // Use a unique constant to represent the center wheel
                         else
                             tempCase = i;
 
-                        switch (tempCase)
+                        string element_name = tempCase switch
                         {
-                            case 0: // Left endcap
-                                element_name = spriteNames[2, k];
-                                break;
-
-                            case 1: // Left wheel
-                                element_name = spriteNames[3, k];
-                                break;
-
-                            case -1: // Right endcap
-                                element_name = spriteNames[1, k];
-                                break;
-
-                            case -2: // Right wheel
-                                element_name = spriteNames[3, k];
-                                break;
-
-                            case -3: // Center wheel condition
-                                if (length > centerwheel_threshold)
-                                    element_name = spriteNames[3, k];
-                                else
-                                    element_name = spriteNames[0, k];
-                                break;
-
-                            default:
-                                element_name = spriteNames[0, k];
-                                break;
-                        }
-
+                            // Left endcap
+                            0 => spriteNames[2, k],
+                            // Left wheel
+                            1 => spriteNames[3, k],
+                            // Right endcap
+                            -1 => spriteNames[1, k],
+                            // Right wheel
+                            -2 => spriteNames[3, k],
+                            // Center wheel condition
+                            -3 => length > centerwheel_threshold ? spriteNames[3, k] : spriteNames[0, k],
+                            _ => spriteNames[0, k],
+                        };
                         sLeaser.sprites[i + (k * length) + isShadow].element = Futile.atlasManager.GetElementWithName(element_name);
 
-                        Vector2 pieceOffset = new Vector2(offsetAmount, 0f);
+                        Vector2 pieceOffset = new(offsetAmount, 0f);
                         Vector2 currentPos = Vector2.Lerp(lastPos, pos, timeStacker);
-                        Vector2 adjustedPos = (currentPos + pieceOffset) - rCam.pos;
+                        Vector2 adjustedPos = currentPos + pieceOffset - rCam.pos;
                         Vector2 screenPosition = adjustedPos / new Vector2(1364f / 2f, 770f / 2f);
 
                         sLeaser.sprites[i + (k * length) + isShadow].SetPosition(adjustedPos - new Vector2(k * (screenPosition.x - 1f), k * (screenPosition.y - 1f)));
 
-                        sLeaser.sprites[i + (k * length) + isShadow].color = new Color(i / 9f, this.seed / 65535f, 0f, -(k / 30) + (29f / 30f));
+                        sLeaser.sprites[i + (k * length) + isShadow].color = new Color(i / 9f, seed / 65535f, 0f, -(k / 30) + (29f / 30f));
 
-                        sLeaser.sprites[i + (k * length) + isShadow].isVisible = Utilities.CheckIfOnScreen((currentPos + pieceOffset), this.ROOM);
+                        sLeaser.sprites[i + (k * length) + isShadow].isVisible = Utilities.CheckIfOnScreen(currentPos + pieceOffset, ROOM);
 
-                        if (Constants.shaders_enabled)
-                            if (Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var shaders))
-                            {
-                                sLeaser.sprites[i + (k * length) + isShadow].shader = shaders.DynamicTrain;
-                                sLeaser.sprites[i + (k * length) + isShadow]._renderLayer?._material?.SetTexture("_ShadowMask", shaders._shadowMask);
-                            }
+                        if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var shaders))
+                        {
+                            sLeaser.sprites[i + (k * length) + isShadow].shader = shaders.DynamicTrain;
+                            sLeaser.sprites[i + (k * length) + isShadow]._renderLayer?._material?.SetTexture("_ShadowMask", shaders._shadowMask);
+                        }
                     }
                 }
             }
@@ -254,27 +202,26 @@ namespace Slugpack
 
                 Vector2 currentPos = Vector2.Lerp(lastPos, pos, timeStacker);
 
-                int random_index = ((i - (length * layer_count * 2)) / 10) % accessory_count;
+                int random_index = (i - (length * layer_count * 2)) / 10 % accessory_count;
 
-                Vector2 globalPos = (currentPos + new Vector2(135f * (random_index + 1) + (random_index * offsetLengths[length]), 123f));
+                Vector2 globalPos = currentPos + new Vector2((135f * (random_index + 1)) + (random_index * offsetLengths[length]), 123f);
                 Vector2 adjustedPos = globalPos - rCam.pos; // (9f * length) - 96.5f)
                 sLeaser.sprites[i].element = Futile.atlasManager.GetElementWithName($"traintop_{top_index[random_index]}_{i % 10}");
 
                 Vector2 screenPosition = adjustedPos / new Vector2(1364f / 2f, 770f / 2f);
 
-                sLeaser.sprites[i].isVisible = top_isVisible[random_index] & Utilities.CheckIfOnScreen(globalPos, this.ROOM);
+                sLeaser.sprites[i].isVisible = top_isVisible[random_index] && Utilities.CheckIfOnScreen(globalPos, ROOM);
 
-                sLeaser.sprites[i].SetPosition(adjustedPos - new Vector2((i % 10) * (screenPosition.x - 1f), (i % 10) * (screenPosition.y - 1f)));
+                sLeaser.sprites[i].SetPosition(adjustedPos - new Vector2(i % 10 * (screenPosition.x - 1f), i % 10 * (screenPosition.y - 1f)));
 
-                if (Constants.shaders_enabled)
-                    if (Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var shaders))
-                    {
-                        sLeaser.sprites[i].shader = shaders.DynamicTrain;
-                        sLeaser.sprites[i]._renderLayer?._material?.SetTexture("_ShadowMask", shaders._shadowMask);
-                    }
+                if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var shaders))
+                {
+                    sLeaser.sprites[i].shader = shaders.DynamicTrain;
+                    sLeaser.sprites[i]._renderLayer?._material?.SetTexture("_ShadowMask", shaders._shadowMask);
+                }
             }
 
-            UnityEngine.Random.state = state;
+            Random.state = state;
         }
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
@@ -289,9 +236,9 @@ namespace Slugpack
             AddToContainer(sLeaser, rCam, null);
         }
 
-        public override void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContainer)
+        public override void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
         {
-            this.lastLength = length;
+            lastLength = length;
 
             // Why did I set these sprites to be in the hud? I know I had a good reason but I don't remember it
 
@@ -347,7 +294,7 @@ namespace Slugpack
         public int[] top_index = new int[3];
 
         public int length; // = 38;
-
+        public Vector2 pos;
         public int seed;
 
         public float offset;

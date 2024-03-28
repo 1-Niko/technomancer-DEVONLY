@@ -2,7 +2,7 @@ using static Pom.Pom;
 
 namespace Slugpack
 {
-    public class TrainTrackObjectData : ManagedData
+    public class TrainTrackObjectData(PlacedObject owner) : ManagedData(owner, null)
     {
         [IntegerField("A", 0, 65535, 0, ManagedFieldWithPanel.ControlType.slider, displayName: "Seed")]
         public int seed;
@@ -15,10 +15,6 @@ namespace Slugpack
 
         [BooleanField("D", false, ManagedFieldWithPanel.ControlType.button, displayName: "Force Shelter (If Valid)")]
         public bool forceShelter;
-
-        public TrainTrackObjectData(PlacedObject owner) : base(owner, null)
-        {
-        }
     }
 
     public class TrainLeftHead : UpdatableAndDeletable
@@ -35,19 +31,18 @@ namespace Slugpack
 
             if (dynamicSprite == null)
             {
-                dynamicSprite = new TrainSpriteObject(this.placedObject.pos, (this.placedObject.data as TrainTrackObjectData).seed);
-                this.room.AddObject(dynamicSprite);
+                dynamicSprite = new TrainSpriteObject(placedObject.pos, (placedObject.data as TrainTrackObjectData).seed);
+                room.AddObject(dynamicSprite);
             }
 
-            dynamicSprite.useSprite = (this.placedObject.data as TrainTrackObjectData).useSprite;
-            dynamicSprite.seed = (this.placedObject.data as TrainTrackObjectData).seed;
-            dynamicSprite.forcePipe = (this.placedObject.data as TrainTrackObjectData).forceEntrance;
-            dynamicSprite.forceShelter = (this.placedObject.data as TrainTrackObjectData).forceShelter;
-            dynamicSprite.pos = this.placedObject.pos;
+            dynamicSprite.useSprite = (placedObject.data as TrainTrackObjectData).useSprite;
+            dynamicSprite.seed = (placedObject.data as TrainTrackObjectData).seed;
+            dynamicSprite.forcePipe = (placedObject.data as TrainTrackObjectData).forceEntrance;
+            dynamicSprite.forceShelter = (placedObject.data as TrainTrackObjectData).forceShelter;
+            dynamicSprite.pos = placedObject.pos;
         }
 
         private PlacedObject placedObject;
-        private Room room;
         private TrainSpriteObject dynamicSprite;
     }
 
@@ -80,15 +75,6 @@ namespace Slugpack
             }
         };
 
-        private static readonly string[] pipeEntranceNames = new string[] {
-            "tpi_s_u",
-            "tpi_s_d",
-            "tpi_s_r",
-            "tpi_s_l",
-            "tpi_p_h",
-            "tpi_p_v"
-        };
-
         public TrainSpriteObject(Vector2 pos, int seed)
         {
             this.pos = pos;
@@ -99,17 +85,15 @@ namespace Slugpack
         {
             base.Update(eu);
 
-            this.DEBUGTIMER++;
+            DEBUGTIMER++;
         }
 
         public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
             base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
 
-            UnityEngine.Random.State state = UnityEngine.Random.state;
-            UnityEngine.Random.InitState(this.seed);
-
-            // Debug.Log($"{UnityEngine.Random.Range(0, 2048)}");
+            UnityEngine.Random.State state = Random.state;
+            Random.InitState(seed);
 
             // Normal tile setting (All tiles have this)
             Vector2 currentPos = Vector2.Lerp(lastPos, pos, timeStacker);
@@ -125,14 +109,13 @@ namespace Slugpack
                     sLeaser.sprites[i + shadowOffset].isVisible = true;
                     sLeaser.sprites[i + shadowOffset].SetPosition(adjustedPos - new Vector2(i * (screenPosition.x - 1f), i * (screenPosition.y - 1f)));
 
-                    sLeaser.sprites[i + shadowOffset].color = new Color(i / 9f, this.seed / 65535f, 0f, -(i / 30) + (29f / 30f));
+                    sLeaser.sprites[i + shadowOffset].color = new Color(i / 9f, seed / 65535f, 0f, -(i / 30) + (29f / 30f));
 
-                    if (Constants.shaders_enabled)
-                        if (Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var shaders))
-                        {
-                            sLeaser.sprites[i + shadowOffset].shader = shaders.DynamicTrain;
-                            sLeaser.sprites[i + shadowOffset]._renderLayer?._material?.SetTexture("_ShadowMask", shaders._shadowMask);
-                        }
+                    if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var shaders))
+                    {
+                        sLeaser.sprites[i + shadowOffset].shader = shaders.DynamicTrain;
+                        sLeaser.sprites[i + shadowOffset]._renderLayer?._material?.SetTexture("_ShadowMask", shaders._shadowMask);
+                    }
                 }
             }
 
@@ -169,7 +152,7 @@ namespace Slugpack
             }
             */
 
-            UnityEngine.Random.state = state;
+            Random.state = state;
         }
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
@@ -184,7 +167,7 @@ namespace Slugpack
             AddToContainer(sLeaser, rCam, null);
         }
 
-        public override void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContainer)
+        public override void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
         {
             // Why did I set these sprites to be in the hud? I know I had a good reason but I don't remember it
 

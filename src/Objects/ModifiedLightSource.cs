@@ -3,7 +3,7 @@ using static Pom.Pom.Vector2ArrayField;
 
 namespace Slugpack
 {
-    public class ModifiedLightSourceData : ManagedData
+    public class ModifiedLightSourceData(PlacedObject owner) : ManagedData(owner, null)
     {
         [Vector2ArrayField("ExtraPosition", 2, true, Vector2ArrayRepresentationType.Chain, new float[4] { 0, 0, -50, 50 })]
         public Vector2[] ExtraPosition;
@@ -37,84 +37,74 @@ namespace Slugpack
 
         [BooleanField("F", false, ManagedFieldWithPanel.ControlType.button, "Set Screen B To Current")]
         public bool setScreenB;
-
-        public ModifiedLightSourceData(PlacedObject owner) : base(owner, null)
-        {
-        }
     }
 
-    public class ModifiedLightSource : UpdatableAndDeletable
+    public class ModifiedLightSource(PlacedObject placedObject, Room room) : UpdatableAndDeletable
     {
-        public ModifiedLightSource(PlacedObject placedObject, Room room)
-        {
-            this.placedObject = placedObject;
-        }
-
         public override void Update(bool eu)
         {
             base.Update(eu);
 
-            if (this.lightSourceA == null)
+            if (lightSourceA == null)
             {
-                this.lightSourceA = new LightSource(placedObject.pos + (this.placedObject.data as ModifiedLightSourceData).ExtraPosition[1], false, new Color((this.placedObject.data as ModifiedLightSourceData).red, (this.placedObject.data as ModifiedLightSourceData).green, (this.placedObject.data as ModifiedLightSourceData).blue), this);
-                this.lightSourceA.affectedByPaletteDarkness = 0.5f;
-                this.room.AddObject(this.lightSourceA);
+                lightSourceA = new LightSource(placedObject.pos + (placedObject.data as ModifiedLightSourceData).ExtraPosition[1], false, new Color((placedObject.data as ModifiedLightSourceData).red, (placedObject.data as ModifiedLightSourceData).green, (placedObject.data as ModifiedLightSourceData).blue), this)
+                {
+                    affectedByPaletteDarkness = 0.5f
+                };
+                room.AddObject(lightSourceA);
             }
 
-            if (this.lightSourceB == null)
+            if (lightSourceB == null)
             {
-                this.lightSourceB = new LightSource(placedObject.pos, false, new Color((this.placedObject.data as ModifiedLightSourceData).red, (this.placedObject.data as ModifiedLightSourceData).green, (this.placedObject.data as ModifiedLightSourceData).blue), this);
-                this.lightSourceB.affectedByPaletteDarkness = 0.5f;
-                this.room.AddObject(this.lightSourceB);
+                lightSourceB = new LightSource(placedObject.pos, false, new Color((placedObject.data as ModifiedLightSourceData).red, (placedObject.data as ModifiedLightSourceData).green, (placedObject.data as ModifiedLightSourceData).blue), this)
+                {
+                    affectedByPaletteDarkness = 0.5f
+                };
+                room.AddObject(lightSourceB);
             }
 
-            this.lightSourceA.pos = placedObject.pos + (this.placedObject.data as ModifiedLightSourceData).ExtraPosition[1];
-            this.lightSourceB.pos = placedObject.pos;
+            lightSourceA.pos = placedObject.pos + (placedObject.data as ModifiedLightSourceData).ExtraPosition[1];
+            lightSourceB.pos = placedObject.pos;
 
-            this.lightSourceA.color = new Color((this.placedObject.data as ModifiedLightSourceData).red, (this.placedObject.data as ModifiedLightSourceData).green, (this.placedObject.data as ModifiedLightSourceData).blue);
-            this.lightSourceB.color = new Color((this.placedObject.data as ModifiedLightSourceData).red, (this.placedObject.data as ModifiedLightSourceData).green, (this.placedObject.data as ModifiedLightSourceData).blue);
+            lightSourceA.color = new Color((placedObject.data as ModifiedLightSourceData).red, (placedObject.data as ModifiedLightSourceData).green, (placedObject.data as ModifiedLightSourceData).blue);
+            lightSourceB.color = new Color((placedObject.data as ModifiedLightSourceData).red, (placedObject.data as ModifiedLightSourceData).green, (placedObject.data as ModifiedLightSourceData).blue);
 
-            this.lightSourceA.rad = RWCustom.Custom.Dist(Vector2.zero, (this.placedObject.data as ModifiedLightSourceData).rad1);
-            this.lightSourceB.rad = RWCustom.Custom.Dist(Vector2.zero, (this.placedObject.data as ModifiedLightSourceData).rad2);
+            lightSourceA.rad = RWCustom.Custom.Dist(Vector2.zero, (placedObject.data as ModifiedLightSourceData).rad1);
+            lightSourceB.rad = RWCustom.Custom.Dist(Vector2.zero, (placedObject.data as ModifiedLightSourceData).rad2);
 
-            if (Constants.DamagedShortcuts.TryGetValue(this.room.game, out var CameraPosition))
+            if (Constants.DamagedShortcuts.TryGetValue(room.game, out var CameraPosition))
             {
-                if ((this.placedObject.data as ModifiedLightSourceData).setScreenA)
+                if ((placedObject.data as ModifiedLightSourceData).setScreenA)
                 {
-                    (this.placedObject.data as ModifiedLightSourceData).screenA = CameraPosition.camPosition;
-                    (this.placedObject.data as ModifiedLightSourceData).setScreenA = false;
+                    (placedObject.data as ModifiedLightSourceData).screenA = CameraPosition.camPosition;
+                    (placedObject.data as ModifiedLightSourceData).setScreenA = false;
                 }
 
-                if ((this.placedObject.data as ModifiedLightSourceData).setScreenB)
+                if ((placedObject.data as ModifiedLightSourceData).setScreenB)
                 {
-                    (this.placedObject.data as ModifiedLightSourceData).screenB = CameraPosition.camPosition;
-                    (this.placedObject.data as ModifiedLightSourceData).setScreenB = false;
+                    (placedObject.data as ModifiedLightSourceData).screenB = CameraPosition.camPosition;
+                    (placedObject.data as ModifiedLightSourceData).setScreenB = false;
                 }
 
-                if (CameraPosition.camPosition == (this.placedObject.data as ModifiedLightSourceData).screenA)
+                if (CameraPosition.camPosition == (placedObject.data as ModifiedLightSourceData).screenA)
                 {
-                    this.lightSourceA.alpha = 0f;
-                    this.lightSourceB.alpha = (this.placedObject.data as ModifiedLightSourceData).alpha;
+                    lightSourceA.alpha = 0f;
+                    lightSourceB.alpha = (placedObject.data as ModifiedLightSourceData).alpha;
                 }
-                if (CameraPosition.camPosition == (this.placedObject.data as ModifiedLightSourceData).screenB)
+                if (CameraPosition.camPosition == (placedObject.data as ModifiedLightSourceData).screenB)
                 {
-                    this.lightSourceA.alpha = (this.placedObject.data as ModifiedLightSourceData).alpha;
-                    this.lightSourceB.alpha = 0f;
+                    lightSourceA.alpha = (placedObject.data as ModifiedLightSourceData).alpha;
+                    lightSourceB.alpha = 0f;
                 }
-                if (CameraPosition.camPosition == (this.placedObject.data as ModifiedLightSourceData).screenA && (this.placedObject.data as ModifiedLightSourceData).screenA == (this.placedObject.data as ModifiedLightSourceData).screenB)
+                if (CameraPosition.camPosition == (placedObject.data as ModifiedLightSourceData).screenA && (placedObject.data as ModifiedLightSourceData).screenA == (placedObject.data as ModifiedLightSourceData).screenB)
                 {
-                    this.lightSourceA.alpha = (this.placedObject.data as ModifiedLightSourceData).alpha;
-                    this.lightSourceB.alpha = (this.placedObject.data as ModifiedLightSourceData).alpha;
+                    lightSourceA.alpha = (placedObject.data as ModifiedLightSourceData).alpha;
+                    lightSourceB.alpha = (placedObject.data as ModifiedLightSourceData).alpha;
                 }
             }
         }
 
-        public override void Destroy()
-        {
-            base.Destroy();
-        }
-
-        private PlacedObject placedObject;
+        private PlacedObject placedObject = placedObject;
 
         private LightSource lightSourceA;
         private LightSource lightSourceB;
