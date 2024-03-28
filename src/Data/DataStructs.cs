@@ -9,7 +9,7 @@ public static class DataStructures
         public Int40(long value)
         {
             if (value is < 0 or > 0x7FFFFFFFFFF)
-                throw new System.ArgumentOutOfRangeException(nameof(value), "Value must be a 40-bit integer.");
+                throw new ArgumentOutOfRangeException(nameof(value), "Value must be a 40-bit integer.");
 
             this.value = value;
         }
@@ -17,7 +17,7 @@ public static class DataStructures
         public bool GetBit(int index)
         {
             return index is < 0 or > 40
-                ? throw new System.ArgumentOutOfRangeException(nameof(index), "Index must be between 0 and 40.")
+                ? throw new ArgumentOutOfRangeException(nameof(index), "Index must be between 0 and 40.")
                 : ((value >> index) & 1) == 1;
         }
 
@@ -54,11 +54,11 @@ public static class DataStructures
     {
         public Sprite(int lockValue, int spriteIndex, Vector2 offset, float rotation, Anchorpoint anchor, Scale scale, float minimum, float maximum) =>
             (Lock, SpriteIndex, Offset, Rotation, AnchorX, AnchorY, ScaleX, ScaleY, Minimum, Maximum) =
-            (lockValue, $"FurTuft{spriteIndex}", offset, rotation, anchor.x, anchor.y, scale.x, scale.y, minimum, maximum);
+            (lockValue, $"FurTuft{spriteIndex}", offset, rotation, anchor.X, anchor.Y, scale.X, scale.Y, minimum, maximum);
 
         public Sprite(int lockValue, int spriteIndex, Vector2 offset, float rotation, Anchorpoint anchor, Scale scale, Color Colour) =>
             (Lock, SpriteIndex, Offset, Rotation, AnchorX, AnchorY, ScaleX, ScaleY, Color) =
-            (lockValue, $"FurTuft{spriteIndex}", offset, rotation, anchor.x, anchor.y, scale.x, scale.y, Colour);
+            (lockValue, $"FurTuft{spriteIndex}", offset, rotation, anchor.X, anchor.Y, scale.X, scale.Y, Colour);
 
         public int Lock { get; set; }
         public string SpriteIndex { get; set; }
@@ -80,49 +80,49 @@ public static class DataStructures
 
     public class Anchorpoint
     {
-        public Anchorpoint(float x, float y) => (this.x, this.y) = (x, y);
+        public Anchorpoint(float x, float y) => (X, Y) = (x, y);
 
-        public float x { get; set; }
-        public float y { get; set; }
+        public float X { get; set; }
+        public float Y { get; set; }
     }
 
     public class Scale
     {
-        public Scale(float x, float y) => (this.x, this.y) = (x, y);
+        public Scale(float x, float y) => (X, Y) = (x, y);
 
-        public float x { get; set; }
-        public float y { get; set; }
+        public float X { get; set; }
+        public float Y { get; set; }
     }
 
     public class Pixel
     {
-        public Pixel(float x, float y, float z) => (this.x, this.y, this.z) = (x, y, z);
+        public Pixel(float x, float y, float z) => (X, Y, Z) = (x, y, z);
 
-        public float x { get; set; }
-        public float y { get; set; }
-        public float z { get; set; }
+        public float X { get; set; }
+        public float Y { get; set; }
+        public float Z { get; set; }
     }
 
     public class Lock
     {
         public Lock(ShortcutData[] shortcuts, Room[] rooms, int time, LockHologram[] holograms) =>
-            (this.shortcuts, this.rooms, this.time, this.holograms, sinceFlicker) = (shortcuts, rooms, time, holograms, 0);
+            (Shortcuts, Rooms, Time, Holograms, SinceFlicker) = (shortcuts, rooms, time, holograms, 0);
 
-        public ShortcutData[] shortcuts { get; set; }
-        public Room[] rooms { get; set; }
-        public int time { get; set; }
-        public LockHologram[] holograms { get; set; }
-        public int sinceFlicker { get; set; }
+        public ShortcutData[] Shortcuts { get; set; }
+        public Room[] Rooms { get; set; }
+        public int Time { get; set; }
+        public LockHologram[] Holograms { get; set; }
+        public int SinceFlicker { get; set; }
     }
 
     public class Node
     {
         public Node(Vector2 position, int level, int protection, PhysicalObject anchor) =>
-            (this.position, this.level, this.protection, this.anchor) = (position, level, protection, anchor);
+            (Position, Level, Protection, Anchor) = (position, level, protection, anchor);
 
-        public Vector2 position { get; set; }
-        public int level { get; set; }
-        public int protection { get; set; }
-        public PhysicalObject anchor { get; set; }
+        public Vector2 Position { get; set; }
+        public int Level { get; set; }
+        public int Protection { get; set; }
+        public PhysicalObject Anchor { get; set; }
     }
 }

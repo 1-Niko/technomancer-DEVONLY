@@ -336,7 +336,7 @@ public static class Utilities
         return -angleDegrees;
     }
 
-    public static List<DataStructures.Node> GetAllNodeInformation(Room room)
+    public static List<Node> GetAllNodeInformation(Room room)
     {
         var (positions, creatures, items, objects) = GetEverything(room);
 
@@ -346,7 +346,7 @@ public static class Utilities
         items.ForEach(item => positions.Add(item.firstChunk.pos));
         objects.ForEach(_object => positions.Add(_object.pos));
 
-        List<DataStructures.Node> NodeInfo = [];
+        List<Node> NodeInfo = [];
 
         // "element.destNode != -1" seems to be enough to distinguish from pipe entrances and everything else
         // foreach (var shortcut in room.shortcuts.Where(element => element.destNode != -1 && element.destNode < room.abstractRoom.connections.Length && room.abstractRoom.connections[element.destNode] != -1).ToList())
@@ -357,7 +357,7 @@ public static class Utilities
 
         foreach (var shortcut in room.shortcuts.Where(element => element.destNode != -1).ToList())
         {
-            NodeInfo.Add(new DataStructures.Node(room.MiddleOfTile(shortcut.StartTile), 1, 0, null));
+            NodeInfo.Add(new Node(room.MiddleOfTile(shortcut.StartTile), 1, 0, null));
             //room.MiddleOfTile(shortcut.StartTile), 1, 0, null));
         }
 
@@ -367,12 +367,12 @@ public static class Utilities
                 creature as Creature is MoreSlugcats.Inspector || creature as Creature is Overseer) && room.ViewedByAnyCamera((creature as Creature).mainBodyChunk.pos, 0f) &&
                 (!(creature as Creature).dead))
             {
-                NodeInfo.Add(new DataStructures.Node((creature as Creature).mainBodyChunk.pos, 2, 0, creature));
+                NodeInfo.Add(new Node((creature as Creature).mainBodyChunk.pos, 2, 0, creature));
             }
         }
         NodeInfo.AddRange(from item in items
                           where item as PlayerCarryableItem is DataPearl or OverseerCarcass
-                          select new DataStructures.Node((item as PlayerCarryableItem).firstChunk.pos, 1, 0, item));
+                          select new Node((item as PlayerCarryableItem).firstChunk.pos, 1, 0, item));
 
         // There's a bug with these at the moment
         /*foreach (var _object in objects.Where(element => element.type.ToString() == "TrackHologram" || element.type.ToString() == "TrainBell"))
@@ -578,13 +578,13 @@ public static class Utilities
         return normalizedValue;
     }
 
-    public static UnityEngine.Color ColourLerp(UnityEngine.Color ColourA, UnityEngine.Color ColourB, float N)
+    public static Color ColourLerp(Color ColourA, Color ColourB, float N)
     {
         float R = Mathf.Lerp(ColourA.r, ColourB.r, N);
         float G = Mathf.Lerp(ColourA.g, ColourB.g, N);
         float B = Mathf.Lerp(ColourA.b, ColourB.b, N);
 
-        return new UnityEngine.Color(R, G, B);
+        return new Color(R, G, B);
     }
 
     public static float Timestamp()
@@ -643,7 +643,7 @@ public static class Utilities
         return FloatListBinaryEncoding(IntFloatListBinaryEncoding(ConvertFloat(a)), IntFloatListBinaryEncoding(ConvertFloat(b)), IntFloatListBinaryEncoding(ConvertFloat(c)));
     }
 
-    public static UnityEngine.Color HexToColor(string hex)
+    public static Color HexToColor(string hex)
     {
         hex = hex.TrimStart('#'); // Remove the '#' if it's included in the input
         if (hex.Length != 6)
@@ -655,7 +655,7 @@ public static class Utilities
         int g = int.Parse(hex.Substring(2, 2), System.Globalization.NumberStyles.HexNumber);
         int b = int.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
 
-        return new UnityEngine.Color(r / 255f, g / 255f, b / 255f);
+        return new Color(r / 255f, g / 255f, b / 255f);
     }
 
     public static bool IsTechnomancerOrVoyager(SlugcatStats.Name slugName)

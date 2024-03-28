@@ -41,13 +41,13 @@ namespace Slugpack
                 room.AddObject(EffectObject);
             }
             EffectObject.pos = placedObject.pos;
-            EffectObject.colour = (placedObject.data as EffectChangerData).colour;
-            EffectObject.effectA = (placedObject.data as EffectChangerData).effectA;
-            EffectObject.effectB = (placedObject.data as EffectChangerData).effectB;
-            EffectObject.fade = (placedObject.data as EffectChangerData).fade;
-            EffectObject.hue = (placedObject.data as EffectChangerData).hue;
-            EffectObject.saturation = (placedObject.data as EffectChangerData).saturation;
-            EffectObject.brightness = (placedObject.data as EffectChangerData).brightness;
+            EffectObject.Colour = (placedObject.data as EffectChangerData).colour;
+            EffectObject.EffectA = (placedObject.data as EffectChangerData).effectA;
+            EffectObject.EffectB = (placedObject.data as EffectChangerData).effectB;
+            EffectObject.Fade = (placedObject.data as EffectChangerData).fade;
+            EffectObject.Hue = (placedObject.data as EffectChangerData).hue;
+            EffectObject.Saturation = (placedObject.data as EffectChangerData).saturation;
+            EffectObject.Brightness = (placedObject.data as EffectChangerData).brightness;
         }
 
         private EffectChangerObject EffectObject;
@@ -58,14 +58,14 @@ namespace Slugpack
     public class EffectChangerObject(PlacedObject placedObject, Vector2 pos) : CosmeticSprite
     {
         private readonly PlacedObject placedObject = placedObject;
-        public int colour { get; set; }
-        public bool effectA { get; set; }
-        public bool effectB { get; set; }
+        public int Colour { get; set; }
+        public bool EffectA { get; set; }
+        public bool EffectB { get; set; }
 
-        public float fade { get; set; }
-        public float hue { get; set; }
-        public float saturation { get; set; }
-        public float brightness { get; set; }
+        public float Fade { get; set; }
+        public float Hue { get; set; }
+        public float Saturation { get; set; }
+        public float Brightness { get; set; }
 
         public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
@@ -90,7 +90,7 @@ namespace Slugpack
 
             sLeaser.sprites[0].isVisible = true;
 
-            sLeaser.sprites[0].color = new Color(Utilities.EncodeBools(effectA, effectB), (1f - (colour / 21f)) % 1f, Utilities.EncodeFloats(fade, hue, saturation, brightness), 0f);
+            sLeaser.sprites[0].color = new Color(Utilities.EncodeBools(EffectA, EffectB), (1f - (Colour / 21f)) % 1f, Utilities.EncodeFloats(Fade, Hue, Saturation, Brightness), 0f);
 
             if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rCam.room?.world?.game?.rainWorld, out var Shaders))
             {

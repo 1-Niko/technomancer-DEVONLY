@@ -100,9 +100,9 @@ internal static class GameHooks
 
         for (int i = 0; i < self.entranceSpriteColors.Length; i++)
         {
-            if (Constants.DamagedShortcuts.TryGetValue(self.room.game, out var ShortcutTable) && ShortcutTable.locks.Any(lockObj => lockObj.shortcuts.Contains(self.room.shortcuts[i])))
+            if (Constants.DamagedShortcuts.TryGetValue(self.room.game, out var ShortcutTable) && ShortcutTable.locks.Any(lockObj => lockObj.Shortcuts.Contains(self.room.shortcuts[i])))
             {
-                self.entranceSpriteColors[i] = RWCustom.Custom.RGB2RGBA(new Color(0f, 0f, 0f), Mathf.Max(self.entranceSpriteColors[i].a, (float)32 / (ShortcutTable.locks.FirstOrDefault(lockObj => lockObj.shortcuts.Contains(self.room.shortcuts[i])).sinceFlicker + 32)));
+                self.entranceSpriteColors[i] = RWCustom.Custom.RGB2RGBA(new Color(0f, 0f, 0f), Mathf.Max(self.entranceSpriteColors[i].a, (float)32 / (ShortcutTable.locks.FirstOrDefault(lockObj => lockObj.Shortcuts.Contains(self.room.shortcuts[i])).SinceFlicker + 32)));
             }
         }
     }
@@ -112,7 +112,7 @@ internal static class GameHooks
         orig(self, manager);
 
         if (!Constants.DamagedShortcuts.TryGetValue(self, out var _))
-        { Constants.DamagedShortcuts.Add(self, _ = new WeakTables.ShortcutList()); }
+        { Constants.DamagedShortcuts.Add(self, _ = new ShortcutList()); }
     }
 
     private static bool RoomRealizer_CanAbstractizeRoom(On.RoomRealizer.orig_CanAbstractizeRoom orig, RoomRealizer self, RoomRealizer.RealizedRoomTracker tracker)
@@ -126,7 +126,7 @@ internal static class GameHooks
                 {
                     for (int r = 0; r < 2; r++)
                     {
-                        if (ShortcutTable.locks[i].rooms[r].abstractRoom == enumerator.Current.Room)
+                        if (ShortcutTable.locks[i].Rooms[r].abstractRoom == enumerator.Current.Room)
                         {
                             return false;
                         }
@@ -145,20 +145,20 @@ internal static class GameHooks
         {
             for (int i = 0; i < ShortcutTable.locks.Count; i++)
             {
-                if (ShortcutTable.locks[i].time > 0)
+                if (ShortcutTable.locks[i].Time > 0)
                 {
-                    ShortcutTable.locks[i].time--;
-                    ShortcutTable.locks[i].sinceFlicker++;
+                    ShortcutTable.locks[i].Time--;
+                    ShortcutTable.locks[i].SinceFlicker++;
                     for (int r = 0; r < 2; r++)
                     {
-                        if (Random.Range(0, 20) == 0 && ShortcutTable.locks[i].rooms[r].abstractRoom.realizedRoom != null)
+                        if (Random.Range(0, 20) == 0 && ShortcutTable.locks[i].Rooms[r].abstractRoom.realizedRoom != null)
                         {
                             for (int j = 0; j < Random.Range(10, 30); j++)
                             {
                                 Vector2 a = RWCustom.Custom.RNV();
-                                ShortcutTable.locks[i].rooms[r].AddObject(new Spark(ShortcutTable.locks[i].rooms[r].MiddleOfTile(ShortcutTable.locks[i].shortcuts[r].StartTile) + (a * Random.value * 40f), a * Mathf.Lerp(4f, 30f, Random.value), new Color(0.9f, 0.9f, 1f), null, 16, 30));
+                                ShortcutTable.locks[i].Rooms[r].AddObject(new Spark(ShortcutTable.locks[i].Rooms[r].MiddleOfTile(ShortcutTable.locks[i].Shortcuts[r].StartTile) + (a * Random.value * 40f), a * Mathf.Lerp(4f, 30f, Random.value), new Color(0.9f, 0.9f, 1f), null, 16, 30));
                             }
-                            ShortcutTable.locks[i].sinceFlicker = 0;
+                            ShortcutTable.locks[i].SinceFlicker = 0;
                         }
                     }
                 }

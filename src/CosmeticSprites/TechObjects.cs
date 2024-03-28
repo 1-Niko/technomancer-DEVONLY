@@ -72,11 +72,11 @@ public class RoomController : CosmeticSprite
 
         for (int i = 0; i < nodeData.Count; i++)
         {
-            if (!Nodes.Any(obj => obj.pos.Equals(nodeData[i].position)) && (nodeData[i].anchor == null || !Nodes.Any(obj => obj.Anchor == nodeData[i].anchor)) && (room.TileHeight * 20f) > nodeData[i].position.y && (room.TileWidth * 20f) > nodeData[i].position.x && 0 < nodeData[i].position.x && 0 < nodeData[i].position.y)
+            if (!Nodes.Any(obj => obj.pos.Equals(nodeData[i].Position)) && (nodeData[i].Anchor == null || !Nodes.Any(obj => obj.Anchor == nodeData[i].Anchor)) && (room.TileHeight * 20f) > nodeData[i].Position.y && (room.TileWidth * 20f) > nodeData[i].Position.x && 0 < nodeData[i].Position.x && 0 < nodeData[i].Position.y)
             {
                 // going to have to make something to allow for nodes to track their parent object
                 // at least the functionality for the connections is already in place
-                HighlightSprite node = new(nodeData[i].position, nodeData[i].level, nodeData[i].protection, room, this, nodeData[i].anchor);
+                HighlightSprite node = new(nodeData[i].Position, nodeData[i].Level, nodeData[i].Protection, room, this, nodeData[i].Anchor);
                 Nodes.Add(node);
                 room.AddObject(node);
                 addedNodes++;
@@ -358,7 +358,6 @@ public class ConnectingLine : CosmeticSprite
         ShouldBeEnabled = false;
         Pos = pos;
         Rot = rot;
-        Length = Length;
         Padding = 30;
 
         lastPos = pos;

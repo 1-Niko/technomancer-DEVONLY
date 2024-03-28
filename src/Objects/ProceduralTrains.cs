@@ -92,7 +92,7 @@ namespace Slugpack
         {
             base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
 
-            UnityEngine.Random.State state = Random.state;
+            Random.State state = Random.state;
             Random.InitState(seed);
 
             // Normal tile setting (All tiles have this)

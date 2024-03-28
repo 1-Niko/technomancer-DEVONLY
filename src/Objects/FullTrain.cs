@@ -85,7 +85,7 @@ namespace Slugpack
 
             length = length / 2 * 2;
 
-            UnityEngine.Random.State state = Random.state;
+            Random.State state = Random.state;
             Random.InitState(seed);
 
             // Random Value initializations
@@ -294,7 +294,6 @@ namespace Slugpack
         public int[] top_index = new int[3];
 
         public int length; // = 38;
-        public Vector2 pos;
         public int seed;
 
         public float offset;

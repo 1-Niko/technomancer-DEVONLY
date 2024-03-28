@@ -86,3 +86,9 @@ dotnet_diagnostic.IDE0044.severity = none
 
 # IDE0001: Simplify Names
 dotnet_diagnostic.IDE0001.severity = suggestion
+
+# CS9179: Primary constructor parameter is shadowed by a member from base
+dotnet_diagnostic.CS9179.severity = none
+
+# CS0618: Type or member is obsolete
+dotnet_diagnostic.CS0618.severity = none

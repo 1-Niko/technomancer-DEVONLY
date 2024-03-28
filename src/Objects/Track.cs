@@ -125,76 +125,83 @@ namespace Slugpack
                          chunk.pos.y > hit_lower_bound
                     )
                 );
-
-            foreach (var physObject in filteredObjects)
+            try
             {
-                var targetChunks = physObject.bodyChunks
-                    .Where(chunk =>
-                        RWCustom.Custom.Dist(chunk.pos, pos) < 453 &&
-                         chunk.pos.y < hit_upper_bound &&
-                         chunk.pos.y > hit_lower_bound
-                    );
-
-                foreach (var chunk in targetChunks)
+                foreach (var physObject in filteredObjects)
                 {
-                    if (chunk.pos.x > delete_position)
-                    {
-                        physObject.RemoveFromRoom();
-                        physObject.Destroy();
-                    }
-                    else
-                    {
-                        chunk.vel = new Vector2(velocity * 1.25f, 5);
+                    var targetChunks = physObject.bodyChunks
+                        .Where(chunk =>
+                            RWCustom.Custom.Dist(chunk.pos, pos) < 453 &&
+                             chunk.pos.y < hit_upper_bound &&
+                             chunk.pos.y > hit_lower_bound
+                        );
 
-                        if (chunk.owner is not Creature)
+                    foreach (var chunk in targetChunks)
+                    {
+                        if (chunk.pos.x > delete_position)
                         {
-                            if (Random.Range(0, 4) == 0)
-                            {
-                                // To future me : remember ot make it os that the slughacat tdoes ntot despawn when reaching the end ofth eroom
-                                // also, get more sleep.... ou need it
-                                if (chunk.owner is Spear && (chunk.owner as Spear).hasHorizontalBeamState)
-                                {
-                                    (chunk.owner as Spear).resetHorizontalBeamState();
-                                    (chunk.owner as Spear).vibrate = 20;
-                                    (chunk.owner as Spear).stuckInWall = Vector2.zero;
-                                    (chunk.owner as Spear).firstChunk.collideWithTerrain = true;
-                                    (chunk.owner as Spear).abstractSpear.stuckInWallCycles = 0;
-                                    (chunk.owner as Spear).ChangeMode(Weapon.Mode.Free);
-                                }
+                            physObject.RemoveFromRoom();
+                            physObject.Destroy();
+                        }
+                        else
+                        {
+                            chunk.vel = new Vector2(velocity * 1.25f, 5);
 
+                            if (chunk.owner is not Creature)
+                            {
+                                if (Random.Range(0, 4) == 0)
+                                {
+                                    // To future me : remember ot make it os that the slughacat tdoes ntot despawn when reaching the end ofth eroom
+                                    // also, get more sleep.... ou need it
+                                    if (chunk.owner is Spear && (chunk.owner as Spear).hasHorizontalBeamState)
+                                    {
+                                        (chunk.owner as Spear).resetHorizontalBeamState();
+                                        (chunk.owner as Spear).vibrate = 20;
+                                        (chunk.owner as Spear).stuckInWall = Vector2.zero;
+                                        (chunk.owner as Spear).firstChunk.collideWithTerrain = true;
+                                        (chunk.owner as Spear).abstractSpear.stuckInWallCycles = 0;
+                                        (chunk.owner as Spear).ChangeMode(Weapon.Mode.Free);
+                                    }
+
+                                    chunk.owner.RemoveFromRoom();
+                                    chunk.owner.Destroy();
+                                }
+                            }
+                            else if (!has_connector && chunk.pos.x > delete_position)
+                            {
                                 chunk.owner.RemoveFromRoom();
                                 chunk.owner.Destroy();
                             }
-                        }
-                        else if (!has_connector && chunk.pos.x > delete_position)
-                        {
-                            chunk.owner.RemoveFromRoom();
-                            chunk.owner.Destroy();
-                        }
 
-                        List<Player> players = room.physicalObjects
-                            .SelectMany(category => category)
-                            .OfType<Player>()
-                            .Where(player => RWCustom.Custom.Dist(pos, player.mainBodyChunk.pos) < 1000f)
-                            .ToList();
+                            List<Player> players = room.physicalObjects
+                                .SelectMany(category => category)
+                                .OfType<Player>()
+                                .Where(player => RWCustom.Custom.Dist(pos, player.mainBodyChunk.pos) < 1000f)
+                                .ToList();
 
-                        foreach (var player in players)
-                        {
-                            room.PlaySound(SoundID.Spear_Bounce_Off_Wall, chunk.pos);
-                            for (int j = 0; j < 4; j++)
+                            foreach (var player in players)
                             {
-                                Vector2 a = RWCustom.Custom.RNV();
-                                room.AddObject(new Spark(chunk.pos + (a * Random.value * 40f), a * Mathf.Lerp(4f, 5f, Random.value), new Color(0.9f, 0.9f, 1f), null, 4, 18));
+                                room.PlaySound(SoundID.Spear_Bounce_Off_Wall, chunk.pos);
+                                for (int j = 0; j < 4; j++)
+                                {
+                                    Vector2 a = RWCustom.Custom.RNV();
+                                    room.AddObject(new Spark(chunk.pos + (a * Random.value * 40f), a * Mathf.Lerp(4f, 5f, Random.value), new Color(0.9f, 0.9f, 1f), null, 4, 18));
+                                }
+                                if (physObject is Creature)
+                                {
+                                    (physObject as Creature).Die();
+                                }
+                                break;
                             }
-                            if (physObject is Creature)
-                            {
-                                (physObject as Creature).Die();
-                            }
-                            break;
                         }
                     }
                 }
             }
+            catch (Exception)
+            {
+                //Nothing 
+            }
+
 
             pos += new Vector2(velocity, 0);
 

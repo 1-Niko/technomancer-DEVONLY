@@ -41,7 +41,7 @@ namespace Slugpack
 
                     if (!scanline.roomControllerGenerated)
                     {
-                        RoomController roomController = new RoomController(self.room, self.ShortCutColor(), scanline.arrow);
+                        RoomController roomController = new(self.room, self.ShortCutColor(), scanline.arrow);
                         scanline.roomController = roomController;
                         self.room.AddObject(roomController);
                         scanline.roomControllerGenerated = true;
@@ -95,11 +95,10 @@ namespace Slugpack
 
             if (self != null && self.room != null && self.room.game != null && self.slugcatStats.name.ToString() == Constants.Technomancer)
             {
-                if (!Constants.ScanLineMemory.TryGetValue(self, out var scanline)) Constants.ScanLineMemory.Add(self, scanline = new WeakTables.ScanLine());
+                if (!Constants.ScanLineMemory.TryGetValue(self, out var scanline)) Constants.ScanLineMemory.Add(self, scanline = new ScanLine());
 
-                if (Constants.shaders_enabled)
-                    if (Constants.SlugpackShaders.TryGetValue(self.room.game.rainWorld, out var Shaders))
-                        Shaders.position = new Vector2((self.mainBodyChunk.pos.x) / (self.room.TileWidth * 20), self.mainBodyChunk.pos.y / (self.room.TileHeight * 20));
+                if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(self.room.game.rainWorld, out var Shaders))
+                    Shaders.position = new Vector2((self.mainBodyChunk.pos.x) / (self.room.TileWidth * 20), self.mainBodyChunk.pos.y / (self.room.TileHeight * 20));
 
                 // if (scanline.debugbool)
                 // {
@@ -118,7 +117,7 @@ namespace Slugpack
 
                 if (self != null && self.room != null && self.room.updateList != null && self.room.updateList.Count > 0)
                 {
-                    List<TrainObject> trainPositions = new();
+                    List<TrainObject> trainPositions = [];
 
                     for (int i = 0; i < self.room.updateList.Count; i++)
                     {
@@ -161,7 +160,7 @@ namespace Slugpack
                             {
                                 self.Blink(10);
                             }
-                            float num = (float)Mathf.Max((-1f / 500f) * minimumTrainDistance, 0f);
+                            float num = Mathf.Max((-1f / 500f) * minimumTrainDistance, 0f);
                             (self.graphicsModule as PlayerGraphics).tail[0].vel += RWCustom.Custom.DirVec((self.graphicsModule as PlayerGraphics).objectLooker.mostInterestingLookPoint, (self.graphicsModule as PlayerGraphics).drawPositions[1, 0]) * 5f * num;
                             (self.graphicsModule as PlayerGraphics).tail[1].vel += RWCustom.Custom.DirVec((self.graphicsModule as PlayerGraphics).objectLooker.mostInterestingLookPoint, (self.graphicsModule as PlayerGraphics).drawPositions[1, 0]) * 3f * num;
                             (self.graphicsModule as PlayerGraphics).player.aerobicLevel = Mathf.Max((self.graphicsModule as PlayerGraphics).player.aerobicLevel, Mathf.InverseLerp(0.5f, 1f, num) * 0.9f);
@@ -266,7 +265,7 @@ namespace Slugpack
 
                     if (scanline.holdTime > Constants.timeReached && scanline.arrow != null)
                     {
-                        List<Vector2> iconPositions = new List<Vector2>();
+                        List<Vector2> iconPositions = [];
 
                         if (scanline.arrow.pos/* - new Vector2(0f, (scanline.arrow.item == null) ? 35f : 15f)*/ == Vector2.zero || (scanline.arrow.item != null && !self.room.ViewedByAnyCamera(scanline.arrow.item.firstChunk.pos, 0f)) || (scanline.arrow.creature != null && !self.room.ViewedByAnyCamera(scanline.arrow.creature.mainBodyChunk.pos, 0f))) //&& !(scanline.arrow.creature is Vulture)))
                         {
@@ -344,120 +343,111 @@ namespace Slugpack
                             // Debug.Log($" > scanline.arrow.pos {scanline.arrow.pos}");
                             // Debug.Log("");
                             // Object Controls
-                            if (scanline.arrow._object != null)
+                            if (scanline.arrow._object != null && scanline.arrow._object.type.ToString() == "TrackHologram")
                             {
-                                if (scanline.arrow._object.type.ToString() == "TrackHologram")
-                                {
-                                    float explosionRadius = 80f;
+                                float explosionRadius = 80f;
 
-                                    for (int j = 0; j < 20; j++)
-                                    {
-                                        Vector2 a = RWCustom.Custom.RNV();
-                                        self.room.AddObject(new Spark((scanline.arrow.pos/* - new Vector2(0f, 35f)*/) + a * UnityEngine.Random.value * 40f, a * Mathf.Lerp(14f, 20f, Random.value), new Color(0.9f, 0.9f, 1f), null, 4, 18));
-                                    }
-                                    self.room.AddObject(new Explosion(self.room, null, scanline.arrow._object.pos, 20, explosionRadius, 70f, 0.2f, 2f, 0f, null, 0f, 0.1f, 4f));
-                                    self.room.PlaySound(SoundID.Bomb_Explode, scanline.arrow._object.pos);
-                                    self.room.PlaySound(SoundID.Zapper_Zap, scanline.arrow._object.pos);
+                                for (int j = 0; j < 20; j++)
+                                {
+                                    Vector2 a = RWCustom.Custom.RNV();
+                                    self.room.AddObject(new Spark(scanline.arrow.pos/* - new Vector2(0f, 35f)*/ + a * Random.value * 40f, a * Mathf.Lerp(14f, 20f, Random.value), new Color(0.9f, 0.9f, 1f), null, 4, 18));
                                 }
+                                self.room.AddObject(new Explosion(self.room, null, scanline.arrow._object.pos, 20, explosionRadius, 70f, 0.2f, 2f, 0f, null, 0f, 0.1f, 4f));
+                                self.room.PlaySound(SoundID.Bomb_Explode, scanline.arrow._object.pos);
+                                self.room.PlaySound(SoundID.Zapper_Zap, scanline.arrow._object.pos);
                             }
                             // Shortcut Locking
                             if (scanline.arrow.creature == null && scanline.arrow.item == null)
                             {
                                 var (nearestObjectType, nearestCreature, nearestItem, nearestShortcut, nearestObject, nearestPosition) = Utilities.DetermineObjectFromPosition(scanline.arrow.pos/* - new Vector2(0f, 35f)*/, self.room);
-                                if (nearestObjectType == "shortcut")
+                                if (nearestObjectType == "shortcut" && !ShortcutTable.locks.Any(l => l.Shortcuts.Contains(nearestShortcut)))
                                 {
-                                    if (!ShortcutTable.locks.Any(l => l.shortcuts.Contains(nearestShortcut)))
+                                    int newRoom = self.room.abstractRoom.connections[nearestShortcut.destNode];
+                                    if (newRoom > -1)
                                     {
-                                        int newRoom = self.room.abstractRoom.connections[nearestShortcut.destNode];
-                                        if (newRoom > -1)
+                                        AbstractRoom abstractRoom = self.room.world.GetAbstractRoom(newRoom);
+                                        while (abstractRoom.realizedRoom == null)
                                         {
-                                            AbstractRoom abstractRoom = self.room.world.GetAbstractRoom(newRoom);
-                                            while (abstractRoom.realizedRoom == null)
-                                            {
-                                                abstractRoom.RealizeRoom(self.room.world, self.room.game);
-                                            }
-                                            var shortcutList = abstractRoom?.realizedRoom?.shortcuts?
-                                                .Where(element => element.destNode != -1 && element.destNode < abstractRoom.connections?.Length && abstractRoom.connections[element.destNode] != -1)
-                                                .ToList() ?? new List<ShortcutData>();
+                                            abstractRoom.RealizeRoom(self.room.world, self.room.game);
+                                        }
+                                        var shortcutList = abstractRoom?.realizedRoom?.shortcuts?
+                                            .Where(element => element.destNode != -1 && element.destNode < abstractRoom.connections?.Length && abstractRoom.connections[element.destNode] != -1)
+                                            .ToList() ?? [];
 
-                                            bool success = false;
+                                        bool success = false;
 
-                                            if (shortcutList.Count > 0)
+                                        if (shortcutList.Count > 0)
+                                        {
+                                            var exitIndex = abstractRoom.ExitIndex(self.room.abstractRoom.index);
+                                            if (exitIndex >= 0 && exitIndex < shortcutList.Count)
                                             {
-                                                var exitIndex = abstractRoom.ExitIndex(self.room.abstractRoom.index);
-                                                if (exitIndex >= 0 && exitIndex < shortcutList.Count)
+                                                var shortcut = shortcutList[exitIndex];
+
+                                                ShortcutData[] shortcutDataArray = [nearestShortcut, shortcut];
+                                                Room[] roomArray = [self.room, abstractRoom.realizedRoom];
+
+                                                int lockTime = 10 * 40;
+
+                                                LockHologram[] hologramArray = [new(self.room.MiddleOfTile(nearestShortcut.StartTile), self.ShortCutColor(), lockTime), new LockHologram(abstractRoom.realizedRoom.MiddleOfTile(shortcut.StartTile), self.ShortCutColor(), lockTime)];
+
+                                                ShortcutTable.locks.Add(new Lock(shortcutDataArray, roomArray, lockTime, hologramArray));
+
+                                                self.room.AddObject(hologramArray[0]);
+                                                abstractRoom.realizedRoom.AddObject(hologramArray[1]);
+
+                                                for (int j = 0; j < 20; j++)
                                                 {
-                                                    var shortcut = shortcutList[exitIndex];
+                                                    Vector2 a = RWCustom.Custom.RNV();
+                                                    self.room.AddObject(new Spark(scanline.arrow.pos/* - new Vector2(0f, 35f)*/ + a * Random.value * 40f, a * Mathf.Lerp(4f, 30f, Random.value), new Color(0.9f, 0.9f, 1f), null, 16, 18));
+                                                }
 
-                                                    ShortcutData[] shortcutDataArray = { nearestShortcut, shortcut };
-                                                    Room[] roomArray = { self.room, abstractRoom.realizedRoom };
+                                                success = true;
+                                            }
+                                        }
 
-                                                    int lockTime = 10 * 40;
+                                        if (!success)
+                                        {
+                                            // do failure animation
 
-                                                    LockHologram[] hologramArray = { new LockHologram(self.room.MiddleOfTile(nearestShortcut.StartTile), self.ShortCutColor(), lockTime), new LockHologram(abstractRoom.realizedRoom.MiddleOfTile(shortcut.StartTile), self.ShortCutColor(), lockTime) };
-
-                                                    ShortcutTable.locks.Add(new DataStructures.Lock(shortcutDataArray, roomArray, lockTime, hologramArray));
-
-                                                    self.room.AddObject(hologramArray[0]);
-                                                    abstractRoom.realizedRoom.AddObject(hologramArray[1]);
-
-                                                    for (int j = 0; j < 20; j++)
+                                            /*Debug.Log("PIPE LOCK FAILURE");
+                                            for (int i = 0; i < self.room.shortcuts.Length; i++)
+                                            {
+                                                if (self.room.shortcuts[i].Equals(nearestShortcut))
+                                                {
+                                                    for (int j = 0; j < 100; j++)
                                                     {
                                                         Vector2 a = RWCustom.Custom.RNV();
-                                                        self.room.AddObject(new Spark(scanline.arrow.pos/* - new Vector2(0f, 35f)*/ + a * UnityEngine.Random.value * 40f, a * Mathf.Lerp(4f, 30f, UnityEngine.Random.value), new Color(0.9f, 0.9f, 1f), null, 16, 18));
+                                                        self.room.AddObject(new Spark(scanline.arrow.pos - new Vector2(0f, 35f) + a * Random.value * 40f, a * Mathf.Lerp(4f, 30f, Random.value), new Color(0.9f, 0.9f, 1f), null, 16, 18));
                                                     }
-
-                                                    success = true;
                                                 }
-                                            }
-
-                                            if (!success)
-                                            {
-                                                // do failure animation
-
-                                                /*Debug.Log("PIPE LOCK FAILURE");
-                                                for (int i = 0; i < self.room.shortcuts.Length; i++)
-                                                {
-                                                    if (self.room.shortcuts[i].Equals(nearestShortcut))
-                                                    {
-                                                        for (int j = 0; j < 100; j++)
-                                                        {
-                                                            Vector2 a = RWCustom.Custom.RNV();
-                                                            self.room.AddObject(new Spark(scanline.arrow.pos - new Vector2(0f, 35f) + a * Random.value * 40f, a * Mathf.Lerp(4f, 30f, Random.value), new Color(0.9f, 0.9f, 1f), null, 16, 18));
-                                                        }
-                                                    }
-                                                }*/
-                                            }
+                                            }*/
                                         }
                                     }
                                 }
                             }
 
-                            if (scanline.arrow.item != null)// && !scanline.inputHoldThrw)
+                            if (scanline.arrow.item is DataPearl)// && !scanline.inputHoldThrw)
                             {
-                                if (scanline.arrow.item is DataPearl)
+                                scanline.slugVector = new Vector2[self.bodyChunks.Length];
+                                for (int i = 0; i < self.bodyChunks.Length; i++)
+                                    scanline.slugVector[i] = self.bodyChunks[i].vel;
+
+                                float explosionRadius = 80f;
+                                Vector2 pearlPosition = scanline.arrow.item.firstChunk.pos;
+
+                                for (int j = 0; j < 20; j++)
                                 {
-                                    scanline.slugVector = new Vector2[self.bodyChunks.Length];
-                                    for (int i = 0; i < self.bodyChunks.Length; i++)
-                                        scanline.slugVector[i] = self.bodyChunks[i].vel;
-
-                                    float explosionRadius = 80f;
-                                    Vector2 pearlPosition = scanline.arrow.item.firstChunk.pos;
-
-                                    for (int j = 0; j < 20; j++)
-                                    {
-                                        Vector2 a = RWCustom.Custom.RNV();
-                                        self.room.AddObject(new Spark((scanline.arrow.pos/* - new Vector2(0f, (scanline.arrow.item == null) ? 35f : 15f)*/) + a * Random.value * 40f, a * Mathf.Lerp(4f, 5f, Random.value), new Color(0.9f, 0.9f, 1f), null, 4, 18));
-                                    }
-                                    self.room.AddObject(new Explosion(self.room, scanline.arrow.item, scanline.arrow.item.firstChunk.pos, 20, explosionRadius, 70f, 0.2f, 2f, 0f, null, 0f, 0.1f, 4f));
-                                    self.room.PlaySound(SoundID.Bomb_Explode, scanline.arrow.item.firstChunk.pos);
-
-                                    scanline.arrow.item.RemoveFromRoom();
-                                    self.room.RemoveObject(scanline.arrow.item);
-                                    scanline.arrow.item.Destroy();
-
-                                    scanline.arrow.item = null;
+                                    Vector2 a = RWCustom.Custom.RNV();
+                                    self.room.AddObject(new Spark((scanline.arrow.pos/* - new Vector2(0f, (scanline.arrow.item == null) ? 35f : 15f)*/) + a * Random.value * 40f, a * Mathf.Lerp(4f, 5f, Random.value), new Color(0.9f, 0.9f, 1f), null, 4, 18));
                                 }
+                                self.room.AddObject(new Explosion(self.room, scanline.arrow.item, scanline.arrow.item.firstChunk.pos, 20, explosionRadius, 70f, 0.2f, 2f, 0f, null, 0f, 0.1f, 4f));
+                                self.room.PlaySound(SoundID.Bomb_Explode, scanline.arrow.item.firstChunk.pos);
+
+                                scanline.arrow.item.RemoveFromRoom();
+                                self.room.RemoveObject(scanline.arrow.item);
+                                scanline.arrow.item.Destroy();
+
+                                scanline.arrow.item = null;
                             }
 
                             if (scanline.arrow.creature != null && scanline.arrow.creature.stun == 0)
@@ -493,7 +483,7 @@ namespace Slugpack
                                     }
 
                                     if (!Constants.VultureStuff.TryGetValue((scanline.arrow.creature as Vulture), out var vulturestuff))
-                                    { Constants.VultureStuff.Add((scanline.arrow.creature as Vulture), vulturestuff = new WeakTables.VultureStuff()); }
+                                    { Constants.VultureStuff.Add((scanline.arrow.creature as Vulture), vulturestuff = new VultureStuff()); }
 
                                     vulturestuff.timer = 60;
                                 }
@@ -514,31 +504,28 @@ namespace Slugpack
                             if (scanline.arrow.creature == null && scanline.arrow.item == null)
                             {
                                 var (nearestObjectType, nearestCreature, nearestItem, nearestShortcut, nearestObject, nearestPosition) = Utilities.DetermineObjectFromPosition(scanline.arrow.pos/* - new Vector2(0f, 35f)*/, self.room);
-                                if (nearestObjectType == "shortcut")
+                                if (nearestObjectType == "shortcut" && ShortcutTable.locks.Any(l => l.Shortcuts.Contains(nearestShortcut)))
                                 {
-                                    if (ShortcutTable.locks.Any(l => l.shortcuts.Contains(nearestShortcut)))
+                                    for (int i = 0; i < ShortcutTable.locks.Count; i++)
                                     {
-                                        for (int i = 0; i < ShortcutTable.locks.Count; i++)
+                                        for (int r = 0; r < 2; r++)
                                         {
-                                            for (int r = 0; r < 2; r++)
+                                            if (ShortcutTable.locks[i].Shortcuts[r].Equals(nearestShortcut))
                                             {
-                                                if (ShortcutTable.locks[i].shortcuts[r].Equals(nearestShortcut))
+                                                for (int h = 0; h < 2; h++)
                                                 {
-                                                    for (int h = 0; h < 2; h++)
-                                                    {
-                                                        ShortcutTable.locks[i].holograms[h].Destroy();
-                                                    }
-
-                                                    ShortcutTable.locks.RemoveAt(i);
-
-                                                    /*for (int j = 0; j < 20; j++)
-                                                    {
-                                                        Vector2 a = RWCustom.Custom.RNV();
-                                                        self.room.AddObject(new Spark(scanline.arrow.pos - new Vector2(0f, 35f) + a * Random.value * 40f, a * Mathf.Lerp(4f, 30f, Random.value), new Color(0.9f, 0.9f, 1f), null, 16, 18));
-                                                    }*/
-
-                                                    break;
+                                                    ShortcutTable.locks[i].Holograms[h].Destroy();
                                                 }
+
+                                                ShortcutTable.locks.RemoveAt(i);
+
+                                                /*for (int j = 0; j < 20; j++)
+                                                {
+                                                    Vector2 a = RWCustom.Custom.RNV();
+                                                    self.room.AddObject(new Spark(scanline.arrow.pos - new Vector2(0f, 35f) + a * Random.value * 40f, a * Mathf.Lerp(4f, 30f, Random.value), new Color(0.9f, 0.9f, 1f), null, 16, 18));
+                                                }*/
+
+                                                break;
                                             }
                                         }
                                     }
@@ -579,13 +566,13 @@ namespace Slugpack
 
                                     scanline.arrow.item = null;
 
-                                    var inspectors = Utilities.GetEverything(self.room);
+                                    var (positions, creatures, items, objects) = Utilities.GetEverything(self.room);
 
-                                    for (int i = 0; i < inspectors.creatures.Count; i++)
+                                    for (int i = 0; i < creatures.Count; i++)
                                     {
-                                        if (inspectors.creatures[i] is MoreSlugcats.Inspector)
+                                        if (creatures[i] is MoreSlugcats.Inspector)
                                         {
-                                            (inspectors.creatures[i] as MoreSlugcats.Inspector).anger = 2f;
+                                            (creatures[i] as MoreSlugcats.Inspector).anger = 2f;
                                         }
                                     }
 
@@ -606,12 +593,9 @@ namespace Slugpack
 
         private static void Player_ThrowObject(On.Player.orig_ThrowObject orig, Player self, int grasp, bool eu)
         {
-            if (Constants.ScanLineMemory.TryGetValue(self, out var scanline))
+            if (Constants.ScanLineMemory.TryGetValue(self, out var scanline) && scanline.holdTime > Constants.timeReached)
             {
-                if (scanline.holdTime > Constants.timeReached) // && self.grasps[grasp].grabbed is Spear)
-                {
-                    return;
-                }
+                return;
             }
             orig(self, grasp, eu);
         }

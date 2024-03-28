@@ -336,6 +336,6 @@ namespace Slugpack
 
         public Vector2[] projectionLinesMarker;
 
-        public MaterialPropertyBlock block = new MaterialPropertyBlock();
+        public MaterialPropertyBlock block = new();
     }
 }

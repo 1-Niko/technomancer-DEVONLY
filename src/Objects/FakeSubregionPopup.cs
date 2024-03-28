@@ -34,11 +34,7 @@ namespace Slugpack
             if (dataObj.index == subRegions.Count)
                 dataObj.index = 1;
 
-            if (name != subRegions[dataObj.index])
-            {
-                name = subRegions[dataObj.index];
-                //Debug.Log($"Region set to {subRegions[dataObj.index]}");
-            }
+            name = subRegions[dataObj.index];
 
             if (nothingNull && room == room.game.Players[0].realizedCreature.room && room.game.cameras[0].hud.textPrompt.subregionTracker.lastShownRegion != dataObj.index)
             {
@@ -130,7 +126,7 @@ namespace Slugpack
 
         private List<string> subRegions;
 
-        private string name;
+        public string name;
 
         private bool inRadius;
 

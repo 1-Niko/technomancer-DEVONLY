@@ -27,7 +27,7 @@ namespace Slugpack
                     {
                         for (int r = 0; r < 2; r++)
                         {
-                            if (ShortcutTable.locks[i].shortcuts[r].Equals(shortcutLocation))
+                            if (ShortcutTable.locks[i].Shortcuts[r].Equals(shortcutLocation))
                             {
                                 self.enteringShortCut = null;
                                 self.inShortcut = false;
