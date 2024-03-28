@@ -118,8 +118,10 @@ public class Plugin : BaseUnityPlugin
 
         HiveQueenHooks.Apply();
         PastGreenHooks.Apply();
+        CaveLeechHooks.Apply();
 
         Content.Register(
+            new CaveLeechCritob(),
             new HiveQueenCritob(),
             new PastGreenCritob());
     }

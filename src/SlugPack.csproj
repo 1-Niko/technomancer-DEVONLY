@@ -35,11 +35,6 @@
 	<ItemGroup>
 	  <None Remove="Creatures\Lizards\HiveQueen\HiveQueenHooks.cs~RF4bf08bc9.TMP" />
 	</ItemGroup>
-
-
-	<ItemGroup>
-	  <Folder Include="Creatures\Leeches\" />
-	</ItemGroup>
     
 
 </Project>
