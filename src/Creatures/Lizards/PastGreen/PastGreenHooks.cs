@@ -1,6 +1,6 @@
 ﻿namespace Slugpack;
 
-public static class LizardHooks
+public static class PastGreenHooks
 {
     public static void Apply()
     {

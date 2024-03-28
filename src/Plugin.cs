@@ -15,7 +15,7 @@ public class Plugin : BaseUnityPlugin
     {
         try
         {
-            Debug.LogWarning("Technonancer is loading...");
+            Debug.LogWarning("MyMod is loading...");
 
             ApplyCreatures();
 
@@ -117,7 +117,7 @@ public class Plugin : BaseUnityPlugin
         Debug.LogWarning("Loading Creatures from Technomancer");
 
         HiveQueenHooks.Apply();
-        LizardHooks.Apply();
+        PastGreenHooks.Apply();
 
         Content.Register(
             new HiveQueenCritob(),
