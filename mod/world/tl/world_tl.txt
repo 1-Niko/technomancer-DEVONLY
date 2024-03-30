@@ -88,6 +88,7 @@ TL_A29 : TL_C11, TL_B18
 TL_A30 : TL_C11, TL_B18
 TL_C11 : TL_A28, TL_A30, DISCONNECTED, TL_A29
 TL_B18 : TL_A30, TL_A29, TL_A25
+TL_A31 : TL_A31, TL_A31, TL_A31
 
 // Remove this when making this properly
 {!TM}TL_V01 : DISCONNECTED, TL_A10, TL_B14, TL_A04, TL_K01, DISCONNECTED, TL_AC01, DISCONNECTED, TL_C03, TL_C01 : PERF_HEAVY
@@ -124,9 +125,7 @@ TL_V01 : 10-SmallCentipede-2, 12-BigSpider
 TL_A25 : 2-SmallCentipede-2, 3-Centipede-2, 4-Centipede-1, 5-SmallCentipede-3
 TL_A20 : 3-Snail
 
-// Disabled glizards until fisobs is fixed
-// TL_V02 : 12-Centipede-3, 12-SmallCentipede-4, 13-pastGreen-2
-TL_V02 : 12-Centipede-3, 12-SmallCentipede-4, 13-Green-2
+TL_V02 : 12-Centipede-3, 12-SmallCentipede-4, 13-pastGreen-2
 
 TL_AC01 : 15-Mouse-3, 14-SmallCentipede-2, 13-Mouse-2, 16-Mouse-3, 17-BigSpider
 TL_A12 : 2-BigSpider-1, 2-SpitterSpider

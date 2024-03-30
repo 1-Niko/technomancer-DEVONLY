@@ -1,9 +1,9 @@
 {
-	"id": "splugpack.DEVONLY",
+	"id": "splugpack",
 	"//devbuild-id": "splugpack.DEVONLY",
 	"name": "[DEVBUILD] The Technomancer",
-	"release_build": "1.1.2",
-	"version": "1.2.0",
+	"release_build": "1.2.0",
+	"version": "1.3.0",
 	"authors": "Technomancer Development Team<LINE><LINE>Niko - Project Lead, Lead Coder, Lead Leditor<LINE>Lurzard - Menu Art<LINE>Supernova - Bugtester",
 	"hide_version": false,
 	"requirements": [ "slime-cubed.slugbase", "moreslugcats", "regionkit", "crs", "pom", "fisobs" ],
