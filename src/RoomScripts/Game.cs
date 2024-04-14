@@ -14,6 +14,8 @@ internal static class GameHooks
         On.RoomCamera.SpriteLeaser.RemoveAllSpritesFromContainer += SpriteLeaser_RemoveAllSpritesFromContainer;
         On.RegionGate.customKarmaGateRequirements += RegionGate_customKarmaGateRequirements;
 
+        On.ShortcutHandler.Update += ShortcutHandler_Update;
+
         On.RoomCamera.MoveCamera2 += RoomCamera_MoveCamera2;
 
         On.RoomCamera.MoveCamera2 += (orig, self, roomName, camPos) =>
@@ -24,6 +26,40 @@ internal static class GameHooks
                 CameraPosition.camPosition = camPos;
             }
         };
+    }
+
+    private static void ShortcutHandler_Update(On.ShortcutHandler.orig_Update orig, ShortcutHandler self)
+    {
+        // I might be able to do something that sets it so if the next position is a locked pipe, it just sends them back?
+        bool runOrigHere = true;
+
+        Constants.DamagedShortcuts.TryGetValue(self.game, out var ShortcutTable);
+
+        for (int i = self.transportVessels.Count - 1; i >= 0; i--)
+        {
+            if (self.transportVessels[i].room.realizedRoom != null)
+            {
+                for (int j = 0; j < ShortcutTable.locks.Count; i++)
+                {
+                    for (int k = 0; k < ShortcutTable.locks[j].Shortcuts.Length; k++)
+                    {
+                        if (self.transportVessels[i].pos == ShortcutTable.locks[j].Shortcuts[k].connection.StartTile)
+                        {
+                            // The fact that we are here at all means that the shortcut is in the locked list, so we don't need to check for that explicitly
+                            runOrigHere = false;
+                            Room realizedRoom = self.transportVessels[i].room.realizedRoom;
+                            self.transportVessels[i].pos = ShortcutHandler.NextShortcutPosition(self.transportVessels[i].lastPos, self.transportVessels[i].pos, realizedRoom);
+                        }
+                    }
+                }
+            }
+        }
+
+        if (runOrigHere)
+        {
+            orig(self);
+        }
+
     }
 
     private static void RoomCamera_MoveCamera2(On.RoomCamera.orig_MoveCamera2 orig, RoomCamera self, string roomName, int camPos)
@@ -40,7 +76,7 @@ internal static class GameHooks
         // Resolve the file path
         string filePath = AssetManager.ResolveFilePath($"world/{roomName.Split('_')[0].ToLower()}-rooms/{tMaskImageFileName}");
 
-        //Debug.Log(filePath);
+        Debug.Log(filePath);
 
         // Check if the TMASK image file exists and load it
         if (File.Exists(filePath))

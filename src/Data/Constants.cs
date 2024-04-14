@@ -1,3 +1,5 @@
+using BepInEx.Logging;
+
 namespace Slugpack
 {
     internal static class Constants
@@ -9,6 +11,14 @@ namespace Slugpack
         public const bool shaders_enabled = true;
 
         public const int timeReached = 10;
+
+        
+        public static void LogWarning(object ex) => Logger.LogWarning(ex);
+
+        public static void LogError(object ex) => Logger.LogError(ex);
+
+        public static ManualLogSource Logger;
+
 
         public static ConditionalWeakTable<Player, ScanLine> ScanLineMemory = new();
 
