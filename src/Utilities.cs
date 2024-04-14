@@ -676,8 +676,8 @@ public static class Utilities
         }
         catch (Exception ex)
         {
-            DebugLogError(errorMessage.Replace("%ln", $"{lineNumber}"));
-            DebugLogException(ex);
+            Plugin.DebugError(errorMessage.Replace("%ln", $"{lineNumber}"));
+            Debug.LogException(ex);
         }
     }
 

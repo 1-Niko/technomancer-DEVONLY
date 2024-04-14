@@ -188,7 +188,7 @@ namespace Slugpack
 
                     if (scanline.correctVelocity > 0)
                     {
-                        DebugLog($"POINT POWER : {scanline.pointPower}");
+                        Plugin.DebugLog($"POINT POWER : {scanline.pointPower}");
 
                         for (int i = 0; i < self.bodyChunks.Length; i++)
                         {

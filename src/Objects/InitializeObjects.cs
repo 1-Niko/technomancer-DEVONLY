@@ -27,15 +27,15 @@ namespace Slugpack
                     RegisterManagedObject<ProceduralTrainObject, TrainObjectData, ManagedRepresentation>("DEBUGTRAINOBJECT", "Technomancer");
                     RegisterManagedObject<FakeSubregionPopupObject, FakeSubregionPopupData, ManagedRepresentation>("FakeSubregionPopup", "Technomancer");
 
-                    DebugLogWarning("Technomancer Objects Initialized!");
+                    Plugin.DebugWarning("Technomancer Objects Initialized!");
 
                     initialized = true;
                 }
             }
             catch (Exception ex)
             {
-                DebugLogError(ex);
-                DebugLogException(ex);
+                Plugin.DebugError(ex);
+                Debug.LogException(ex);
             }
         }
 

@@ -1,14 +1,15 @@
 ﻿using BepInEx;
 using BepInEx.Logging;
 using Fisobs.Core;
-using Slugpack;
 
-namespace SlugpackPlugin;
+namespace Slugpack;
 
-[BepInPlugin(_ID, nameof(SlugpackPlugin), "1.0.0")]
+[BepInPlugin(MOD_ID, MOD_NAME, VERSION)]
 public class Plugin : BaseUnityPlugin
 {
-    private const string _ID = "splugpack";
+    public const string MOD_NAME = "SlugpackPlugin";
+    public const string MOD_ID = "splugpack";
+    public const string VERSION = "1.0.0";
 
     public bool IsInit;
 
@@ -113,9 +114,9 @@ public class Plugin : BaseUnityPlugin
         orig(self, newlyDisabledMods);
         for (var i = 0; i < newlyDisabledMods.Length; i++)
         {
-            if (newlyDisabledMods[i].id == _ID)
+            if (newlyDisabledMods[i].id == MOD_ID)
             {
-                DebugWarning($"Unregistering Creatures from {_ID}");
+                DebugWarning($"Unregistering Creatures from {MOD_ID}");
                 TnEnums.Unregister();
                 break;
             }
