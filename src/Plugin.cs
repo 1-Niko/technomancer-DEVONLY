@@ -12,11 +12,20 @@ public class Plugin : BaseUnityPlugin
 
     public bool IsInit;
 
+    public static void DebugWarning(object ex) => Logger.LogWarning(ex);
+
+    public static void DebugError(object ex) => Logger.LogError(ex);
+
+    public static void DebugLog(object ex) => Logger.LogInfo(ex);
+
+    public static new ManualLogSource Logger;
+
     public void OnEnable()
     {
         try
         {
-            Debug.LogWarning("Technomancer is loading...");
+            Logger = base.Logger;
+            DebugWarning("Technomancer is loading...");
 
             ApplyCreatures();
 
@@ -24,7 +33,7 @@ public class Plugin : BaseUnityPlugin
         }
         catch (Exception ex)
         {
-            Debug.LogError(ex);
+            DebugError(ex);
             Debug.LogException(ex);
         }
     }
@@ -84,7 +93,7 @@ public class Plugin : BaseUnityPlugin
                     }
                     else
                     {
-                        Debug.Log("Technomancer: Error loading shaders or shader assets!");
+                        DebugLog("Technomancer: Error loading shaders or shader assets!");
                     }
                 }
             }
@@ -94,8 +103,8 @@ public class Plugin : BaseUnityPlugin
         catch (Exception ex)
         {
             Debug.LogException(ex);
-            Debug.LogError(ex);
-            throw new Exception("Technomancer failed to load OnModsInit!");
+            DebugError(ex);
+            DebugError("Technomancer failed to load OnModsInit!");
         }
     }
 
@@ -106,7 +115,7 @@ public class Plugin : BaseUnityPlugin
         {
             if (newlyDisabledMods[i].id == _ID)
             {
-                Debug.LogWarning($"Unregistering Creatures from {_ID}");
+                DebugWarning($"Unregistering Creatures from {_ID}");
                 TnEnums.Unregister();
                 break;
             }
@@ -115,7 +124,7 @@ public class Plugin : BaseUnityPlugin
 
     private void ApplyCreatures()
     {
-        Debug.LogWarning("Loading Creatures from Technomancer");
+        DebugWarning("Loading Creatures from Technomancer");
 
         HiveQueenHooks.Apply();
         PastGreenHooks.Apply();

@@ -76,7 +76,7 @@ internal static class GameHooks
         // Resolve the file path
         string filePath = AssetManager.ResolveFilePath($"world/{roomName.Split('_')[0].ToLower()}-rooms/{tMaskImageFileName}");
 
-        Debug.Log(filePath);
+        DebugLog(filePath);
 
         // Check if the TMASK image file exists and load it
         if (File.Exists(filePath))

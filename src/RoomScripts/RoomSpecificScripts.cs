@@ -36,7 +36,7 @@ public class GATE_TL_OE_IntroScript : UpdatableAndDeletable
     public GATE_TL_OE_IntroScript(Room room)
     {
         this.room = room;
-        //Debug.Log($"The Technomancer: Created new {nameof(GATE_TL_OE_IntroScript)} in room {room.abstractRoom.name}");
+        //DebugLog($"The Technomancer: Created new {nameof(GATE_TL_OE_IntroScript)} in room {room.abstractRoom.name}");
     }
 
     public override void Update(bool eu)

@@ -12,13 +12,6 @@ namespace Slugpack
 
         public const int timeReached = 10;
 
-        
-        public static void LogWarning(object ex) => Logger.LogWarning(ex);
-
-        public static void LogError(object ex) => Logger.LogError(ex);
-
-        public static ManualLogSource Logger;
-
 
         public static ConditionalWeakTable<Player, ScanLine> ScanLineMemory = new();
 

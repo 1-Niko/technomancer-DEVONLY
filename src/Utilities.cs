@@ -504,15 +504,15 @@ public static class Utilities
     /// <returns></returns>
     public static AssetBundle LoadFromEmbeddedResource_OLD(string fullyQualifiedPath)
     {
-        //Debug.Log($"Loading embedded asset bundle: {fullyQualifiedPath}");
+        //DebugLog($"Loading embedded asset bundle: {fullyQualifiedPath}");
         using MemoryStream mstr = new();
         Stream str = Assembly.GetExecutingAssembly().GetManifestResourceStream(fullyQualifiedPath);
         str.CopyTo(mstr);
         str.Flush();
         str.Close();
-        //Debug.Log("Bundle loaded into memory as byte[], processing with Unity...");
+        //DebugLog("Bundle loaded into memory as byte[], processing with Unity...");
         AssetBundle bundle = AssetBundle.LoadFromMemory(mstr.ToArray());
-        //Debug.Log("Unity has successfully loaded this asset bundle from memory.");
+        //DebugLog("Unity has successfully loaded this asset bundle from memory.");
         return bundle;
     }
 
@@ -523,9 +523,9 @@ public static class Utilities
 
     public static FShader CreateFromAsset(AssetBundle bundle, string shortName)
     {
-        //Debug.Log($"Loading shader \"{shortName}\"...");
+        //DebugLog($"Loading shader \"{shortName}\"...");
         Shader target = bundle.LoadAsset<Shader>($"assets/{shortName}.shader");
-        //Debug.Log($"Implementing shader \"{shortName}\" into Futile...");
+        //DebugLog($"Implementing shader \"{shortName}\" into Futile...");
         return FShader.CreateShader(shortName, target);
     }
 
@@ -676,8 +676,8 @@ public static class Utilities
         }
         catch (Exception ex)
         {
-            Debug.LogError(errorMessage.Replace("%ln", $"{lineNumber}"));
-            Debug.LogException(ex);
+            DebugLogError(errorMessage.Replace("%ln", $"{lineNumber}"));
+            DebugLogException(ex);
         }
     }
 

@@ -75,7 +75,7 @@ namespace Slugpack
                             scanline.roomControllerGenerated = false;
                         }
 
-                        // Debug.Log("Clearing Tech Icons");
+                        // DebugLog("Clearing Tech Icons");
                         for (int i = 0; i < scanline.TechIcons.Count; i++)
                             self.room.RemoveObject(scanline.TechIcons[i]);
                         scanline.TechIcons.Clear();
@@ -188,7 +188,7 @@ namespace Slugpack
 
                     if (scanline.correctVelocity > 0)
                     {
-                        Debug.Log($"POINT POWER : {scanline.pointPower}");
+                        DebugLog($"POINT POWER : {scanline.pointPower}");
 
                         for (int i = 0; i < self.bodyChunks.Length; i++)
                         {
@@ -335,13 +335,13 @@ namespace Slugpack
 
                         if (scanline.thrw && !scanline.inputHoldThrw)
                         {
-                            // Debug.Log("");
-                            // Debug.Log("Debug Info Here");
-                            // Debug.Log($" > scanline.arrow.item {scanline.arrow.item}");
-                            // Debug.Log($" > scanline.arrow.creature {scanline.arrow.creature}");
-                            // Debug.Log($" > scanline.arrow._object {scanline.arrow._object}");
-                            // Debug.Log($" > scanline.arrow.pos {scanline.arrow.pos}");
-                            // Debug.Log("");
+                            // DebugLog("");
+                            // DebugLog("Debug Info Here");
+                            // DebugLog($" > scanline.arrow.item {scanline.arrow.item}");
+                            // DebugLog($" > scanline.arrow.creature {scanline.arrow.creature}");
+                            // DebugLog($" > scanline.arrow._object {scanline.arrow._object}");
+                            // DebugLog($" > scanline.arrow.pos {scanline.arrow.pos}");
+                            // DebugLog("");
                             // Object Controls
                             if (scanline.arrow._object != null && scanline.arrow._object.type.ToString() == "TrackHologram")
                             {
@@ -409,7 +409,7 @@ namespace Slugpack
                                         {
                                             // do failure animation
 
-                                            /*Debug.Log("PIPE LOCK FAILURE");
+                                            /*DebugLog("PIPE LOCK FAILURE");
                                             for (int i = 0; i < self.room.shortcuts.Length; i++)
                                             {
                                                 if (self.room.shortcuts[i].Equals(nearestShortcut))

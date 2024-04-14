@@ -78,8 +78,8 @@ namespace Slugpack
 
                     // if (previousRegionID == 0 && regionID == 1) { } // nothing
                     // if (previousRegionID == 1 && regionID == 0) { } // nothing
-                    // if (previousRegionID == 1 && regionID == 2) { primed = true; Debug.Log("Primed!"); } // prime
-                    // if (previousRegionID == 2 && regionID == 1) { primed = false; Debug.Log("Unprimed"); } // unprime
+                    // if (previousRegionID == 1 && regionID == 2) { primed = true; DebugLog("Primed!"); } // prime
+                    // if (previousRegionID == 2 && regionID == 1) { primed = false; DebugLog("Unprimed"); } // unprime
 
                     // It should also automatically supress if you enter the room with your last seen subregion being its display
 
