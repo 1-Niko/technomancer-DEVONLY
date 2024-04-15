@@ -9,7 +9,7 @@ public class Plugin : BaseUnityPlugin
 {
     public const string MOD_NAME = "SlugpackPlugin";
     public const string MOD_ID = "splugpack";
-    public const string VERSION = "1.0.0";
+    public const string VERSION = "1.0.1";
 
     public bool IsInit;
 

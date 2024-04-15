@@ -1,7 +1,146 @@
+using MoreSlugcats;
+
 namespace Slugpack;
 
 public static class Utilities
 {
+    public static int Identify(SlugArrow arrow)
+    {
+        /*
+0000 *****     0-31      ERROR
+
+0001 00000       32      Yellow Lizard              CREATURE // Don't know how to detect specific lizard types yet, if you can solve that that would be very helpful but I'm not dealing with it right now.
+0001 00001       33      Vultures                   CREATURE
+0001 00010       34      Brother Long Legs          CREATURE
+0001 00011       35      Leviathans                 CREATURE
+0001 00100       36      Miros Birds                CREATURE
+0001 00101       37      Daddy Long Legs            CREATURE
+0001 00110       38      Vulture Grubs              CREATURE
+0001 00111       39      Looks To The Moon          ?
+0001 01000       40      Five Pebbles               ?
+0001 01001       41      Cyan Lizards               CREATURE
+0001 01010       42      King Vultures              CREATURE
+0001 01011       43      Red Centipedes             CREATURE
+
+              44-63      ERROR                      
+
+0010 00000       64      Shortcuts                  SHORTCUT
+0010 00001       65      Gate                       ?
+
+              66-95      ERROR                      
+
+0011 00000       96      Miros Vultures             CREATURE
+0011 00001       97      Mother Long Legs           CREATURE
+0011 00010       98      Inspectors                 CREATURE
+
+             99-127      ERROR                      
+
+0100 00000      128      Pearl                      ITEM
+0100 00001      129      Overseer Eye               ITEM
+
+            130-159      ERROR                      
+
+0101 00000      160      Singularity Bomb           ITEM // Deal with later
+0101 00001      161      Rarefaction Cell           ITEM
+0101 00010      162      Inspector Eye              ITEM
+
+            163-223      ERROR                      
+
+0111 00000      224      Train Warnings             OBJECT
+0111 00001      225      Hologram Advertisements    OBJECT
+0111 00010      226      Holograms (In General)     OBJECT
+0111 00011      227      Transformers               OBJECT
+
+            228-255      ERROR                      
+
+1000 00000      256      Dronemaster's Drones       ?
+        */
+
+        bool isCreature = false;
+        bool isObject = false;
+        bool isItem = false;
+        bool isShortcut = false;
+
+        string nearestObjectType = null;
+        Creature nearestCreature = null;
+        PhysicalObject nearestItem = null;
+        ShortcutData nearestShortcut = new ShortcutData();
+        PlacedObject nearestObject = null;
+        Vector2 nearestPosition = Vector2.zero;
+
+        if (arrow != null && arrow.room != null)
+        {
+            (nearestObjectType, nearestCreature, nearestItem, nearestShortcut, nearestObject, nearestPosition) = Utilities.DetermineObjectFromPosition(arrow.pos, arrow.room);
+
+            isCreature = nearestCreature != null;
+            isObject = nearestObject != null;
+            isItem = nearestItem != null;
+            isShortcut = nearestObjectType == "shortcut";
+
+
+            if (isCreature)
+            {
+                if (nearestCreature is Vulture && nearestCreature.Template.type == CreatureTemplate.Type.Vulture)
+                    return 33;
+                else if (nearestCreature is DaddyLongLegs && nearestCreature.Template.type == CreatureTemplate.Type.BrotherLongLegs)
+                    return 34;
+                else if (nearestCreature is BigEel)
+                    return 35;
+                else if (nearestCreature is MirosBird)
+                    return 36;
+                else if (nearestCreature is DaddyLongLegs)
+                    return 37;
+                else if (nearestCreature is VultureGrub)
+                    return 38;
+                else if (nearestCreature is Vulture && nearestCreature.Template.type == CreatureTemplate.Type.KingVulture)
+                    return 42;
+                else if (nearestCreature is Centipede && nearestCreature.Template.type == CreatureTemplate.Type.RedCentipede)
+                    return 43;
+                else if (nearestCreature is Vulture && nearestCreature.Template.type == MoreSlugcatsEnums.CreatureTemplateType.MirosVulture)
+                    return 96;
+                else if (nearestCreature is DaddyLongLegs && nearestCreature.Template.type == MoreSlugcatsEnums.CreatureTemplateType.TerrorLongLegs)
+                    return 97;
+                else if (nearestCreature is Inspector)
+                    return 98;
+
+            }
+            else if (isObject)
+            {
+                return 0; // Will deal with this later
+            }
+            else if (isItem && nearestItem is PlayerCarryableItem)
+            {
+                if (nearestItem is DataPearl)
+                {
+
+                }
+                else if (nearestItem is OverseerCarcass)
+                {
+
+                }
+                else if (nearestItem is SingularityBomb)
+                {
+
+                }
+                /*else if (nearestItem is OverseerCarcass && nearestItem.) // Gotta figure out how to tell vanilla overseer eyes from inspector eyes
+                {
+
+                }*/
+            }
+            else if (isShortcut)
+            {
+
+            }
+        }
+
+        return 0;
+    }
+
+    public static bool InRange(int x, int low, int high)
+    {
+        return x >= low && x <= high;
+    }
+
     public static float BinaryToFloat(int minValue, string chunk, List<float> values)
     {
         float result = 0;
