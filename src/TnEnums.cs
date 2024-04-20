@@ -2,6 +2,9 @@
 
 public static class TnEnums
 {
+    public readonly static SlugcatStats.Name Technomancer = new("technomancer");
+    public readonly static SlugcatStats.Name Voyager = new("voyager");
+
     public static void Init()
     {
         RuntimeHelpers.RunClassConstructor(typeof(CreatureType).TypeHandle);
