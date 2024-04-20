@@ -18,9 +18,11 @@ namespace Slugpack
             {
                 orig(self);
 
+                if (!self.player.IsTechy(out var scanline)) return;
+
                 if (self.player.Consious && self.objectLooker.currentMostInteresting != null && self.objectLooker.currentMostInteresting is Creature)
                 {
-                    var scanline = ScanLineMemory.GetOrCreateValue(self.player);
+                    //scanline = ScanLineMemory.GetOrCreateValue(self.player);
 
                     CreatureTemplate.Relationship relationship = self.player.abstractCreature.creatureTemplate.CreatureRelationship((self.objectLooker.currentMostInteresting as Creature).abstractCreature.creatureTemplate);
 
@@ -106,6 +108,11 @@ namespace Slugpack
             {
                 orig(self, sLeaser, rCam, timeStacker, camPos);
 
+                if (self.player.IsTechy(out var scanline))
+                {
+                    //Leave this empty, you have 2 slugcats here if you check for 1 the other one will miss the sprites 
+                }
+
                 string slug = self.player.slugcatStats.name.value;
                 if (!new List<string> { "voyager", "technomancer" }.Contains(slug))
                     return;
@@ -128,7 +135,7 @@ namespace Slugpack
                 if (sLeaser.sprites[3]?.element?.name is string text && text.StartsWith("Head"))
                     sLeaser.sprites[3].element = Futile.atlasManager.GetElementWithName("Fluff" + text);
 
-                var scanline = ScanLineMemory.GetOrCreateValue(self.player);
+                // scanline = ScanLineMemory.GetOrCreateValue(self.player);
 
                 scanline.screenPosition = new Vector2(((self.owner.abstractPhysicalObject.realizedObject as Creature).mainBodyChunk.pos.x - rCam.pos.x + 19) / 1400f, ((self.owner.abstractPhysicalObject.realizedObject as Creature).mainBodyChunk.pos.y - rCam.pos.y + 72) / 900f);
 

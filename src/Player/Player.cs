@@ -13,7 +13,7 @@ namespace Slugpack
 
         private static void Player_TerrainImpact(On.Player.orig_TerrainImpact orig, Player self, int chunk, RWCustom.IntVector2 direction, float speed, bool firstContact)
         {
-            if (self.IsTechy() && Constants.ScanLineMemory.TryGetValue(self, out var scanline) && scanline.stunImmune > 0)
+            if (self.IsTechy(out var scanline) && scanline.stunImmune > 0)
                 return; // No dying!!!
             orig(self, chunk, direction, speed, firstContact);
         }
@@ -33,7 +33,8 @@ namespace Slugpack
         private static void Player_checkInput(On.Player.orig_checkInput orig, Player self)
         {
             orig(self);
-            if (self != null && Constants.ScanLineMemory.TryGetValue(self, out var scanline))
+            if (!self.IsTechy(out var scanline)) return;
+            if (self != null)
             {
                 if (scanline.holdTime > Constants.timeReached)
                 {
@@ -93,7 +94,7 @@ namespace Slugpack
         {
             orig(self, eu);
 
-            if (!Null.Check(self, 1) || !(self.IsTechy() || self.IsVoyager())) return; // Return if null or not either slug
+            if (!Null.Check(self, 1) || !(self.IsTechy(out var scanline) || self.IsVoyager())) return; // Return if null or not either slug
 
             if (self.IsTechy()) goto Technomancer;
             if (self.IsVoyager()) goto Voyager;
@@ -101,8 +102,6 @@ namespace Slugpack
 
         Technomancer:
 
-            // Need to compact somehow
-            if (!Constants.ScanLineMemory.TryGetValue(self, out var scanline)) Constants.ScanLineMemory.Add(self, scanline = new ScanLine());
             bool ShadersAreValid = Constants.SlugpackShaders.TryGetValue(self.room.game.rainWorld, out var Shaders);
 
             // This too
@@ -147,7 +146,7 @@ namespace Slugpack
 
         private static void Player_ThrowObject(On.Player.orig_ThrowObject orig, Player self, int grasp, bool eu)
         {
-            if (Constants.ScanLineMemory.TryGetValue(self, out var scanline) && scanline.holdTime > Constants.timeReached)
+            if (self.IsTechy(out var scanline) && scanline.holdTime > Constants.timeReached)
             {
                 return;
             }

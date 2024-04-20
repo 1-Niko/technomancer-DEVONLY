@@ -13,7 +13,7 @@ namespace Slugpack
         public const int timeReached = 10;
 
 
-        public static ConditionalWeakTable<Player, ScanLine> ScanLineMemory = new();
+        //public static ConditionalWeakTable<Player, ScanLine> ScanLineMemory = new();
 
         public static ConditionalWeakTable<PlayerGraphics, GraphicsData> Graphics = new();
 

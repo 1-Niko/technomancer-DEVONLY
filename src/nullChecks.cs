@@ -12,9 +12,7 @@ public static class Null
 
         if (method == 1)
         {
-            Player checkObj = check as Player;
-
-            return checkObj != null && checkObj.room != null && checkObj.room.game != null;
+            return check is Player checkObj && checkObj.room != null && checkObj.room.game != null;
         }
         if (method == 2)
         {

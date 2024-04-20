@@ -96,13 +96,13 @@ public static class Utilities
         string nearestObjectType = null;
         Creature nearestCreature = null;
         PhysicalObject nearestItem = null;
-        ShortcutData nearestShortcut = new ShortcutData();
+        ShortcutData nearestShortcut = new();
         PlacedObject nearestObject = null;
         Vector2 nearestPosition = Vector2.zero;
 
         if (arrow != null && arrow.room != null)
         {
-            (nearestObjectType, nearestCreature, nearestItem, nearestShortcut, nearestObject, nearestPosition) = Utilities.DetermineObjectFromPosition(arrow.pos, arrow.room);
+            (nearestObjectType, nearestCreature, nearestItem, nearestShortcut, nearestObject, nearestPosition) = DetermineObjectFromPosition(arrow.pos, arrow.room);
 
             isCreature = nearestCreature != null;
             isObject = nearestObject != null;
@@ -112,9 +112,9 @@ public static class Utilities
 
             if (isCreature)
             {
-                if (nearestCreature is Vulture && nearestCreature.Template.type == CreatureTemplate.Type.Vulture)
+                if (nearestCreature is Vulture && nearestCreature.Template.type == CreatureType.Vulture)
                     return 33;
-                else if (nearestCreature is DaddyLongLegs && nearestCreature.Template.type == CreatureTemplate.Type.BrotherLongLegs)
+                else if (nearestCreature is DaddyLongLegs && nearestCreature.Template.type == CreatureType.BrotherLongLegs)
                     return 34;
                 else if (nearestCreature is BigEel)
                     return 35;
@@ -124,9 +124,9 @@ public static class Utilities
                     return 37;
                 else if (nearestCreature is VultureGrub)
                     return 38;
-                else if (nearestCreature is Vulture && nearestCreature.Template.type == CreatureTemplate.Type.KingVulture)
+                else if (nearestCreature is Vulture && nearestCreature.Template.type == CreatureType.KingVulture)
                     return 42;
-                else if (nearestCreature is Centipede && nearestCreature.Template.type == CreatureTemplate.Type.RedCentipede)
+                else if (nearestCreature is Centipede && nearestCreature.Template.type == CreatureType.RedCentipede)
                     return 43;
                 else if (nearestCreature is Vulture && nearestCreature.Template.type == MoreSlugcatsEnums.CreatureTemplateType.MirosVulture)
                     return 96;
@@ -333,7 +333,7 @@ public static class Utilities
             .ToList();
 
         var creatures = room.physicalObjects[1]
-            .Where(element => element as Creature is MirosBird or VultureGrub or Vulture or MoreSlugcats.Inspector or Overseer)
+            .Where(element => element as Creature is MirosBird or VultureGrub or Vulture or Inspector or Overseer)
             .Where(element => room.ViewedByAnyCamera((element as Creature).mainBodyChunk.pos, 0f))
             .Where(element => !(element as Creature).dead)
             .ToList();
@@ -527,7 +527,7 @@ public static class Utilities
         foreach (var creature in creatures)
         {
             if ((creature as Creature is MirosBird || creature as Creature is VultureGrub || creature as Creature is Vulture ||
-                creature as Creature is MoreSlugcats.Inspector || creature as Creature is Overseer) && room.ViewedByAnyCamera((creature as Creature).mainBodyChunk.pos, 0f) &&
+                creature as Creature is Inspector || creature as Creature is Overseer) && room.ViewedByAnyCamera((creature as Creature).mainBodyChunk.pos, 0f) &&
                 (!(creature as Creature).dead))
             {
                 NodeInfo.Add(new Node((creature as Creature).mainBodyChunk.pos, 2, 0, creature));

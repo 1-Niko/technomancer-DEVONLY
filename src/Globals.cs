@@ -15,6 +15,5 @@ global using CreatureType = CreatureTemplate.Type;
 global using Color = UnityEngine.Color;
 global using Random = UnityEngine.Random;
 
-#pragma warning disable CS0618 // ignore false message
 [module: UnverifiableCode]
 [assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]

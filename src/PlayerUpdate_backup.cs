@@ -7,9 +7,11 @@ internal static class BACKUP
     {
         orig(self, eu);
 
-        if (self != null && self.room != null && self.room.game != null && self.slugcatStats.name.ToString() == Constants.Technomancer)
+        if (!self.IsTechy(out var scanline)) return;
+
+        if (self != null && self.room != null && self.room.game != null)
         {
-            if (!Constants.ScanLineMemory.TryGetValue(self, out var scanline)) Constants.ScanLineMemory.Add(self, scanline = new ScanLine());
+            
 
             if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(self.room.game.rainWorld, out var Shaders))
                 Shaders.position = new Vector2((self.mainBodyChunk.pos.x) / (self.room.TileWidth * 20), self.mainBodyChunk.pos.y / (self.room.TileHeight * 20));
