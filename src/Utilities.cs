@@ -4,16 +4,6 @@ namespace Slugpack;
 
 public static class Utilities
 {
-    public static bool isTechnomancer(Player slug)
-    {
-        return SlugName(slug) == Constants.Technomancer;
-    }
-
-    public static string SlugName(Player slug)
-    {
-        return slug.slugcatStats.name.ToString();
-    }
-
     public static int Identify(SlugArrow arrow)
     {
         /*

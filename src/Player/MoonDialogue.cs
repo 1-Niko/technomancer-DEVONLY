@@ -9,7 +9,7 @@ namespace Slugpack
 
         private static void SSOracleBehavior_Update(On.SSOracleBehavior.orig_Update orig, SSOracleBehavior self, bool eu)
         {
-            if (self.oracle.room.game.Players.Any(i => i.realizedCreature is Player && (i.realizedCreature as Player).slugcatStats.name.ToString() == Constants.Technomancer) &&
+            if (self.oracle.room.game.Players.Any(i => i.realizedCreature is Player && (i.realizedCreature as Player).IsTechy()) &&
                 self.oracle.room.game.Players.Where(i => i.realizedCreature is Player).All(i => i.Room.name == "DM_AI"))
             {
                 orig(self, eu);

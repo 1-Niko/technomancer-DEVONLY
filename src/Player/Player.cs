@@ -15,14 +15,14 @@ namespace Slugpack
 
         private static void Player_TerrainImpact(On.Player.orig_TerrainImpact orig, Player self, int chunk, RWCustom.IntVector2 direction, float speed, bool firstContact)
         {
-            if (self.slugcatStats.name.ToString() == Constants.Technomancer && Constants.ScanLineMemory.TryGetValue(self, out var scanline) && scanline.stunImmune > 0)
+            if (self.IsTechy() && Constants.ScanLineMemory.TryGetValue(self, out var scanline) && scanline.stunImmune > 0)
                 return; // No dying!!!
             orig(self, chunk, direction, speed, firstContact);
         }
 
         private static bool Player_CanBeSwallowed(On.Player.orig_CanBeSwallowed orig, Player self, PhysicalObject testObj)
         {
-            if (self.slugcatStats.name.ToString() == Constants.Technomancer)
+            if (self.IsTechy())
             {
                 return false;
             }
@@ -94,8 +94,7 @@ namespace Slugpack
         private static void Player_Update(On.Player.orig_Update orig, Player self, bool eu)
         {
             orig(self, eu);
-
-            if (!Null.Check(self, 1) || !Utilities.isTechnomancer(self)) return; // Return if null or not techy
+            if (!Null.Check(self, 1) || !self.IsTechy()) return; // Return if null or not techy
 
             if (!Constants.ScanLineMemory.TryGetValue(self, out var scanline)) Constants.ScanLineMemory.Add(self, scanline = new ScanLine());
 

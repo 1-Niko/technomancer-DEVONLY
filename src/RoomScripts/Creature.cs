@@ -11,7 +11,7 @@ namespace Slugpack
 
         private static void Creature_SuckedIntoShortCut(On.Creature.orig_SuckedIntoShortCut orig, Creature self, RWCustom.IntVector2 entrancePos, bool carriedByOther)
         {
-            if (self is Player && (self as Player).slugcatStats.name.ToString() == Constants.Technomancer && Constants.ScanLineMemory.TryGetValue(self as Player, out var scanline) && (scanline.generatedIcons || scanline.roomController != null))
+            if (self is Player && (self as Player).IsTechy() && Constants.ScanLineMemory.TryGetValue(self as Player, out var scanline) && (scanline.generatedIcons || scanline.roomController != null))
             {
                 // Prevention of an NRE
                 self.enteringShortCut = null;
