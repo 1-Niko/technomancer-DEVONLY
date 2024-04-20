@@ -4,6 +4,16 @@ namespace Slugpack;
 
 public static class Utilities
 {
+    public static bool isTechnomancer(Player slug)
+    {
+        return SlugName(slug) == Constants.Technomancer;
+    }
+
+    public static string SlugName(Player slug)
+    {
+        return slug.slugcatStats.name.ToString();
+    }
+
     public static int Identify(SlugArrow arrow)
     {
         /*
@@ -111,26 +121,18 @@ public static class Utilities
             else if (isItem && nearestItem is PlayerCarryableItem)
             {
                 if (nearestItem is DataPearl)
-                {
-
-                }
+                    return 128;
                 else if (nearestItem is OverseerCarcass)
-                {
-
-                }
+                    return 129;
                 else if (nearestItem is SingularityBomb)
-                {
-
-                }
+                    return 160;
                 /*else if (nearestItem is OverseerCarcass && nearestItem.) // Gotta figure out how to tell vanilla overseer eyes from inspector eyes
                 {
-
+                    return 162;
                 }*/
             }
             else if (isShortcut)
-            {
-
-            }
+                return 64;
         }
 
         return 0;

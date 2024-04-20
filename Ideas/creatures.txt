@@ -1,0 +1,25 @@
+Guard (Past Green) Lizards:
+1. Too fat to go through pipes (except entity pipes)
+2. Slow when no threat present, but can go surprisingly quick when a threat is detected (Even through crawlspaces)
+3. Meant to guard from *incoming* intruders, so will ignore all sound from behind it (if it hasn't detected a threat yet)
+4. Will go between several points (objects) present in the room to guard (a point with a second point determining the look direction) if none are present it will continually wander (ignoring pipes)
+5. Will ignore Weldpedes (and will be ignored by them) (Make this easily editable, since they will be guarding other things in the future)
+6. If it spots a threat, it will growl loudly. This will get the attention of other Guard Lizards
+7. Guard Lizards do not feud with each other, but they also do not care about each other. They are simply focused on keeping their 'territory' safe
+8. If a Guard Lizard spots another lizard lazing around, it will bite at them to get them to get back to work
+9. If a Guard Lizard sees that another lizard is already guarding a spot, it will not attempt to guard the same spot
+A. If all spots in a room are currently being guarded by other lizards, a lizard will stop to watch the other creatures work
+B. Guard lizards are highly prized by their owners for their good work. They will be guilded in decorations based on their accomplishments and experience
+C. Larger Guard Lizards are older. They can be put to work alongside younger (smaller) lizards.
+D. "More Experienced" Guard Lizards will be more willing to force another younger lizard to get back to work, or to take its spot guarding
+E. Guard Lizards will stop whatever they're guarding from exiting the room by nipping at them (or gently carrying them back to their worksite)
+F. Guard Lizards will also "clean up" anything they find, carrying it back into their den (for disposal) this will not tame the guard lizard as they are fiercly loyal to their proper (ancient) owners
+
+Weldpede:
+1. A past variant of the Centipede
+2. Smaller Weldpedes will attempt to cling to larger weldpedes, this will make the larger's zaps stronger
+3. Weldpedes will go around zapping various points (object markers) around the room "maintaining" something
+4. Weldpedes will go into a frenzy if any other weldpedes are killed within their field of view and hunt whatever did it to the death (or until it escapes from the room)
+5. Weldpedes will tend to remain on ceilings, to keep out of the way of any machinery
+6. If a weldpede does not have enough zapping power for a specific point (specified by a setting on the point) it will go around collecting smaller weldpedes to accomplish the task
+7. Some weld points will only be done by smaller weldpedes, everyone gets put to work!

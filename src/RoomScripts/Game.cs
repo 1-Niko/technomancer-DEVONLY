@@ -35,22 +35,16 @@ internal static class GameHooks
 
         Constants.DamagedShortcuts.TryGetValue(self.game, out var ShortcutTable);
 
-        Plugin.DebugLog("LINE REACHED : 38");
         for (int i = self.transportVessels.Count - 1; i >= 0; i--)
         {
-            Plugin.DebugLog("LINE REACHED : 41");
             if (self.transportVessels[i].room.realizedRoom != null)
             {
-                Plugin.DebugLog("LINE REACHED : 44");
                 for (int j = 0; j < ShortcutTable.locks.Count; i++)
                 {
-                    Plugin.DebugLog("LINE REACHED : 47");
                     for (int k = 0; k < ShortcutTable.locks[j].Shortcuts.Length; k++)
                     {
-                        Plugin.DebugLog("LINE REACHED : 50");
                         if (self.transportVessels[i].pos == ShortcutTable.locks[j].Shortcuts[k].connection.StartTile)
                         {
-                            Plugin.DebugLog("LINE REACHED : 53");
                             // The fact that we are here at all means that the shortcut is in the locked list, so we don't need to check for that explicitly
                             runOrigHere = false;
                             Room realizedRoom = self.transportVessels[i].room.realizedRoom;
