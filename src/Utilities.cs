@@ -4,6 +4,38 @@ namespace Slugpack;
 
 public static class Utilities
 {
+    public static (float minimumDistance, float nearestHeight) closestTrainPosition(Player player)
+    {
+        List<TrainObject> trainPositions = [];
+
+        for (int i = 0; i < player.room.updateList.Count; i++)
+        {
+            if (player.room.updateList[i] is TrainObject)
+            {
+                trainPositions.Add((player.room.updateList[i] as TrainObject));
+            }
+        }
+
+        float minimumTrainDistance = float.MaxValue;
+        Vector2 closestTrainPos = Vector2.zero;
+        if (trainPositions.Count > 0)
+        {
+            for (int i = 0; i < trainPositions.Count; i++)
+            {
+                if (trainPositions[i].velocity > 50)
+                {
+                    float checkingDistance = RWCustom.Custom.Dist(trainPositions[i].pos, player.mainBodyChunk.pos);
+                    if (checkingDistance < minimumTrainDistance)
+                    {
+                        minimumTrainDistance = checkingDistance;
+                        closestTrainPos = trainPositions[i].pos;
+                    }
+                }
+            }
+        }
+        return (minimumTrainDistance, closestTrainPos.y);
+    }
+
     public static int Identify(SlugArrow arrow)
     {
         /*

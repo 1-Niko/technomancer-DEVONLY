@@ -16,6 +16,12 @@ public static class Null
 
             return checkObj != null && checkObj.room != null && checkObj.room.game != null;
         }
+        if (method == 2)
+        {
+            Player checkObj = check as Player;
+
+            return checkObj != null && checkObj.room != null && checkObj.room.updateList != null && checkObj.room.updateList.Count > 0;
+        }
 
         return false;
     }
