@@ -504,7 +504,6 @@ internal static class BACKUP
                 scanline.inputHoldThrw = !scanline.thrw;
                 scanline.inputHoldJmp = !scanline.jmp;
             }
-            Utilities.Identify(scanline.arrow);
         }
     }
 }

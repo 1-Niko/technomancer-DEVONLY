@@ -156,7 +156,30 @@ public class HighlightSprite : CosmeticSprite
         stepTimer++;
 
         if (Anchor is Creature)
+        {
             pos = (Anchor as Creature).mainBodyChunk.pos;
+            if ((Anchor as Creature) == null || (Anchor as Creature).slatedForDeletetion || (Anchor as Creature).dead)
+            {
+                MarkedForDeletion = true;
+            }
+        }
+
+        else if (Anchor is SSOracleSwarmer)
+        {
+            pos = (Anchor as PhysicalObject).firstChunk.pos;
+            if ((Anchor as SSOracleSwarmer) == null || (Anchor as SSOracleSwarmer).slatedForDeletetion)
+            {
+                MarkedForDeletion = true;
+            }
+        }
+        else if (Anchor is PlayerCarryableItem)
+        {
+            pos = (Anchor as PlayerCarryableItem).firstChunk.pos;
+            if ((Anchor as PlayerCarryableItem) == null || (Anchor as PlayerCarryableItem).slatedForDeletetion)
+            {
+                MarkedForDeletion = true;
+            }
+        }
 
         if (Connections.Count == 0)
             RegenerateConnections();

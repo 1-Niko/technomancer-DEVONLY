@@ -36,56 +36,58 @@ public static class Utilities
         return (minimumTrainDistance, closestTrainPos.y);
     }
 
-    public static int Identify(SlugArrow arrow)
+    public static int Identify(SlugArrow arrow, bool thrw, bool jmp, bool inputHoldThrw, bool inputHoldJmp)
     {
         /*
-0000 *****     0-31      ERROR
-
-0001 00000       32      Yellow Lizard              CREATURE // Don't know how to detect specific lizard types yet, if you can solve that that would be very helpful but I'm not dealing with it right now.
-0001 00001       33      Vultures                   CREATURE
-0001 00010       34      Brother Long Legs          CREATURE
-0001 00011       35      Leviathans                 CREATURE
-0001 00100       36      Miros Birds                CREATURE
-0001 00101       37      Daddy Long Legs            CREATURE
-0001 00110       38      Vulture Grubs              CREATURE
-0001 00111       39      Looks To The Moon          ?
-0001 01000       40      Five Pebbles               ?
-0001 01001       41      Cyan Lizards               CREATURE
-0001 01010       42      King Vultures              CREATURE
-0001 01011       43      Red Centipedes             CREATURE
-
-              44-63      ERROR                      
-
-0010 00000       64      Shortcuts                  SHORTCUT
-0010 00001       65      Gate                       ?
-
-              66-95      ERROR                      
-
-0011 00000       96      Miros Vultures             CREATURE
-0011 00001       97      Mother Long Legs           CREATURE
-0011 00010       98      Inspectors                 CREATURE
-
-             99-127      ERROR                      
-
-0100 00000      128      Pearl                      ITEM
-0100 00001      129      Overseer Eye               ITEM
-
-            130-159      ERROR                      
-
-0101 00000      160      Singularity Bomb           ITEM // Deal with later
-0101 00001      161      Rarefaction Cell           ITEM
-0101 00010      162      Inspector Eye              ITEM
-
-            163-223      ERROR                      
-
-0111 00000      224      Train Warnings             OBJECT
-0111 00001      225      Hologram Advertisements    OBJECT
-0111 00010      226      Holograms (In General)     OBJECT
-0111 00011      227      Transformers               OBJECT
-
-            228-255      ERROR                      
-
-1000 00000      256      Dronemaster's Drones       ?
+0000 *****      0-63    ERROR
+          	   
+0001 00000     64,65    Yellow Lizard              CREATURE // Don't know how to detect specific lizard types yet, if you can solve that that would be very helpful but I'm not dealing with it right now.
+0001 00001     66,67    Vultures                   CREATURE
+0001 00010     68,69    Brother Long Legs          CREATURE
+0001 00011     70,71    Leviathans                 CREATURE
+0001 00100     72,73    Miros Birds                CREATURE
+0001 00101     74,75    Daddy Long Legs            CREATURE
+0001 00110     76,77    Vulture Grubs              CREATURE
+0001 00111     78,79    Looks To The Moon          ?
+0001 01000     80,81    Five Pebbles               ?
+0001 01001     82,83    Cyan Lizards               CREATURE
+0001 01010     84,85    King Vultures              CREATURE
+0001 01011     86,87    Red Centipedes             CREATURE
+0001 01100     88,89    Overseer                   CREATURE
+0001 01101     90,91    Neuron                     CREATURE
+          	   
+              92-127    ERROR                      
+          	   
+0010 00000   128,129    Shortcuts                  SHORTCUT
+0010 00001   130,131    Gate                       ?
+          	   
+                        ERROR                      
+          	   
+0011 00000   192,193    Miros Vultures             CREATURE
+0011 00001   194,195    Mother Long Legs           CREATURE
+0011 00010   196,197    Inspectors                 CREATURE
+          	   
+                        ERROR                      
+          	   
+0100 00000   256,257    Pearl                      ITEM
+0100 00001   258,259    Overseer Eye               ITEM
+          	   
+                        ERROR                      
+          	   
+0101 00000   320,321    Singularity Bomb           ITEM // Deal with later
+0101 00001   322,323    Rarefaction Cell           ITEM
+0101 00010   324,325    Inspector Eye              ITEM
+          	   
+                        ERROR                      
+          	   
+0111 00000   448,449    Train Warnings             OBJECT
+0111 00001   450,451    Hologram Advertisements    OBJECT
+0111 00010   452,453    Holograms (In General)     OBJECT
+0111 00011   454,455    Transformers               OBJECT
+          	   
+                        ERROR                      
+          	   
+1000 00000   512,513    Dronemaster's Drones       ?
         */
 
         bool isCreature = false;
@@ -100,61 +102,80 @@ public static class Utilities
         PlacedObject nearestObject = null;
         Vector2 nearestPosition = Vector2.zero;
 
+        if (thrw && inputHoldThrw) return 0;
+        if (jmp && inputHoldJmp) return 0;
+
         if (arrow != null && arrow.room != null)
         {
             (nearestObjectType, nearestCreature, nearestItem, nearestShortcut, nearestObject, nearestPosition) = DetermineObjectFromPosition(arrow.pos, arrow.room);
 
             isCreature = nearestCreature != null;
-            isObject = nearestObject != null;
+            isObject = nearestObject != null && arrow._object != null;
             isItem = nearestItem != null;
             isShortcut = nearestObjectType == "shortcut";
 
 
+            if (nearestItem != null && nearestItem is SSOracleSwarmer)
+                return (thrw) ? 90 : (jmp) ? 91 : 0;
+
             if (isCreature)
             {
-                if (nearestCreature is Vulture && nearestCreature.Template.type == CreatureType.Vulture)
-                    return 33;
+                if (arrow.creature.stun != 0)
+                    return 0;
+
+                // Adding in the error condition here because it might be an option to add a third thing (if both inputs are held at the same time) if we want to later, for now though it's just going to throw the error condition
+                if (nearestCreature is Lizard && nearestCreature.Template.type == CreatureType.YellowLizard)
+                    return (thrw) ? 64 : (jmp) ? 65 : 0;
+                else if (nearestCreature is Vulture && nearestCreature.Template.type == CreatureType.Vulture)
+                    return (thrw) ? 66 : (jmp) ? 67 : 0;
                 else if (nearestCreature is DaddyLongLegs && nearestCreature.Template.type == CreatureType.BrotherLongLegs)
-                    return 34;
+                    return (thrw) ? 68 : (jmp) ? 69 : 0;
                 else if (nearestCreature is BigEel)
-                    return 35;
+                    return (thrw) ? 70 : (jmp) ? 71 : 0;
                 else if (nearestCreature is MirosBird)
-                    return 36;
+                    return (thrw) ? 72 : (jmp) ? 73 : 0;
                 else if (nearestCreature is DaddyLongLegs)
-                    return 37;
-                else if (nearestCreature is VultureGrub)
-                    return 38;
+                    return (thrw) ? 74 : (jmp) ? 75 : 0;
+                else if (nearestCreature is VultureGrub && (arrow.creature as VultureGrub).signalWaitCounter == 0 && (arrow.creature as VultureGrub).singalCounter == 0)
+                    return (thrw) ? 76 : (jmp) ? 77 : 0;
+
+                else if (nearestCreature is Lizard && nearestCreature.Template.type == CreatureType.CyanLizard)
+                    return (thrw) ? 82 : (jmp) ? 83 : 0;
                 else if (nearestCreature is Vulture && nearestCreature.Template.type == CreatureType.KingVulture)
-                    return 42;
+                    return (thrw) ? 84 : (jmp) ? 85 : 0;
                 else if (nearestCreature is Centipede && nearestCreature.Template.type == CreatureType.RedCentipede)
-                    return 43;
+                    return (thrw) ? 86 : (jmp) ? 87 : 0;
+                else if (nearestCreature is Overseer)
+                    return (thrw) ? 88 : (jmp) ? 89 : 0;
+
                 else if (nearestCreature is Vulture && nearestCreature.Template.type == MoreSlugcatsEnums.CreatureTemplateType.MirosVulture)
-                    return 96;
+                    return (thrw) ? 192 : (jmp) ? 193 : 0;
                 else if (nearestCreature is DaddyLongLegs && nearestCreature.Template.type == MoreSlugcatsEnums.CreatureTemplateType.TerrorLongLegs)
-                    return 97;
+                    return (thrw) ? 194 : (jmp) ? 195 : 0;
                 else if (nearestCreature is Inspector)
-                    return 98;
+                    return (thrw) ? 196 : (jmp) ? 197 : 0;
 
             }
             else if (isObject)
             {
-                return 0; // Will deal with this later
+                if (arrow._object.type.ToString() == "TrainBell")
+                    return (thrw) ? 448 : (jmp) ? 449 : 0;
+                else if (arrow._object.type.ToString() == "TrackHologram")
+                    return (thrw) ? 450 : (jmp) ? 451 : 0;
             }
             else if (isItem && nearestItem is PlayerCarryableItem)
             {
                 if (nearestItem is DataPearl)
-                    return 128;
+                    return (thrw) ? 256 : (jmp) ? 257 : 0;
                 else if (nearestItem is OverseerCarcass)
-                    return 129;
+                    return (thrw) ? 258 : (jmp) ? 259 : 0;
                 else if (nearestItem is SingularityBomb)
-                    return 160;
-                /*else if (nearestItem is OverseerCarcass && nearestItem.) // Gotta figure out how to tell vanilla overseer eyes from inspector eyes
-                {
-                    return 162;
-                }*/
+                    return (thrw) ? 320 : (jmp) ? 321 : 0;
+                else if (nearestItem is OverseerCarcass && (nearestItem.abstractPhysicalObject as OverseerCarcass.AbstractOverseerCarcass).InspectorMode)
+                    return (thrw) ? 324 : (jmp) ? 325 : 0;
             }
             else if (isShortcut)
-                return 64;
+                return (thrw) ? 128 : (jmp) ? 129 : 0;
         }
 
         return 0;
@@ -344,7 +365,7 @@ public static class Utilities
             .ToList();
 
         items.AddRange(room.physicalObjects[0]
-            .Where(element => element is SSOracleSwarmer)
+            .Where(element => element is SSOracleSwarmer && element != null && !(element as SSOracleSwarmer).slatedForDeletetion)
             .Where(element => room.ViewedByAnyCamera(element.firstChunk.pos, 0f))
             .ToList());
 
@@ -516,9 +537,9 @@ public static class Utilities
         // foreach (var shortcut in room.shortcuts.Where(element => element.LeadingSomewhere).ToList()) // Filters out the wack a mole holes and spawnpoints, but also selects exit pipes with no connection set
 
         // Use this one when shortcut support is added
-        // foreach (var shortcut in room.shortcuts.Where(element => (element.destNode != -1 && element.destNode < room.abstractRoom.connections.Length && room.abstractRoom.connections[element.destNode] != -1) || element.shortCutType == ShortcutData.Type.Normal).ToList())
+        foreach (var shortcut in room.shortcuts.Where(element => (element.destNode != -1 && element.destNode < room.abstractRoom.connections.Length && room.abstractRoom.connections[element.destNode] != -1) || element.shortCutType == ShortcutData.Type.Normal).ToList())
 
-        foreach (var shortcut in room.shortcuts.Where(element => element.destNode != -1).ToList())
+        //foreach (var shortcut in room.shortcuts.Where(element => element.destNode != -1).ToList())
         {
             NodeInfo.Add(new Node(room.MiddleOfTile(shortcut.StartTile), 1, 0, null));
             //room.MiddleOfTile(shortcut.StartTile), 1, 0, null));
@@ -536,6 +557,10 @@ public static class Utilities
         NodeInfo.AddRange(from item in items
                           where item as PlayerCarryableItem is DataPearl or OverseerCarcass
                           select new Node((item as PlayerCarryableItem).firstChunk.pos, 1, 0, item));
+
+        NodeInfo.AddRange(from _object in room.physicalObjects[0]
+                          where _object is SSOracleSwarmer && _object != null && !(_object as SSOracleSwarmer).slatedForDeletetion
+                          select new Node(_object.firstChunk.pos, 1, 0, _object as PhysicalObject));
 
         // There's a bug with these at the moment
         /*foreach (var _object in objects.Where(element => element.type.ToString() == "TrackHologram" || element.type.ToString() == "TrainBell"))
