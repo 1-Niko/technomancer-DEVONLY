@@ -1,3 +1,5 @@
+using UnityEngine.UIElements;
+
 namespace Slugpack
 {
     internal static class PlayerHooks
@@ -36,8 +38,10 @@ namespace Slugpack
             if (!self.IsTechy(out var scanline)) return;
             if (self != null)
             {
+                scanline.isHeld = false;
                 if (scanline.holdTime > Constants.timeReached)
                 {
+                    scanline.isHeld = true;
                     scanline.stunImmune = 10;
 
                     if (!scanline.roomControllerGenerated)
@@ -101,8 +105,16 @@ namespace Slugpack
 
             Technomancer:
 
-            // Need to compact somehow
             (self as Player).IsTechy(out var scanline);
+
+            if (scanline.isHeld && !scanline.isQueued)
+            {
+                scanline.queueThrw = scanline.thrw;
+                scanline.queueJmp = scanline.jmp;
+                scanline.isQueued = true;
+            }
+
+            // Need to compact somehow
             Constants.DamagedShortcuts.TryGetValue(self.room.game, out var ShortcutTable);
             bool ShadersAreValid = Constants.SlugpackShaders.TryGetValue(self.room.game.rainWorld, out var Shaders);
 
@@ -296,6 +308,15 @@ namespace Slugpack
             scanline.heldleft = scanline.x == -1;
             scanline.heldright = scanline.x == 1;
 
+            if (scanline.isQueued)
+            {
+                scanline.thrw = scanline.queueThrw;
+                scanline.jmp = scanline.queueJmp;
+                scanline.inputHoldThrw = false;
+                scanline.inputHoldJmp = false;
+                scanline.isQueued = false;
+            }
+
             // Each individual case needs to be compacted, but the overall system is good
             switch (Utilities.Identify(scanline.arrow, scanline.thrw, scanline.jmp, scanline.inputHoldThrw, scanline.inputHoldJmp))
             {
@@ -314,11 +335,7 @@ namespace Slugpack
                 // Vulture
                 case 66:
                     {
-                        for (int j = 0; j < 20; j++)
-                        {
-                            Vector2 a = RWCustom.Custom.RNV();
-                            self.room.AddObject(new Spark(scanline.arrow.creature.mainBodyChunk.pos + a * Random.value * 40f, a * Mathf.Lerp(4f, 30f, Random.value), new Color(0.9f, 0.9f, 1f), null, 4, 18));
-                        }
+                        Utilities.Spark(self.room, 20, scanline.arrow.creature.mainBodyChunk.pos, 4f, 30f, 4);
 
                         if (!Constants.VultureStuff.TryGetValue((scanline.arrow.creature as Vulture), out var vulturestuff))
                         { Constants.VultureStuff.Add((scanline.arrow.creature as Vulture), vulturestuff = new VultureStuff()); }
@@ -350,11 +367,7 @@ namespace Slugpack
                 case 72:
                     {
                         self.room.PlaySound(SoundID.Bomb_Explode, scanline.arrow.creature.mainBodyChunk.pos, 0.7f, 2.3f);
-                        for (int j = 0; j < 20; j++)
-                        {
-                            Vector2 a = RWCustom.Custom.RNV();
-                            self.room.AddObject(new Spark(scanline.arrow.creature.mainBodyChunk.pos + a * Random.value * 40f, a * Mathf.Lerp(4f, 30f, Random.value), new Color(0.9f, 0.9f, 1f), null, 4, 18));
-                        }
+                        Utilities.Spark(self.room, 20, scanline.arrow.creature.mainBodyChunk.pos, 4f, 30f, 4);
                         int temp = Random.Range(3, 5);
                         scanline.arrow.creature.stun = (temp * 40);
                         scanline.arrow.creature.blind = ((Random.Range(3, 5) + 1) * 40);
@@ -376,11 +389,7 @@ namespace Slugpack
                 case 76:
                     {
                         (scanline.arrow.creature as VultureGrub).InitiateSignal();
-                        for (int j = 0; j < 5; j++)
-                        {
-                            Vector2 a = RWCustom.Custom.RNV();
-                            self.room.AddObject(new Spark(scanline.arrow.creature.mainBodyChunk.pos + a * Random.value * 40f, a * Mathf.Lerp(4f, 12f, Random.value), new Color(0.9f, 0.9f, 1f), null, 4, 18));
-                        }
+                        Utilities.Spark(self.room, 5, scanline.arrow.creature.mainBodyChunk.pos, 4f, 12f, 4);
                     }
                     break;
                 case 77:
@@ -389,7 +398,35 @@ namespace Slugpack
 
                 // Cyan Lizards
                 case 82:
-                    { }
+                    {
+                        Utilities.Spark(self.room, 20, scanline.arrow.creature.mainBodyChunk.pos, 4f, 30f, 4);
+
+                        self.room.PlaySound(SoundID.Cyan_Lizard_Small_Jump, scanline.arrow.creature.mainBodyChunk.pos);
+                        Vector2 vector = self.room.MiddleOfTile((scanline.arrow.creature as Lizard).mainBodyChunk.pos);
+                        Vector2 b = (scanline.arrow.creature as Lizard).bodyChunks[2].pos - (scanline.arrow.creature as Lizard).bodyChunks[1].pos;
+                        for (int j = 0; j < (scanline.arrow.creature as Lizard).jumpModule.lizard.bodyChunks.Length; j++)
+                        {
+                            (scanline.arrow.creature as Lizard).jumpModule.lizard.bodyChunks[j].pos += b;
+                            (scanline.arrow.creature as Lizard).jumpModule.lizard.bodyChunks[j].vel = b * 100f;
+                        }
+                        if ((scanline.arrow.creature as Lizard).jumpModule.smoke == null)
+                        {
+                            (scanline.arrow.creature as Lizard).jumpModule.smoke = new Smoke.CyanLizardSmoke((scanline.arrow.creature as Lizard).jumpModule.room);
+                            (scanline.arrow.creature as Lizard).jumpModule.room.AddObject((scanline.arrow.creature as Lizard).jumpModule.smoke);
+                        }
+                        for (int k = 0; k < 7; k++)
+                        {
+                            (scanline.arrow.creature as Lizard).jumpModule.smoke.EmitSmoke(vector, -(scanline.arrow.creature as Lizard).jumpModule.actOnJump.bestJump.initVel * UnityEngine.Random.value * 0.5f + RWCustom.Custom.RNV() * Mathf.Lerp(6f, 23f, (scanline.arrow.creature as Lizard).jumpModule.actOnJump.bestJump.power), (scanline.arrow.creature as Lizard).jumpModule.lizard.graphicsModule as LizardGraphics, true, Mathf.Lerp(30f, 140f, (scanline.arrow.creature as Lizard).jumpModule.actOnJump.bestJump.power));
+                        }
+                        for (int l = (int)((scanline.arrow.creature as Lizard).jumpModule.actOnJump.bestJump.power * 10f * UnityEngine.Random.value); l >= 0; l--)
+                        {
+                            (scanline.arrow.creature as Lizard).jumpModule.room.AddObject(new LizardBubble((scanline.arrow.creature as Lizard).jumpModule.lizard.graphicsModule as LizardGraphics, 1f, 0f, (scanline.arrow.creature as Lizard).jumpModule.actOnJump.bestJump.power * 10f));
+                        }
+                        (scanline.arrow.creature as Lizard).jumpModule.room.AddObject(new LizardJumpModule.JumpLight(vector - (scanline.arrow.creature as Lizard).jumpModule.actOnJump.bestJump.initVel.normalized * 10f, (scanline.arrow.creature as Lizard).jumpModule.lizard.graphicsModule as LizardGraphics, (scanline.arrow.creature as Lizard).jumpModule.actOnJump.bestJump.power));
+                        (scanline.arrow.creature as Lizard).jumpModule.room.AddObject(new ShockWave(vector - (scanline.arrow.creature as Lizard).jumpModule.actOnJump.bestJump.initVel.normalized * 15f, Mathf.Lerp(40f, 120f, (scanline.arrow.creature as Lizard).jumpModule.actOnJump.bestJump.power), 0.07f, 6 + (int)((scanline.arrow.creature as Lizard).jumpModule.actOnJump.bestJump.power * 4f), false));
+
+                        (scanline.arrow.creature as Lizard).stun = 120;
+                    }
                     break;
                 case 83:
                     { }
@@ -398,11 +435,7 @@ namespace Slugpack
                 // King Vultures
                 case 84:
                     {
-                        for (int j = 0; j < 20; j++)
-                        {
-                            Vector2 a = RWCustom.Custom.RNV();
-                            self.room.AddObject(new Spark(scanline.arrow.creature.mainBodyChunk.pos + a * Random.value * 40f, a * Mathf.Lerp(4f, 30f, Random.value), new Color(0.9f, 0.9f, 1f), null, 4, 18));
-                        }
+                        Utilities.Spark(self.room, 20, scanline.arrow.creature.mainBodyChunk.pos, 4f, 30f, 4);
 
                         if (!Constants.VultureStuff.TryGetValue((scanline.arrow.creature as Vulture), out var vulturestuff))
                         { Constants.VultureStuff.Add((scanline.arrow.creature as Vulture), vulturestuff = new VultureStuff()); }
@@ -435,11 +468,7 @@ namespace Slugpack
                 // Neuron
                 case 90:
                     {
-                        for (int j = 0; j < 20; j++)
-                        {
-                            Vector2 a = RWCustom.Custom.RNV();
-                            self.room.AddObject(new Spark((scanline.arrow.pos/* - new Vector2(0f, (scanline.arrow.item == null) ? 35f : 15f)*/) + a * Random.value * 40f, a * Mathf.Lerp(4f, 5f, Random.value), new Color(0.9f, 0.9f, 1f), null, 4, 18));
-                        }
+                        Utilities.Spark(self.room, 20, scanline.arrow.pos, 4f, 5f, 4);
                         self.room.AddObject(new Explosion(self.room, scanline.arrow.item, scanline.arrow.item.firstChunk.pos, 20, 80f, 70f, 0.2f, 2f, 0f, null, 0f, 0.1f, 4f));
                         self.room.PlaySound(SoundID.Bomb_Explode, scanline.arrow.item.firstChunk.pos);
 
@@ -507,11 +536,7 @@ namespace Slugpack
                                         self.room.AddObject(hologramArray[0]);
                                         abstractRoom.realizedRoom.AddObject(hologramArray[1]);
 
-                                        for (int j = 0; j < 20; j++)
-                                        {
-                                            Vector2 a = RWCustom.Custom.RNV();
-                                            self.room.AddObject(new Spark(scanline.arrow.pos/* - new Vector2(0f, 35f)*/ + a * Random.value * 40f, a * Mathf.Lerp(4f, 30f, Random.value), new Color(0.9f, 0.9f, 1f), null, 16, 18));
-                                        }
+                                        Utilities.Spark(self.room, 20, scanline.arrow.pos, 4f, 30f, 16);
 
                                         success = true;
                                     }
@@ -562,11 +587,7 @@ namespace Slugpack
                 // Miros Vultures
                 case 192:
                     {
-                        for (int j = 0; j < 20; j++)
-                        {
-                            Vector2 a = RWCustom.Custom.RNV();
-                            self.room.AddObject(new Spark(scanline.arrow.creature.mainBodyChunk.pos + a * Random.value * 40f, a * Mathf.Lerp(4f, 30f, Random.value), new Color(0.9f, 0.9f, 1f), null, 4, 18));
-                        }
+                        Utilities.Spark(self.room, 20, scanline.arrow.creature.mainBodyChunk.pos, 4f, 30f, 4);
 
                         if (!Constants.VultureStuff.TryGetValue((scanline.arrow.creature as Vulture), out var vulturestuff))
                         { Constants.VultureStuff.Add((scanline.arrow.creature as Vulture), vulturestuff = new VultureStuff()); }
@@ -604,15 +625,11 @@ namespace Slugpack
                         for (int i = 0; i < self.bodyChunks.Length; i++)
                             scanline.slugVector[i] = self.bodyChunks[i].vel;
 
-                        float explosionRadius = 80f;
+                        float explosionRadius = 135f;
                         Vector2 pearlPosition = scanline.arrow.item.firstChunk.pos;
 
-                        for (int j = 0; j < 20; j++)
-                        {
-                            Vector2 a = RWCustom.Custom.RNV();
-                            self.room.AddObject(new Spark((scanline.arrow.pos/* - new Vector2(0f, (scanline.arrow.item == null) ? 35f : 15f)*/) + a * Random.value * 40f, a * Mathf.Lerp(4f, 5f, Random.value), new Color(0.9f, 0.9f, 1f), null, 4, 18));
-                        }
-                        self.room.AddObject(new Explosion(self.room, scanline.arrow.item, scanline.arrow.item.firstChunk.pos, 20, explosionRadius, 70f, 0.2f, 2f, 0f, null, 0f, 0.1f, 4f));
+                        Utilities.Spark(self.room, 20, scanline.arrow.pos, 4f, 5f, 4);
+                        self.room.AddObject(new Explosion(self.room, scanline.arrow.item, scanline.arrow.item.firstChunk.pos, 20, explosionRadius, 150f, 2.4f, 5f, 0f, null, 0f, 0.7f, 4f));
                         self.room.PlaySound(SoundID.Bomb_Explode, scanline.arrow.item.firstChunk.pos);
 
                         scanline.arrow.item.RemoveFromRoom();
@@ -629,11 +646,7 @@ namespace Slugpack
                 // Overseer Eye
                 case 258:
                     {
-                        for (int j = 0; j < 20; j++)
-                        {
-                            Vector2 a = RWCustom.Custom.RNV();
-                            self.room.AddObject(new Spark((scanline.arrow.pos/* - new Vector2(0f, (scanline.arrow.item == null) ? 35f : 15f)*/) + a * Random.value * 40f, a * Mathf.Lerp(4f, 5f, Random.value), new Color(0.9f, 0.9f, 1f), null, 4, 18));
-                        }
+                        Utilities.Spark(self.room, 20, scanline.arrow.pos, 4f, 5f, 4);
                         self.room.AddObject(new Explosion(self.room, scanline.arrow.item, scanline.arrow.item.firstChunk.pos, 20, 80f, 70f, 0.2f, 2f, 0f, null, 0f, 0.1f, 4f));
                         self.room.PlaySound(SoundID.Bomb_Explode, scanline.arrow.item.firstChunk.pos);
 
@@ -667,11 +680,7 @@ namespace Slugpack
                 // Inspector Eye
                 case 324:
                     {
-                        for (int j = 0; j < 20; j++)
-                        {
-                            Vector2 a = RWCustom.Custom.RNV();
-                            self.room.AddObject(new Spark((scanline.arrow.pos/* - new Vector2(0f, (scanline.arrow.item == null) ? 35f : 15f)*/) + a * Random.value * 40f, a * Mathf.Lerp(4f, 5f, Random.value), new Color(0.9f, 0.9f, 1f), null, 4, 18));
-                        }
+                        Utilities.Spark(self.room, 20, scanline.arrow.pos, 4f, 5f, 4);
                         self.room.AddObject(new Explosion(self.room, scanline.arrow.item, scanline.arrow.item.firstChunk.pos, 20, 80f, 70f, 0.2f, 2f, 0f, null, 0f, 0.1f, 4f));
                         self.room.PlaySound(SoundID.Bomb_Explode, scanline.arrow.item.firstChunk.pos);
 
@@ -699,11 +708,7 @@ namespace Slugpack
                     {
                         float explosionRadius = 80f;
 
-                        for (int j = 0; j < 20; j++)
-                        {
-                            Vector2 a = RWCustom.Custom.RNV();
-                            self.room.AddObject(new Spark(scanline.arrow.pos/* - new Vector2(0f, 35f)*/ + a * Random.value * 40f, a * Mathf.Lerp(14f, 20f, Random.value), new Color(0.9f, 0.9f, 1f), null, 4, 18));
-                        }
+                        Utilities.Spark(self.room, 20, scanline.arrow.pos, 14f, 20f, 4);
                         self.room.AddObject(new Explosion(self.room, null, scanline.arrow._object.pos, 20, explosionRadius, 70f, 0.2f, 2f, 0f, null, 0f, 0.1f, 4f));
                         self.room.PlaySound(SoundID.Bomb_Explode, scanline.arrow._object.pos);
                         self.room.PlaySound(SoundID.Zapper_Zap, scanline.arrow._object.pos);

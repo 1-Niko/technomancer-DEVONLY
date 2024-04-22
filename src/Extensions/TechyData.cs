@@ -8,6 +8,11 @@ public class TechyData
 
     //ScanLine Data
 
+    public bool queueThrw;
+    public bool queueJmp;
+    public bool isQueued;
+
+    public bool isHeld;
     public int holdTime;
     public Vector2 position;
     public SlugArrow arrow;

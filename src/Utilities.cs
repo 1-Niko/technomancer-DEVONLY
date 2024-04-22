@@ -4,6 +4,15 @@ namespace Slugpack;
 
 public static class Utilities
 {
+    public static void Spark(Room room, int spark_count, Vector2 position, float lerpA, float lerpB, int lifetime)
+    {
+        for (int j = 0; j < spark_count; j++)
+        {
+            Vector2 a = RWCustom.Custom.RNV();
+            room.AddObject(new Spark(position + a * Random.value * 40f, a * Mathf.Lerp(lerpA, lerpB, Random.value), new Color(0.9f, 0.9f, 1f), null, lifetime, 18));
+        }
+    }
+
     public static (float minimumDistance, float nearestHeight) closestTrainPosition(Player player)
     {
         List<TrainObject> trainPositions = [];
@@ -354,7 +363,7 @@ public static class Utilities
             .ToList();
 
         var creatures = room.physicalObjects[1]
-            .Where(element => element as Creature is MirosBird or VultureGrub or Vulture or Inspector or Overseer)
+            .Where(element => (element as Creature is MirosBird or VultureGrub or Vulture or Inspector or Overseer) || (element is Lizard && (((element as Creature).Template.type == CreatureType.YellowLizard) || ((element as Creature).Template.type == CreatureType.CyanLizard))))
             .Where(element => room.ViewedByAnyCamera((element as Creature).mainBodyChunk.pos, 0f))
             .Where(element => !(element as Creature).dead)
             .ToList();
@@ -549,7 +558,7 @@ public static class Utilities
         {
             if ((creature as Creature is MirosBird || creature as Creature is VultureGrub || creature as Creature is Vulture ||
                 creature as Creature is Inspector || creature as Creature is Overseer) && room.ViewedByAnyCamera((creature as Creature).mainBodyChunk.pos, 0f) &&
-                (!(creature as Creature).dead))
+                (!(creature as Creature).dead) || (creature is Lizard && (((creature as Creature).Template.type == CreatureType.YellowLizard) || ((creature as Creature).Template.type == CreatureType.CyanLizard))))
             {
                 NodeInfo.Add(new Node((creature as Creature).mainBodyChunk.pos, 2, 0, creature));
             }

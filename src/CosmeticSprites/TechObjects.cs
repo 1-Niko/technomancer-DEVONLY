@@ -161,6 +161,7 @@ public class HighlightSprite : CosmeticSprite
             if ((Anchor as Creature) == null || (Anchor as Creature).slatedForDeletetion || (Anchor as Creature).dead)
             {
                 MarkedForDeletion = true;
+                RegenerateConnections();
             }
         }
 
@@ -170,6 +171,7 @@ public class HighlightSprite : CosmeticSprite
             if ((Anchor as SSOracleSwarmer) == null || (Anchor as SSOracleSwarmer).slatedForDeletetion)
             {
                 MarkedForDeletion = true;
+                RegenerateConnections();
             }
         }
         else if (Anchor is PlayerCarryableItem)
@@ -178,6 +180,7 @@ public class HighlightSprite : CosmeticSprite
             if ((Anchor as PlayerCarryableItem) == null || (Anchor as PlayerCarryableItem).slatedForDeletetion)
             {
                 MarkedForDeletion = true;
+                RegenerateConnections();
             }
         }
 
