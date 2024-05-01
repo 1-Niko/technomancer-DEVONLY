@@ -13,6 +13,38 @@ public static class Utilities
         }
     }
 
+    public static float closestTrainPosition(Vector2 position, Room room)
+    {
+        List<TrainObject> trainPositions = [];
+
+        for (int i = 0; i < room.updateList.Count; i++)
+        {
+            if (room.updateList[i] is TrainObject)
+            {
+                trainPositions.Add((room.updateList[i] as TrainObject));
+            }
+        }
+
+        float minimumTrainDistance = float.MaxValue;
+        Vector2 closestTrainPos = Vector2.zero;
+        if (trainPositions.Count > 0)
+        {
+            for (int i = 0; i < trainPositions.Count; i++)
+            {
+                if (trainPositions[i].velocity > 50)
+                {
+                    float checkingDistance = RWCustom.Custom.Dist(trainPositions[i].pos, position);
+                    if (checkingDistance < minimumTrainDistance)
+                    {
+                        minimumTrainDistance = checkingDistance;
+                        closestTrainPos = trainPositions[i].pos;
+                    }
+                }
+            }
+        }
+        return minimumTrainDistance;
+    }
+
     public static (float minimumDistance, float nearestHeight) closestTrainPosition(Player player)
     {
         List<TrainObject> trainPositions = [];
@@ -378,10 +410,24 @@ public static class Utilities
             .Where(element => room.ViewedByAnyCamera(element.firstChunk.pos, 0f))
             .ToList());
 
-        var objects = room.roomSettings.placedObjects
-            .Where(element => element.type.ToString() is "TrackHologram" or "TrainBell")
-            .Where(element => room.ViewedByAnyCamera(element.pos, 0f))
-            .ToList();
+        /*var objects = room.roomSettings.placedObjects
+            .Where(element => element.type.ToString() is "TrackHologram")
+            .Where(element => room.ViewedByAnyCamera((element.data as TrackHologramData).handle[1], 0f))
+            .ToList();*/
+
+        var objects = new List<PlacedObject>();
+        foreach (var element in room.roomSettings.placedObjects)
+        {
+            if (element.type.ToString() == "TrackHologram")
+            {
+                var hologramData = element.data as TrackHologramData;
+
+                if (hologramData != null && room.ViewedByAnyCamera(element.pos + hologramData.handle[1], 0f))
+                {
+                    objects.Add(element);
+                }
+            }
+        }
 
         return (positions, creatures, items, objects);
     }
@@ -550,7 +596,7 @@ public static class Utilities
 
         //foreach (var shortcut in room.shortcuts.Where(element => element.destNode != -1).ToList())
         {
-            NodeInfo.Add(new Node(room.MiddleOfTile(shortcut.StartTile), 1, 0, null));
+            NodeInfo.Add(new Node(room.MiddleOfTile(shortcut.StartTile), 1, 0, null, null));
             //room.MiddleOfTile(shortcut.StartTile), 1, 0, null));
         }
 
@@ -560,22 +606,22 @@ public static class Utilities
                 creature as Creature is Inspector || creature as Creature is Overseer) && room.ViewedByAnyCamera((creature as Creature).mainBodyChunk.pos, 0f) &&
                 (!(creature as Creature).dead) || (creature is Lizard && (((creature as Creature).Template.type == CreatureType.YellowLizard) || ((creature as Creature).Template.type == CreatureType.CyanLizard))))
             {
-                NodeInfo.Add(new Node((creature as Creature).mainBodyChunk.pos, 2, 0, creature));
+                NodeInfo.Add(new Node((creature as Creature).mainBodyChunk.pos, 2, 0, creature, null));
             }
         }
         NodeInfo.AddRange(from item in items
                           where item as PlayerCarryableItem is DataPearl or OverseerCarcass
-                          select new Node((item as PlayerCarryableItem).firstChunk.pos, 1, 0, item));
+                          select new Node((item as PlayerCarryableItem).firstChunk.pos, 1, 0, item, null));
 
         NodeInfo.AddRange(from _object in room.physicalObjects[0]
                           where _object is SSOracleSwarmer && _object != null && !(_object as SSOracleSwarmer).slatedForDeletetion
-                          select new Node(_object.firstChunk.pos, 1, 0, _object as PhysicalObject));
+                          select new Node(_object.firstChunk.pos, 1, 0, _object as PhysicalObject, null));
 
         // There's a bug with these at the moment
-        /*foreach (var _object in objects.Where(element => element.type.ToString() == "TrackHologram" || element.type.ToString() == "TrainBell"))
+        foreach (var _object in objects.Where(element => element.type.ToString() == "TrackHologram"))// || element.type.ToString() == "TrainBell"))
         {
-            NodeInfo.Add(new DataStructures.Node(_object.pos, 3, 0, null));
-        }*/
+            NodeInfo.Add(new Node(_object.pos + (_object.data as TrackHologramData).handle[1], 3, 0, null, _object));
+        }
 
         return NodeInfo;
     }
@@ -724,6 +770,12 @@ public static class Utilities
         Shader target = bundle.LoadAsset<Shader>($"assets/{shortName}.shader");
         //DebugLog($"Implementing shader \"{shortName}\" into Futile...");
         return FShader.CreateShader(shortName, target);
+    }
+
+    public static Vector2 Lerp(Vector2 start, Vector2 end, float t)
+    {
+        t = Mathf.Clamp(t, 0f, 1f); // Ensure t is within the range [0, 1]
+        return start + ((end - start) * t);
     }
 
     public static Vector4 Lerp(Vector4 start, Vector4 end, float t)

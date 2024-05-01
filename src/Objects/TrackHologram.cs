@@ -5,65 +5,218 @@ namespace Slugpack
 {
     public class TrackHologramData(PlacedObject owner) : ManagedData(owner, null)
     {
-        // [Vector2Field("size", 100, 100, Vector2Field.VectorReprType.rect)]
-        // public Vector2 size;
-
-        // [ExtEnumField<EyeMode>("eyeMode", nameof(EyeMode.Closed), new[] { nameof(EyeMode.Closed), nameof(EyeMode.Stunned), nameof(EyeMode.Dead), nameof(EyeMode.ReverseBlink), nameof(EyeMode.CustomBlink) }, displayName: "Eye Mode")]
-        // public EyeMode mode;
-
-        // [FloatField("customFrequency", 0, 1, 0.5f, 0.01f, displayName: "Custom Frequency")]
-        // public float customFrequency;
-
-        // [IntegerField("customDurationMin", 0, 400, 3, control: ManagedFieldWithPanel.ControlType.text, displayName: "Custom Duration Min")]
-        // public int customDurationMin;
-
-        // [IntegerField("customDurationMax", 0, 400, 10, control: ManagedFieldWithPanel.ControlType.text, displayName: "Custom Duration Max")]
-        // public int customDurationMax;
-
-        // [FloatField("beforeCycle", 0, 1, 0, 0.01f, displayName: "Before Cycle")]
-        // public float beforeCycle;
-
-        // [FloatField("afterCycle", 0, 1, 0, 0.01f, displayName: "After Cycle")]
-        // public float afterCycle;
-
-        [Vector2ArrayField("handles", 5, true, Vector2ArrayRepresentationType.Polygon, new float[10] { 0, 0, -100, 100, 100, 100, 100, 160, 100, 100 })]
-        public Vector2[] handles;
-
         [Vector2Field("radius", 50, -50, Vector2Field.VectorReprType.circle)]
         public Vector2 rad;
 
-        [IntegerField("hologram", 0, 2, 0, ManagedFieldWithPanel.ControlType.arrows, displayName: "Hologram")]
-        public int hologram;
+        [Vector2ArrayField("handle", 2, true, Vector2ArrayRepresentationType.Chain, new float[4] { 0, 0, 20, 60 })]
+        public Vector2[] handle;
+
+        [Vector2ArrayField("position", 2, true, Vector2ArrayRepresentationType.Chain, new float[4] { 0, 0, -100, 0 })]
+        public Vector2[] hologramPosition;
+
+        [IntegerField("A", 0, 2, 0, ManagedFieldWithPanel.ControlType.arrows, displayName: "Hologram Index")]
+        public int index;
     }
 
-    public class Hologram(string value, bool register = false) : ExtEnum<Hologram>(value, register)
+    public class TrackHologram(PlacedObject placedObject, Room room) : UpdatableAndDeletable
     {
-        public static readonly Hologram None = new(nameof(None), true);
+        public override void Update(bool eu)
+        {
+            base.Update(eu);
+
+            if (hologramSprite == null)
+            {
+                hologramSprite = new TrackHologramObject(placedObject, placedObject.pos);
+                room.AddObject(hologramSprite);
+            }
+
+            hologramSprite.pos = placedObject.pos;
+            hologramSprite.rad = (placedObject.data as TrackHologramData).rad;
+            hologramSprite.index = (placedObject.data as TrackHologramData).index;
+            hologramSprite.position = (placedObject.data as TrackHologramData).hologramPosition[1];
+
+            bool playerInRange = false;
+            float distance = RWCustom.Custom.Dist(Vector2.zero, (placedObject.data as TrackHologramData).rad);
+
+            foreach (var player in room.world.game.Players)
+            {
+                if (player != null && player.Room.realizedRoom == room)
+                {
+                    Vector2 averageBodyChunkPosition = Vector2.zero;
+                    foreach (var bodyChunk in (player.realizedCreature as Player).bodyChunks)
+                    {
+                        averageBodyChunkPosition += bodyChunk.pos;
+                    }
+                    averageBodyChunkPosition /= (player.realizedCreature as Player).bodyChunks.Length;
+
+                    float playerDistance = RWCustom.Custom.Dist(averageBodyChunkPosition, placedObject.pos);
+
+                    playerInRange = playerInRange || playerDistance < distance;
+                }
+            }
+
+            bool trainInRange = Utilities.closestTrainPosition(placedObject.pos, room) < distance * 2;
+            bool trainInFlickerRange = Utilities.closestTrainPosition(placedObject.pos, room) < distance * 4;
+
+            if (trainInFlickerRange)
+                hologramSprite.flickering = true;
+
+            if (trainInRange)
+            {
+                hologramSprite.disabled = true;
+                hologramSprite.trainCountdown = 90;
+            }
+
+            hologramSprite.enabled = playerInRange && !trainInRange;
+        }
+        private TrackHologramObject hologramSprite;
     }
 
-    /*public class ForcedEyePlayerData
+    public class TrackHologramObject(PlacedObject placedObject, Vector2 pos) : CosmeticSprite
     {
-        public bool eu;
-        public int customBlink;
-        public float frequency;
-        public int durationMin;
-        public int durationMax;
+        private readonly PlacedObject placedObject = placedObject;
 
-        private static readonly ConditionalWeakTable<PlayerGraphics, ForcedEyePlayerData> _cwt = new();
-
-        public static ForcedEyePlayerData Get(PlayerGraphics pg) => _cwt.GetValue(pg, _ => new());
-    }*/
-
-    public class TrackHologramObject(PlacedObject placedObject, Room room) : UpdatableAndDeletable
-    {
-        public static void Apply()
+        public override void Update(bool eu)
         {
-            // On.PlayerGraphics.Update += PlayerGraphics_Update;
+            base.Update(eu);
+            stepTimer++;
+            trainCountdown = Mathf.Max(0, trainCountdown - 1);
+
+            if (!Constants.TrackHologramMessage.TryGetValue(placedObject, out var messenger)) Constants.TrackHologramMessage.Add(placedObject, messenger = new WeakTables.TrackHologramMessenger());
+
+            if (!messenger.playerInteracted)
+            {
+                if (trainCountdown < 18 && trainCountdown != 0)
+                {
+                    disabled = false;
+                    flickering = true;
+                }
+                else if (trainCountdown == 0)
+                {
+                    flickering = false;
+                    messenger.onCooldown = false;
+                }
+            }
+            else
+            {
+                if (!messenger.onCooldown)
+                {
+                    disabled = true;
+                    trainCountdown = 120;
+                    messenger.onCooldown = true;
+                    
+                    forceHidden = false;
+                }
+                else if (trainCountdown == 0)
+                {
+                    messenger.playerInteracted = false;
+                    trainCountdown = 19;
+                }
+            }
         }
 
-        public static void Undo()
+        public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
-            // On.PlayerGraphics.Update -= PlayerGraphics_Update;
+            base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
+
+            switch (index)
+            {
+                case 0:
+                    sLeaser.sprites[0].element = Futile.atlasManager.GetElementWithName("EntranceSign");
+                    sLeaser.sprites[0].color = Utilities.HexToColor("FFFF69");
+                    break;
+                case 1:
+                    sLeaser.sprites[0].element = Futile.atlasManager.GetElementWithName("WarningSign");
+                    sLeaser.sprites[0].color = Utilities.ColourFade(new Vector4(1f, 0f, 0f, 1f), new Vector4(1f, 1f, 1f, 1f), (-Mathf.Cos(3.141f * ((float)stepTimer / 10f) / 4) + 1) / 2);
+                    break;
+                case 2:
+                    int time = 20;
+
+                    // This one won't be used on the tracks so it's fine
+
+                    if (trainCountdown > 0)
+                    {
+                        sLeaser.sprites[0].element = Futile.atlasManager.GetElementWithName("ExitSign_3");
+                        stepTimer = time * 4;
+                    }
+                    else
+                    {
+
+                        switch ((stepTimer / time) % 5)
+                        {
+                            case 0:
+                                forceHidden = true;
+                                break;
+                            case 1:
+                                forceHidden = false;
+                                sLeaser.sprites[0].element = Futile.atlasManager.GetElementWithName("ExitSign_0");
+                                break;
+                            case 2:
+                                sLeaser.sprites[0].element = Futile.atlasManager.GetElementWithName("ExitSign_1");
+                                break;
+                            case 3:
+                                sLeaser.sprites[0].element = Futile.atlasManager.GetElementWithName("ExitSign_2");
+                                break;
+                            case 4:
+                                sLeaser.sprites[0].element = Futile.atlasManager.GetElementWithName("ExitSign_3");
+                                break;
+                        }
+                    }
+                    sLeaser.sprites[0].color = new UnityEngine.Color(1f, 0f, 0f); // Utilities.ColourFade(new Vector4(1f, 0f, 0f, 1f), new Vector4(1f, 1f, 1f, 0f), (-Mathf.Cos(3.141f * ((float)stepTimer / 10f) / 2) + 1) / 2);
+                    break;
+            }
+
+            sLeaser.sprites[0].isVisible = (!disabled && ((enabled && !flickering) || (enabled && flickering && stepTimer % 4 == 0))) && !forceHidden;
+
+            sLeaser.sprites[0].SetPosition(pos + position - rCam.pos);
+            sLeaser.sprites[0].scaleX = 1f;
+            sLeaser.sprites[0].scaleY = 1f;
+            sLeaser.sprites[0].anchorX = 0f;
+            sLeaser.sprites[0].anchorY = 0f;
+
+            if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var Shaders))
+            {
+                sLeaser.sprites[0].shader = rCam.room.game.rainWorld.Shaders["Hologram"];
+            }
         }
+
+        public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
+        {
+            sLeaser.sprites = new FSprite[1];
+
+            sLeaser.sprites[0] = new FSprite("pixel", true);
+
+            AddToContainer(sLeaser, rCam, null);
+        }
+
+        public override void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
+        {
+            newContatiner ??= rCam.ReturnFContainer("Foreground");
+            foreach (FSprite fsprite in sLeaser.sprites)
+            {
+                fsprite.RemoveFromContainer();
+                newContatiner.AddChild(fsprite);
+            }
+        }
+
+        public Vector2 rad;
+
+        public Vector2 position;
+
+        public string hex;
+
+        public int index;
+
+        public int stepTimer = 0;
+
+        public bool enabled = true;
+
+        public bool disabled = false;
+
+        public int trainCountdown = 0;
+
+        public bool flickering = false;
+
+        public bool forceHidden = false;
     }
 }

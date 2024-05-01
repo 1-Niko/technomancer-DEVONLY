@@ -76,7 +76,7 @@ public class RoomController : CosmeticSprite
             {
                 // going to have to make something to allow for nodes to track their parent object
                 // at least the functionality for the connections is already in place
-                HighlightSprite node = new(nodeData[i].Position, nodeData[i].Level, nodeData[i].Protection, room, this, nodeData[i].Anchor);
+                HighlightSprite node = new(nodeData[i].Position, nodeData[i].Level, nodeData[i].Protection, room, this, nodeData[i].Anchor, nodeData[i].ObjectAnchor);
                 Nodes.Add(node);
                 room.AddObject(node);
                 addedNodes++;
@@ -113,13 +113,14 @@ public class HighlightSprite : CosmeticSprite
     public float Age { get; }
     public int ConnectionCount { get; set; }
     public PhysicalObject Anchor { get; }
+    public PlacedObject ObjectAnchor { get; }
     public bool MarkedForDeletion { get; set; }
     public RoomController Owner { get; }
     public Dictionary<HighlightSprite, ConnectingLine> ConnectionTable { get; }
     public bool IsSmall { get; set; }
     public bool Selected { get; set; }
 
-    public HighlightSprite(Vector2 pos, int nodeLevel, int protectionLevels, Room room, RoomController owner, PhysicalObject anchor)
+    public HighlightSprite(Vector2 pos, int nodeLevel, int protectionLevels, Room room, RoomController owner, PhysicalObject anchor, PlacedObject anchor2)
     {
         Age = Utilities.Timestamp();
         MarkedForDeletion = false;
@@ -131,6 +132,7 @@ public class HighlightSprite : CosmeticSprite
         this.protectionLevels = protectionLevels;
         this.room = room;
         Anchor = anchor;
+        ObjectAnchor = anchor2;
         Owner = owner;
         Connections = [];
         ConnectionTable = [];
@@ -192,6 +194,11 @@ public class HighlightSprite : CosmeticSprite
         CalculateSmallness();
 
         Selected = RWCustom.Custom.Dist(Owner.Arrow.pos, pos) < 1;
+
+        if (Owner.Arrow._object != null && Owner.Arrow._object == ObjectAnchor)
+        {
+            Selected = true;
+        }
 
         if ((room.TileHeight * 20f) < pos.y || (room.TileWidth * 20f) < pos.x || 0 > pos.x || 0 > pos.y)
             MarkedForDeletion = true;

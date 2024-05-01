@@ -210,7 +210,7 @@ namespace Slugpack
                     sLeaser.sprites[1].isVisible = false;
 
                     sLeaser.sprites[0].shader = Shaders.HologramA;
-                    sLeaser.sprites[1]._renderLayer?._material?.SetInt("_Radial", 1);
+                    sLeaser.sprites[0]._renderLayer?._material?.SetInt("_Radial", 1);
                     sLeaser.sprites[0]._renderLayer?._material?.SetFloat("_Offset", stepTimer * 2);
                     sLeaser.sprites[0]._renderLayer?._material?.SetFloat("_RandomOffset", stepTimer);
                     sLeaser.sprites[0]._renderLayer?._material?.SetVector("_ColourA", Utilities.ColourFade(new Vector4(0f, 1f, 0f, 1f), new Vector4(0f, 1f, 1f, 1f), (-Mathf.Cos(3.141f * (stepTimer / 10f) / 4) + 1) / 2));

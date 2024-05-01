@@ -10,7 +10,7 @@ namespace Slugpack
             {
                 if (!initialized)
                 {
-                    RegisterManagedObject<TrackHologramObject, TrackHologramData, ManagedRepresentation>("TrackHologram", "Technomancer");
+                    RegisterManagedObject<TrackHologram, TrackHologramData, ManagedRepresentation>("TrackHologram", "Technomancer");
 
                     // RegisterManagedObject<DebugTrainItem, DebugTrainItemData, ManagedRepresentation>("TrainTrack", "Technomancer");
                     RegisterManagedObject<TrainTrack, TrainTrackData, ManagedRepresentation>("TrainTrack", "Technomancer");
@@ -26,6 +26,8 @@ namespace Slugpack
                     RegisterManagedObject<SpinningFan, SpinningFanData, ManagedRepresentation>("Spinning Fan", "Technomancer");
                     RegisterManagedObject<ProceduralTrainObject, TrainObjectData, ManagedRepresentation>("DEBUGTRAINOBJECT", "Technomancer");
                     RegisterManagedObject<FakeSubregionPopupObject, FakeSubregionPopupData, ManagedRepresentation>("FakeSubregionPopup", "Technomancer");
+                    RegisterManagedObject<WaterKillBox, WaterKillBoxData, ManagedRepresentation>("LethalWaterKillbox", "Technomancer");
+                    RegisterManagedObject<LeakyPipe, LeakyPipeData, ManagedRepresentation>("LeakyPipe", "Technomancer");
 
                     Plugin.DebugWarning("Technomancer Objects Initialized!");
 

@@ -140,6 +140,13 @@ public class SlugArrow : CosmeticSprite
             {
                 pos = item.firstChunk.pos;// + new Vector2(0f, 15f);
             }
+            else if (_object != null)
+            {
+                if (_object.data is TrackHologramData)
+                {
+                    pos = _object.pos + (_object.data as TrackHologramData).handle[1];
+                }
+            }
             /*else if (this._object != null)
             {
                 if (this._object.data is TrainWarningBellData)

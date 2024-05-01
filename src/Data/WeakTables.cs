@@ -2,6 +2,18 @@ namespace Slugpack;
 
 internal static class WeakTables
 {
+    public class TrackHologramMessenger
+    {
+        public bool playerInteracted = false;
+        public bool onCooldown = false;
+    }
+
+    public class WaterKillBoxCounter
+    {
+        public bool contact = false;
+        public int count = -1;
+    }
+
     public class Shaders
     {
         public FShader Redify = null;

@@ -706,12 +706,22 @@ namespace Slugpack
                 // Hologram Advertisements
                 case 450:
                     {
-                        float explosionRadius = 80f;
+                        if (!Constants.TrackHologramMessage.TryGetValue(scanline.arrow._object, out var messenger)) Constants.TrackHologramMessage.Add(scanline.arrow._object, messenger = new WeakTables.TrackHologramMessenger());
 
-                        Utilities.Spark(self.room, 20, scanline.arrow.pos, 14f, 20f, 4);
-                        self.room.AddObject(new Explosion(self.room, null, scanline.arrow._object.pos, 20, explosionRadius, 70f, 0.2f, 2f, 0f, null, 0f, 0.1f, 4f));
-                        self.room.PlaySound(SoundID.Bomb_Explode, scanline.arrow._object.pos);
-                        self.room.PlaySound(SoundID.Zapper_Zap, scanline.arrow._object.pos);
+                        if (!messenger.onCooldown && !messenger.playerInteracted)
+                        {
+                            messenger.playerInteracted = true;
+
+                            float explosionRadius = 180f;
+
+                            Utilities.Spark(self.room, 20, scanline.arrow.pos + (scanline.arrow._object.data as TrackHologramData).handle[1], 14f, 20f, 4);
+                            self.room.AddObject(new Explosion(self.room, null, scanline.arrow._object.pos + (scanline.arrow._object.data as TrackHologramData).handle[1], 20, explosionRadius, 380f, 0.2f, 2f, 0f, null, 0f, 0.1f, 4f));
+                            self.room.PlaySound(SoundID.Bomb_Explode, scanline.arrow._object.pos + (scanline.arrow._object.data as TrackHologramData).handle[1]);
+                            self.room.PlaySound(SoundID.Zapper_Zap, scanline.arrow._object.pos + (scanline.arrow._object.data as TrackHologramData).handle[1]);
+
+                            // So you can actually use it to launch
+                            self.stun = 0;
+                        }
                     }
                     break;
                 case 451:

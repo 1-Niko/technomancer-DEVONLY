@@ -117,12 +117,13 @@ public static class DataStructures
 
     public class Node
     {
-        public Node(Vector2 position, int level, int protection, PhysicalObject anchor) =>
-            (Position, Level, Protection, Anchor) = (position, level, protection, anchor);
+        public Node(Vector2 position, int level, int protection, PhysicalObject anchor, PlacedObject anchor2) =>
+            (Position, Level, Protection, Anchor, ObjectAnchor) = (position, level, protection, anchor, anchor2);
 
         public Vector2 Position { get; set; }
         public int Level { get; set; }
         public int Protection { get; set; }
         public PhysicalObject Anchor { get; set; }
+        public PlacedObject ObjectAnchor { get; set; }
     }
 }
