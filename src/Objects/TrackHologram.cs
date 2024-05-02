@@ -90,6 +90,8 @@ namespace Slugpack
                 {
                     disabled = false;
                     flickering = true;
+
+                    forceHidden = false;
                 }
                 else if (trainCountdown == 0)
                 {
@@ -104,8 +106,6 @@ namespace Slugpack
                     disabled = true;
                     trainCountdown = 120;
                     messenger.onCooldown = true;
-                    
-                    forceHidden = false;
                 }
                 else if (trainCountdown == 0)
                 {
@@ -152,12 +152,15 @@ namespace Slugpack
                                 sLeaser.sprites[0].element = Futile.atlasManager.GetElementWithName("ExitSign_0");
                                 break;
                             case 2:
+                                forceHidden = false;
                                 sLeaser.sprites[0].element = Futile.atlasManager.GetElementWithName("ExitSign_1");
                                 break;
                             case 3:
+                                forceHidden = false;
                                 sLeaser.sprites[0].element = Futile.atlasManager.GetElementWithName("ExitSign_2");
                                 break;
                             case 4:
+                                forceHidden = false;
                                 sLeaser.sprites[0].element = Futile.atlasManager.GetElementWithName("ExitSign_3");
                                 break;
                         }
