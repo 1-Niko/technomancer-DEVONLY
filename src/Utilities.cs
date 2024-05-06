@@ -389,7 +389,7 @@ public static class Utilities
     public static (List<Vector2> positions, List<PhysicalObject> creatures, List<PhysicalObject> items, List<PlacedObject> objects) GetEverything(Room room)
     {
         var positions = room.shortcuts
-            .Where(element => (element.destNode != -1 && element.destNode < room.abstractRoom.connections.Length && room.abstractRoom.connections[element.destNode] != -1) || element.shortCutType == ShortcutData.Type.Normal)
+            .Where(element => (element.destNode != -1 && element.destNode < room.abstractRoom.connections.Length && room.abstractRoom.connections[element.destNode] != -1) && element.shortCutType == ShortcutData.Type.RoomExit)
             .Where(element => room.ViewedByAnyCamera(room.MiddleOfTile(element.StartTile), 0f))
             .Select(element => room.MiddleOfTile(element.StartTile))
             .ToList();
@@ -592,7 +592,7 @@ public static class Utilities
         // foreach (var shortcut in room.shortcuts.Where(element => element.LeadingSomewhere).ToList()) // Filters out the wack a mole holes and spawnpoints, but also selects exit pipes with no connection set
 
         // Use this one when shortcut support is added
-        foreach (var shortcut in room.shortcuts.Where(element => (element.destNode != -1 && element.destNode < room.abstractRoom.connections.Length && room.abstractRoom.connections[element.destNode] != -1) || element.shortCutType == ShortcutData.Type.Normal).ToList())
+        foreach (var shortcut in room.shortcuts.Where(element => (element.destNode != -1 && element.destNode < room.abstractRoom.connections.Length && room.abstractRoom.connections[element.destNode] != -1) && element.shortCutType == ShortcutData.Type.RoomExit).ToList())
 
         //foreach (var shortcut in room.shortcuts.Where(element => element.destNode != -1).ToList())
         {
@@ -649,7 +649,7 @@ public static class Utilities
 
         foreach (var shortcut in room.shortcuts)
         {
-            if ((shortcut.destNode != -1 && shortcut.destNode < room.abstractRoom.connections.Length && room.abstractRoom.connections[shortcut.destNode] != -1) || shortcut.shortCutType == ShortcutData.Type.Normal)
+            if ((shortcut.destNode != -1 && shortcut.destNode < room.abstractRoom.connections.Length && room.abstractRoom.connections[shortcut.destNode] != -1) && shortcut.shortCutType == ShortcutData.Type.RoomExit)
             {
                 Vector2 position = room.MiddleOfTile(shortcut.StartTile);
                 float distance = RWCustom.Custom.Dist(position, searchPosition);

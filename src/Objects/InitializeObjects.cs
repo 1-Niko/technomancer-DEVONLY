@@ -29,7 +29,7 @@ namespace Slugpack
                     RegisterManagedObject<WaterKillBox, WaterKillBoxData, ManagedRepresentation>("LethalWaterKillbox", "Technomancer");
                     RegisterManagedObject<LeakyPipe, LeakyPipeData, ManagedRepresentation>("LeakyPipe", "Technomancer");
 
-                    RegisterManagedObject<ColourObject, ColourObjectData, ManagedRepresentation>("COLOURGRABBER", "Technomancer");
+                    // RegisterManagedObject<ColourObject, ColourObjectData, ManagedRepresentation>("COLOURGRABBER", "Technomancer");
 
                     Plugin.DebugWarning("Technomancer Objects Initialized!");
 

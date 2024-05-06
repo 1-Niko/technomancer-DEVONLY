@@ -29,6 +29,10 @@ namespace Slugpack
 
         public static ConditionalWeakTable<PlacedObject, TrackHologramMessenger> TrackHologramMessage = new();
 
+        public static ConditionalWeakTable<Creature, ShortcutLockImmunity> ShortcutLockImmune = new();
+
+        public static Dictionary<ShortcutData, bool> isLocked = new Dictionary<ShortcutData, bool>();
+
         public static readonly ulong[] FurData =
         [
             0xD21802F008A81006, 0xD96624837B4AA00B, 0x0004E02005450840, 0x6FCD352033803DE0, 0x5412150E02D034EC, 0x009802900601805A, 0x29A3BAD45402C802, 0x761B67034AE617EB,

@@ -20,18 +20,21 @@ namespace Slugpack
             }
             else
             {
-                var shortcutLocation = Utilities.DetermineObjectFromPosition(self.room.MiddleOfTile(entrancePos), self.room).nearestShortcut;
-                if (Constants.DamagedShortcuts.TryGetValue(self.room.game, out var ShortcutTable))
+                if (self != null && self.room != null)
                 {
-                    for (int i = 0; i < ShortcutTable.locks.Count; i++)
+                    var shortcutLocation = Utilities.DetermineObjectFromPosition(self.room.MiddleOfTile(entrancePos), self.room).nearestShortcut;
+                    if (Constants.DamagedShortcuts.TryGetValue(self.room.game, out var ShortcutTable))
                     {
-                        for (int r = 0; r < 2; r++)
+                        for (int i = 0; i < ShortcutTable.locks.Count; i++)
                         {
-                            if (ShortcutTable.locks[i].Shortcuts[r].Equals(shortcutLocation))
+                            for (int r = 0; r < 2; r++)
                             {
-                                self.enteringShortCut = null;
-                                self.inShortcut = false;
-                                return;
+                                if (ShortcutTable.locks[i].Shortcuts[r].Equals(shortcutLocation))
+                                {
+                                    self.enteringShortCut = null;
+                                    self.inShortcut = false;
+                                    return;
+                                }
                             }
                         }
                     }

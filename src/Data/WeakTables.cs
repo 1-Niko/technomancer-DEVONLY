@@ -2,6 +2,11 @@ namespace Slugpack;
 
 internal static class WeakTables
 {
+    public class ShortcutLockImmunity
+    {
+        public bool immune;
+    }
+
     public class TrackHologramMessenger
     {
         public bool playerInteracted = false;

@@ -1,6 +1,9 @@
+using System.Security.Cryptography;
 using static Pom.Pom;
 
-namespace Slugpack
+// Even though this is technically useless now, some of the functions still show how to do useful things, so don't remove
+
+/*namespace Slugpack
 {
     public class ColourObjectData(PlacedObject owner) : ManagedData(owner, null)
     {
@@ -30,14 +33,44 @@ namespace Slugpack
                 hologramSprite = new ColourObjectObject(placedObject, placedObject.pos);
                 room.AddObject(hologramSprite);
             }
-            hologramSprite.r = (placedObject.data as ColourObjectData).R;
-            hologramSprite.g = (placedObject.data as ColourObjectData).G;
-            hologramSprite.b = (placedObject.data as ColourObjectData).B;
-            hologramSprite.a = (placedObject.data as ColourObjectData).A;
-            hologramSprite.i = (placedObject.data as ColourObjectData).I;
-            hologramSprite.o = (placedObject.data as ColourObjectData).F;
+            if (prevR != (placedObject.data as ColourObjectData).R)
+            {
+                hologramSprite.r = (placedObject.data as ColourObjectData).R;
+                prevR = (placedObject.data as ColourObjectData).R;
+            }
+            if (prevG != (placedObject.data as ColourObjectData).G)
+            {
+                hologramSprite.g = (placedObject.data as ColourObjectData).G;
+                prevG = (placedObject.data as ColourObjectData).G;
+            }
+            if (prevB != (placedObject.data as ColourObjectData).B)
+            {
+                hologramSprite.b = (placedObject.data as ColourObjectData).B;
+                prevB = (placedObject.data as ColourObjectData).B;
+            }
+            if (prevA != (placedObject.data as ColourObjectData).A)
+            {
+                hologramSprite.a = (placedObject.data as ColourObjectData).A;
+                prevA = (placedObject.data as ColourObjectData).A;
+            }
+            if (prevI != (placedObject.data as ColourObjectData).I)
+            {
+                hologramSprite.i = (placedObject.data as ColourObjectData).I;
+                prevI = (placedObject.data as ColourObjectData).I;
+            }
+            if (prevO != (placedObject.data as ColourObjectData).F)
+            {
+                hologramSprite.o = (placedObject.data as ColourObjectData).F;
+                prevO = (placedObject.data as ColourObjectData).F;
+            }
         }
         private ColourObjectObject hologramSprite;
+        public int prevR;
+        public int prevG;
+        public int prevB;
+        public int prevA;
+        public int prevI;
+        public bool prevO;
     }
 
     public class ColourObjectObject(PlacedObject placedObject, Vector2 pos) : CosmeticSprite
@@ -59,14 +92,28 @@ namespace Slugpack
             {
                 o = (placedObject.data as ColourObjectData).F;
 
-                if (o && !finished)
+                stepStopper++;
+
+                if (o && !finished)// && stepStopper % 1 == 0)
                 {
-                    var (successful, cropped) = CropTexture(ScreenCapture.CaptureScreenshotAsTexture(), 748, 400, 256, 256);
+                    Texture2D screencap = ScreenCapture.CaptureScreenshotAsTexture();
+
+                    var (successful, cropped) = CropTexture(screencap, 748, 400, 256, 256);
+
+                    byte[] encoded = cropped.EncodeToPNG();
 
                     if (successful)
                     {
-                        File.WriteAllBytes($"C:\\Niko\\Desktop\\shader\\data\\{PadInt(r)}_{PadInt(g)}_{PadInt(b)}_{PadInt(a)}_{PadInt(i)}.png", cropped.EncodeToPNG());
                         step();
+
+                        File.WriteAllBytes($"C:\\Niko\\Desktop\\shader\\data\\{PadInt(r)}_{PadInt(g)}_{PadInt(b)}_{PadInt(a)}_{PadInt(i)}.png", encoded);
+                        UnityEngine.Object.Destroy(cropped); // Adding this line will properly dispose of the Texture2D.
+                        UnityEngine.Object.Destroy(screencap); // Adding this line will properly dispose of the Texture2D.
+                        cropped = null;
+                        screencap = null;
+                        encoded = null;
+                        // (placedObject.data as ColourObjectData).F = false;
+
                     }
                 }
             }
@@ -83,11 +130,11 @@ namespace Slugpack
                 sLeaser.sprites[0].element = Futile.atlasManager.GetElementWithName("colourExtractor");
                 sLeaser.sprites[1].element = Futile.atlasManager.GetElementWithName("pixel");
                 sLeaser.sprites[1].scale = 300;
-                sLeaser.sprites[1].alpha = (float)(a / 256f);
+                sLeaser.sprites[1].alpha = (a / 255f);
                 sLeaser.sprites[0].scale = 1f;
                 sLeaser.sprites[0].alpha = 1f;
-                sLeaser.sprites[0].color = new UnityEngine.Color(1f, 1f, (float)(i / 256f));
-                sLeaser.sprites[1].color = new Color((float)(r / 256f), (float)(g / 256f), (float)(b / 256f));
+                sLeaser.sprites[0].color = new UnityEngine.Color(1f, 1f, i / 255f);
+                sLeaser.sprites[1].color = new Color(r / 255f, g / 255f, b / 255f);
             }
             catch (Exception e) { (placedObject.data as ColourObjectData).F = false; }
         }
@@ -122,6 +169,10 @@ namespace Slugpack
                 result.SetPixels(pixels);
                 // Apply all SetPixel calls.
                 result.Apply();
+
+                // result = null;
+                pixels = null;
+
                 return (true, result);
             }
             catch (Exception e) { return (false, null); }
@@ -131,7 +182,13 @@ namespace Slugpack
         {
             try
             {
-                i++;
+                i = Random.RandomRange(0,255);
+                a = Random.RandomRange(0,255);
+                b = Random.RandomRange(0,255);
+                g = Random.RandomRange(0,255);
+                r = Random.RandomRange(0,255);
+
+                /*i++;
                 if (i == 256)
                 { i = 0; a++; }
                 if (a == 256)
@@ -141,9 +198,9 @@ namespace Slugpack
                 if (g == 256)
                 { g = 0; r++; }
                 if (r == 256)
-                { finished = true; }
+                { finished = true; }*
 
-            (placedObject.data as ColourObjectData).R = r;
+                (placedObject.data as ColourObjectData).R = r;
                 (placedObject.data as ColourObjectData).G = g;
                 (placedObject.data as ColourObjectData).B = b;
                 (placedObject.data as ColourObjectData).A = a;
@@ -161,6 +218,8 @@ namespace Slugpack
         public bool o;
 
         public bool finished = false;
-        public bool runThisFrame = false;
+        public bool runThisFrame = true;
+
+        public int stepStopper = 0;
     }
-}
+}*/

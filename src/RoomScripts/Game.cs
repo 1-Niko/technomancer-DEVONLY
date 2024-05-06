@@ -16,6 +16,9 @@ internal static class GameHooks
 
         On.ShortcutHandler.Update += ShortcutHandler_Update;
 
+        // On.Creature.SuckedIntoShortCut += Creature_SuckedIntoShortCut;
+        On.Creature.SpitOutOfShortCut += Creature_SpitOutOfShortCut;
+
         On.RoomCamera.MoveCamera2 += RoomCamera_MoveCamera2;
 
         On.RoomCamera.MoveCamera2 += (orig, self, roomName, camPos) =>
@@ -28,9 +31,37 @@ internal static class GameHooks
         };
     }
 
+    private static void Creature_SpitOutOfShortCut(On.Creature.orig_SpitOutOfShortCut orig, Creature self, RWCustom.IntVector2 pos, Room newRoom, bool spitOutAllSticks)
+    {
+        // No checks fail, can't be here
+        if (newRoom != null && newRoom.world != null && newRoom.world.game != null)
+        {
+            Constants.DamagedShortcuts.TryGetValue(newRoom.world.game, out var ShortcutTable);
+
+            for (int i = 0; i < ShortcutTable.locks.Count; i++)
+            {
+                for (int j = 0; j < ShortcutTable.locks[i].Shortcuts.Length; j++)
+                {
+                    // Plugin.DebugLog($"ShortcutTable.locks[{i}].Shortcuts[{j}] IntVector2({ShortcutTable.locks[i].Shortcuts[j].DestTile.x}, {ShortcutTable.locks[i].Shortcuts[j].DestTile.y}) == IntVector2({pos.x}, {pos.y}) {Constants.isLocked.ContainsKey(ShortcutTable.locks[i].Shortcuts[j])} {Constants.isLocked[ShortcutTable.locks[i].Shortcuts[j]]}");
+                    if (Constants.isLocked.ContainsKey(ShortcutTable.locks[i].Shortcuts[j]) && Constants.isLocked[ShortcutTable.locks[i].Shortcuts[j]]) // ShortcutTable.locks[i].Shortcuts[j].DestTile == pos && 
+                    {
+                        self.SuckedIntoShortCut(pos, false);
+                    }
+                }
+            }
+        }
+
+        orig(self, pos, newRoom, spitOutAllSticks);
+    }
+
+    /*private static void Creature_SuckedIntoShortCut(On.Creature.orig_SuckedIntoShortCut orig, Creature self, RWCustom.IntVector2 entrancePos, bool carriedByOther)
+    {
+        orig(self, entrancePos, carriedByOther);
+    }*/
+
     private static void ShortcutHandler_Update(On.ShortcutHandler.orig_Update orig, ShortcutHandler self)
     {
-        // I might be able to do something that sets it so if the next position is a locked pipe, it just sends them back?
+        // Even though it doesn't work with creatures already in the pipe, it does still keep creatures not yet in the pipe from passing through, so is still useful
         bool runOrigHere = true;
 
         Constants.DamagedShortcuts.TryGetValue(self.game, out var ShortcutTable);
@@ -39,7 +70,7 @@ internal static class GameHooks
         {
             if (self.transportVessels[i].room.realizedRoom != null)
             {
-                for (int j = 0; j < ShortcutTable.locks.Count; i++)
+                for (int j = 0; j < ShortcutTable.locks.Count; j++)
                 {
                     for (int k = 0; k < ShortcutTable.locks[j].Shortcuts.Length; k++)
                     {
@@ -183,6 +214,10 @@ internal static class GameHooks
             {
                 if (ShortcutTable.locks[i].Time > 0)
                 {
+                    for (int r = 0; r < ShortcutTable.locks[i].Shortcuts.Length; r++)
+                    {
+                        Constants.isLocked[ShortcutTable.locks[i].Shortcuts[r]] = true;
+                    }
                     ShortcutTable.locks[i].Time--;
                     ShortcutTable.locks[i].SinceFlicker++;
                     for (int r = 0; r < 2; r++)
@@ -200,6 +235,10 @@ internal static class GameHooks
                 }
                 else
                 {
+                    for (int r = 0; r < ShortcutTable.locks[i].Shortcuts.Length; r++)
+                    {
+                        Constants.isLocked[ShortcutTable.locks[i].Shortcuts[r]] = false;
+                    }
                     ShortcutTable.locks.RemoveAt(i);
                     break;
                 }
