@@ -4,4 +4,6 @@ Grime: 0
 Palette: 21
 EffectColorA: 15
 EffectColorB: 19
+PlacedObjects: LightSource><272.8846><45.10205><0.2391304~EffectColor1~-18~57~-420~-343.3975~0~1~None~0~0, LightSource><234.9499><51.75699><1~EffectColor2~0~100~-383~-237.3975~0~0~None~0~0, LightSource><363.7366><50.94955><1~EffectColor2~0~100~-510~-109.3974~0~0~None~0~0, DataPearl><851.1708><133.6041><0~0~0~0~Misc~0, DataPearl><867.8347><136.3873><0~0~0~0~Misc~0, DataPearl><891.1187><136.6609><0~0~0~0~Misc~0, DataPearl><187.0987><174.1307><0~0~0~0~Misc~0, DataPearl><206.1526><173.8253><0~0~0~0~Misc~0, DataPearl><226.3456><172.1757><0~0~0~0~Misc~0, 
+AmbientSounds: OMNI><AM_IND-50hz.ogg><723.4008><340.5764><0.2065217><1, 
 FadePalette: 8, 0.5

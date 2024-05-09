@@ -2,4 +2,5 @@ Template: NONE
 DangerType: None
 Grime: 0
 Palette: 20
+AmbientSounds: OMNI><AM_IND-50hz.ogg><757.2133><337.1966><0.2173913><1, 
 FadePalette: 34, 0.7173913

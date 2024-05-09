@@ -2,4 +2,8 @@ Template: NONE
 DangerType: None
 Grime: 0
 Palette: 20
+EffectColorA: 15
+EffectColorB: 19
+PlacedObjects: LightSource><787.3168><189.6698><0.1413043~EffectColor1~-2~55~50~86.60254~0~1~None~0~0, LightSource><631.6871><190.8206><0.173913~EffectColor1~-14~50~50~86.60254~0~1~None~0~0, LightSource><673.3467><112.6215><0.1521739~EffectColor1~-16~46~50~86.60254~0~1~None~0~0, 
+AmbientSounds: OMNI><AM_IND-50hz.ogg><752.7998><334.9437><0.2282609><1, SPOT><Basic Mech.ogg><726.3065><442.8007><0.5108696><1><268.3065><127.8007><-35.35534><-35.35534><0><0.502174, OMNI><AM_ENV-SubTerr.ogg><799.0587><113.6918><0.2717391><1, 
 FadePalette: 34, 0.6413044

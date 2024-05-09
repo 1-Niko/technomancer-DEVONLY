@@ -1,4 +1,9 @@
 Template: NONE
+DangerType: None
 Grime: 0
 Palette: 21
+EffectColorA: 15
+EffectColorB: 19
+PlacedObjects: DataPearl><649.317><94.93845><0~0~0~0~Misc~0, DataPearl><671.2234><94.94821><0~0~0~0~Misc~0, DataPearl><690.2593><95.55023><0~0~0~0~Misc~0, LightSource><634.6446><46.36182><0.2391304~EffectColor1~-26~56~50~86.60254~0~1~None~0~0, LightSource><725.2885><46.30374><1~EffectColor2~0~100~50~86.60254~0~0~None~0~0, LightSource><597.0538><45.53867><0.1413043~EffectColor2~0~100~50~86.60254~0~0~None~0~0, 
+AmbientSounds: OMNI><AM_ENV-SubTerr.ogg><730.2762><442.9483><0.1847826><1, OMNI><AM_IND-50hz.ogg><716.0979><336.8256><0.2608696><1, SPOT><Basic Mech.ogg><360.067><299.0807><0.5><1><175.067><146.0807><60.64465><-80.35535><0><0.6652175, 
 FadePalette: 8, 0.423913

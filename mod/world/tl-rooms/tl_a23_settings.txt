@@ -2,4 +2,8 @@ Template: NONE
 DangerType: None
 Grime: 0
 Palette: 21
+EffectColorA: 15
+EffectColorB: 19
+PlacedObjects: DataPearl><851.5112><152.6997><0~0~0~0~Misc~0, DataPearl><871.4346><154.689><0~0~0~0~Misc~0, DataPearl><893.6888><153.566><0~0~0~0~Misc~0, DataPearl><811.4911><94.0502><0~0~0~0~Misc~0, DataPearl><828.5227><94.0513><0~0~0~0~Misc~0, DataPearl><848.6086><93.08206><0~0~0~0~Misc~0, DataPearl><369.2767><92.55179><0~0~0~0~Misc~0, DataPearl><386.0831><93.86017><0~0~0~0~Misc~0, DataPearl><404.1003><92.61731><0~0~0~0~Misc~0, LightSource><370.6944><46.20306><0.2826087~EffectColor1~32~-42~50~86.60254~0~1~None~0~0, LightSource><795.318><50.33286><0.3043481~EffectColor1~-14~-54~50~86.60254~0~1~None~0~0, LightSource><337.6031><50.13577><1~EffectColor2~0~100~50~86.60254~0~0~None~0~0, LightSource><759.8724><47.8418><1~EffectColor2~0~100~50~86.60254~0~0~None~0~0, LightSource><883.5659><47.67184><1~EffectColor2~0~100~50~86.60254~0~0~None~0~0, LightSource><462.5527><48.21683><0.4130433~EffectColor2~0~100~50~86.60254~0~0~None~0~0, 
+AmbientSounds: OMNI><AM_IND-50hz.ogg><740.1849><341.4238><0.2391304><1, OMNI><AM_ENV-SubTerr.ogg><733.8385><447.132><0.2282609><1, 
 FadePalette: 8, 0.5652174
