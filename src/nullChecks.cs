@@ -20,6 +20,10 @@ public static class Null
 
             return checkObj != null && checkObj.room != null && checkObj.room.updateList != null && checkObj.room.updateList.Count > 0;
         }
+        if (method == 3)
+        {
+            return check is Creature creature && creature != null && creature.room != null && creature.room.world != null && creature.room.world.game != null;
+        }
 
         return false;
     }

@@ -4,6 +4,24 @@ namespace Slugpack;
 
 public static class Utilities
 {
+    public static bool pipeIsLocked(RainWorldGame game, RWCustom.IntVector2 pos)
+    {
+        Constants.DamagedShortcuts.TryGetValue(game, out var ShortcutTable);
+
+        for (int i = 0; i < ShortcutTable.locks.Count; i++)
+        {
+            for (int j = 0; j < ShortcutTable.locks[i].Shortcuts.Length; j++)
+            {
+                if ((ShortcutTable.locks[i].Shortcuts[j].StartTile == pos || ShortcutTable.locks[i].Shortcuts[j].DestTile == pos) && Constants.isLocked.ContainsKey(ShortcutTable.locks[i].Shortcuts[j]) && Constants.isLocked[ShortcutTable.locks[i].Shortcuts[j]])
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
     public static void Spark(Room room, int spark_count, Vector2 position, float lerpA, float lerpB, int lifetime)
     {
         for (int j = 0; j < spark_count; j++)

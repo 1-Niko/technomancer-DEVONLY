@@ -92,6 +92,3 @@ dotnet_diagnostic.CS9179.severity = none
 
 # CS0618: Type or member is obsolete
 dotnet_diagnostic.CS0618.severity = none
-
-# CS0162: Unreachable code detected
-dotnet_diagnostic.CS0162.severity = silent

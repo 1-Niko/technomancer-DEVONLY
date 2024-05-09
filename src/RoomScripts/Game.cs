@@ -16,7 +16,7 @@ internal static class GameHooks
 
         On.ShortcutHandler.Update += ShortcutHandler_Update;
 
-        // On.Creature.SuckedIntoShortCut += Creature_SuckedIntoShortCut;
+        On.Creature.SuckedIntoShortCut += Creature_SuckedIntoShortCut;
         On.Creature.SpitOutOfShortCut += Creature_SpitOutOfShortCut;
 
         On.RoomCamera.MoveCamera2 += RoomCamera_MoveCamera2;
@@ -33,31 +33,57 @@ internal static class GameHooks
 
     private static void Creature_SpitOutOfShortCut(On.Creature.orig_SpitOutOfShortCut orig, Creature self, RWCustom.IntVector2 pos, Room newRoom, bool spitOutAllSticks)
     {
-        // No checks fail, can't be here
-        if (newRoom != null && newRoom.world != null && newRoom.world.game != null)
-        {
-            Constants.DamagedShortcuts.TryGetValue(newRoom.world.game, out var ShortcutTable);
+        // Creature attempts to exit pipe
 
-            for (int i = 0; i < ShortcutTable.locks.Count; i++)
+        bool creatureMayExit;
+
+        if (Utilities.pipeIsLocked(newRoom.world.game, pos))
+        {
+            // IsLockImmune should be able to be set on a per-creaturetype basis, I think? Idk, what do you think?
+            if (false) // (Creature.IsLockImmune()) // (Creature is immune to pipe locking)
             {
-                for (int j = 0; j < ShortcutTable.locks[i].Shortcuts.Length; j++)
+                /*creatureMayExit = true;
+
+                // Break Lock
+                // Break effects
+                
+                if (Techy is on screen)
                 {
-                    // Plugin.DebugLog($"ShortcutTable.locks[{i}].Shortcuts[{j}] IntVector2({ShortcutTable.locks[i].Shortcuts[j].DestTile.x}, {ShortcutTable.locks[i].Shortcuts[j].DestTile.y}) == IntVector2({pos.x}, {pos.y}) {Constants.isLocked.ContainsKey(ShortcutTable.locks[i].Shortcuts[j])} {Constants.isLocked[ShortcutTable.locks[i].Shortcuts[j]]}");
-                    if (Constants.isLocked.ContainsKey(ShortcutTable.locks[i].Shortcuts[j]) && Constants.isLocked[ShortcutTable.locks[i].Shortcuts[j]]) // ShortcutTable.locks[i].Shortcuts[j].DestTile == pos && 
-                    {
-                        self.SuckedIntoShortCut(pos, false);
-                    }
-                }
+                    // Stun Techy
+                }*/
             }
+            else // Creature is not immune to pipe locking
+            {
+                creatureMayExit = false;
+                // Spawn effects
+            }
+        }
+        else // Pipe is not locked
+        {
+            creatureMayExit = true;
         }
 
         orig(self, pos, newRoom, spitOutAllSticks);
+        if (!creatureMayExit)
+        {
+            // Send the wretched beast back
+            self.SuckedIntoShortCut(pos, false);
+            // Creature.grantTempPipeLockImmunity();
+        }
     }
 
-    /*private static void Creature_SuckedIntoShortCut(On.Creature.orig_SuckedIntoShortCut orig, Creature self, RWCustom.IntVector2 entrancePos, bool carriedByOther)
+    private static void Creature_SuckedIntoShortCut(On.Creature.orig_SuckedIntoShortCut orig, Creature self, RWCustom.IntVector2 entrancePos, bool carriedByOther)
     {
+        if (/*creature.isTempPipeLockImmune() &&*/ Null.Check(self, 3) && (Utilities.pipeIsLocked(self.room.world.game, entrancePos)) || ((self is Player) && (self as Player).IsTechy(out var scanline) && scanline.holdTime > Constants.timeReached))
+        {
+            // creature.revokeTempPipeLockImmunity();
+            self.enteringShortCut = null;
+            self.inShortcut = false;
+            return;
+        }
+
         orig(self, entrancePos, carriedByOther);
-    }*/
+    }
 
     private static void ShortcutHandler_Update(On.ShortcutHandler.orig_Update orig, ShortcutHandler self)
     {

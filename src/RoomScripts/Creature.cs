@@ -4,7 +4,7 @@ namespace Slugpack
     {
         internal static void Apply()
         {
-            On.Creature.SuckedIntoShortCut += Creature_SuckedIntoShortCut;
+            // On.Creature.SuckedIntoShortCut += Creature_SuckedIntoShortCut;
             On.Vulture.Update += Vulture_Update;
             On.AbstractCreatureAI.RandomMoveToOtherRoom += AbstractCreatureAI_RandomMoveToOtherRoom;
         }

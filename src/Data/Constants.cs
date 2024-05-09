@@ -1,4 +1,5 @@
 using BepInEx.Logging;
+using UnityEngine.UIElements;
 
 namespace Slugpack
 {
@@ -50,6 +51,7 @@ namespace Slugpack
             0xAA38961A86CD6258, 0x08A03F2E0B732898, 0x198A8D0000000000,
         ];
 
+        // These last two will be useless after upgrading to the new trains (which as of writing have not been written yet)
         public static Dictionary<int, int> TrainOffsets = new()
         {
             { 0, 40 },
