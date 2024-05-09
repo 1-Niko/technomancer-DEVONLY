@@ -160,6 +160,9 @@ public class SkullOfTheDragon(PlacedObject placedObject, Vector2 pos) : Cosmetic
             sLeaser.sprites[2].shader = rCam.game.rainWorld.Shaders["CustomDepth"];
             sLeaser.sprites[3].shader = rCam.game.rainWorld.Shaders["CustomDepth"];
         }
+
+        if (slatedForDeletetion || room != rCam.room)
+            sLeaser.CleanSpritesAndRemove();
     }
 
     public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)

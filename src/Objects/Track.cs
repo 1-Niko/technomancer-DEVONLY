@@ -297,6 +297,9 @@ public class TrainObject : CosmeticSprite
         block.SetTexture("texture", null);
         _batteryMeter._renderLayer._meshRenderer.SetPropertyBlock(block); // This updates the stored information
         */
+
+        if (slatedForDeletetion || room != rCam.room)
+            sLeaser.CleanSpritesAndRemove();
     }
 
     public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)

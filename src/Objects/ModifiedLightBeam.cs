@@ -110,6 +110,9 @@ public class ModifiedLightBeamSprite(PlacedObject placedObject, Vector2 pos) : C
         {
             sLeaser.sprites[0].shader = Shaders.ModifiedLightBeamShader;
         }
+
+        if (slatedForDeletetion || room != rCam.room)
+            sLeaser.CleanSpritesAndRemove();
     }
 
     public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)

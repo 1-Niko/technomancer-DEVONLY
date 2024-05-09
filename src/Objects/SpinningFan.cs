@@ -181,6 +181,9 @@ public class SpinningFanObject : CosmeticSprite
             sLeaser.sprites[2].isVisible = false;
             sLeaser.sprites[3].isVisible = false;
         }
+
+        if (slatedForDeletetion || room != rCam.room)
+            sLeaser.CleanSpritesAndRemove();
     }
 
     public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)

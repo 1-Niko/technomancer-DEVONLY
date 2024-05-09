@@ -181,6 +181,9 @@ namespace Slugpack
             {
                 sLeaser.sprites[0].shader = rCam.room.game.rainWorld.Shaders["Hologram"];
             }
+
+            if (slatedForDeletetion || room != rCam.room)
+                sLeaser.CleanSpritesAndRemove();
         }
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)

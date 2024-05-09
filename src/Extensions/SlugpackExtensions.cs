@@ -49,4 +49,10 @@ public static class SlugpackExtensions
     public static void GrantPassthroughAllowance(this Creature creature) { creature.CreatureData().tempLockImmune = true; }
     public static bool HasPassthroughAllowance(this Creature creature) => creature.CreatureData().tempLockImmune;
     public static void RevokePassthroughAllowance(this Creature creature) { creature.CreatureData().tempLockImmune = false; }
+
+    public static void Burn(this Creature creature) { creature.CreatureData().burnCount++; }
+    public static int BurnLevel(this Creature creature) => creature.CreatureData().burnCount;
+    public static void SetBurning(this Creature creature) { creature.CreatureData().burning = true; }
+    public static bool IsBurning(this Creature creature) { return creature.CreatureData().burning; }
+    public static void SetNotBurning(this Creature creature) { creature.CreatureData().burning = false; }
 }

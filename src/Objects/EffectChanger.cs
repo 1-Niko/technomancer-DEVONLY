@@ -97,6 +97,9 @@ public class EffectChangerObject(PlacedObject placedObject, Vector2 pos) : Cosme
             sLeaser.sprites[0]._renderLayer?._material?.SetTexture("_RGB2HSL", Shaders._RGB2HSL);
             sLeaser.sprites[0]._renderLayer?._material?.SetTexture("_HSL2RGB", Shaders._HSL2RGB);
         }
+
+        if (slatedForDeletetion || room != rCam.room)
+            sLeaser.CleanSpritesAndRemove();
     }
 
     public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)

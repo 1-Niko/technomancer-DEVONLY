@@ -269,6 +269,9 @@ public class TrainBell(PlacedObject placedObject, Vector2 pos, int waitCount, Ve
                 sLeaser.sprites[3]._renderLayer?._material?.SetVector("_Colour", Utilities.ColourFade(new Vector4(1f, 0f, 0f, 1f), new Vector4(1f, 1f, 0f, 1f), (-Mathf.Cos(3.141f * (stepTimer / 4f) / 4) + 1) / 2));
             }
         }
+
+        if (slatedForDeletetion || room != rCam.room)
+            sLeaser.CleanSpritesAndRemove();
     }
 
     public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)

@@ -69,6 +69,9 @@ public class Streamers(PlacedObject placedObject) : CosmeticSprite
             sLeaser.sprites[0]._renderLayer?._material?.SetFloat("_Height", scaleY / image_size);
             sLeaser.sprites[0]._renderLayer?._material?.SetFloat("_Size", 4 / (xCoordinates.Max() - xCoordinates.Min()));
         }
+
+        if (slatedForDeletetion || room != rCam.room)
+            sLeaser.CleanSpritesAndRemove();
     }
 
     public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)

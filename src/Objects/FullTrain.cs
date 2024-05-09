@@ -220,6 +220,9 @@ public class ProceduralTrain(Vector2 pos, int seed, int length, float velocity, 
         }
 
         Random.state = state;
+
+        if (slatedForDeletetion || room != rCam.room)
+            sLeaser.CleanSpritesAndRemove();
     }
 
     public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)

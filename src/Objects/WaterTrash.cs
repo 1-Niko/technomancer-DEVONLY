@@ -18,7 +18,7 @@ public class WaterTrashData(PlacedObject owner) : ManagedData(owner, null)
     public int BackDepth;
 }
 
-public class WaterTrash(PlacedObject placedObject, Room room) : UpdatableAndDeletable
+public class WaterTrash(PlacedObject placedObject) : UpdatableAndDeletable
 {
     public override void Update(bool eu)
     {
@@ -68,6 +68,9 @@ public class WaterTrashObject : CosmeticSprite, IDrawable
             sLeaser.sprites[i].color = palette.GetPixel(depth, colour[i] + 2);
             sLeaser.sprites[i].alpha = depth / 30f;
         }
+
+        if (slatedForDeletetion || room != rCam.room)
+            sLeaser.CleanSpritesAndRemove();
     }
 
     public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
