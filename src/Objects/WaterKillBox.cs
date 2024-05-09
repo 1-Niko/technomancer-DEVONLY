@@ -19,7 +19,7 @@ namespace Slugpack
                 if (creature != null && creature.Room.realizedRoom == room)
                 {
                     Creature realizedCreature = creature.realizedCreature;
-                    if (!Constants.WaterCounter.TryGetValue(realizedCreature, out var counter)) Constants.WaterCounter.Add(realizedCreature, counter = new WeakTables.WaterKillBoxCounter());
+                    if (!Constants.WaterCounter.TryGetValue(realizedCreature, out var counter)) Constants.WaterCounter.Add(realizedCreature, counter = new WaterKillBoxCounter());
                     {
                         Vector2 averageBodyChunkPosition = Vector2.zero;
                         foreach (var bodyChunk in realizedCreature.bodyChunks)

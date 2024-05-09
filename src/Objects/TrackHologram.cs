@@ -55,8 +55,8 @@ namespace Slugpack
                 }
             }
 
-            bool trainInRange = Utilities.closestTrainPosition(placedObject.pos, room) < distance * 2;
-            bool trainInFlickerRange = Utilities.closestTrainPosition(placedObject.pos, room) < distance * 4;
+            bool trainInRange = Utilities.ClosestTrainPosition(placedObject.pos, room) < distance * 2;
+            bool trainInFlickerRange = Utilities.ClosestTrainPosition(placedObject.pos, room) < distance * 4;
 
             if (trainInFlickerRange)
                 hologramSprite.flickering = true;

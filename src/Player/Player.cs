@@ -129,7 +129,7 @@ namespace Slugpack
             // Not done
             if (Null.Check(self, 2))
             {
-                var (minimumTrainDistance, yHeight) = Utilities.closestTrainPosition(self);
+                var (minimumTrainDistance, yHeight) = Utilities.ClosestTrainPosition(self);
                 if (minimumTrainDistance < float.MaxValue)
                 {
                     // self.room.world.game.cameras[0].microShake = Mathf.Min(Mathf.Max(0.1f, -0.01f * minimumTrainDistance + 10.1f), 4f);

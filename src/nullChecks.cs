@@ -16,9 +16,7 @@ public static class Null
         }
         if (method == 2)
         {
-            Player checkObj = check as Player;
-
-            return checkObj != null && checkObj.room != null && checkObj.room.updateList != null && checkObj.room.updateList.Count > 0;
+            return check is Player checkObj && checkObj.room != null && checkObj.room.updateList != null && checkObj.room.updateList.Count > 0;
         }
         if (method == 3)
         {

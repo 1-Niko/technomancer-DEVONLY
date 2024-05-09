@@ -4,7 +4,7 @@ namespace Slugpack;
 
 public static class Utilities
 {
-    public static bool pipeIsLocked(RainWorldGame game, RWCustom.IntVector2 pos)
+    public static bool PipeIsLocked(RainWorldGame game, RWCustom.IntVector2 pos)
     {
         Constants.DamagedShortcuts.TryGetValue(game, out var ShortcutTable);
 
@@ -12,7 +12,7 @@ public static class Utilities
         {
             for (int j = 0; j < ShortcutTable.locks[i].Shortcuts.Length; j++)
             {
-                if ((ShortcutTable.locks[i].Shortcuts[j].StartTile == pos || ShortcutTable.locks[i].Shortcuts[j].DestTile == pos) && Constants.isLocked.ContainsKey(ShortcutTable.locks[i].Shortcuts[j]) && Constants.isLocked[ShortcutTable.locks[i].Shortcuts[j]])
+                if ((ShortcutTable.locks[i].Shortcuts[j].StartTile == pos || ShortcutTable.locks[i].Shortcuts[j].DestTile == pos) && CreatureData.isLocked.ContainsKey(ShortcutTable.locks[i].Shortcuts[j]) && CreatureData.isLocked[ShortcutTable.locks[i].Shortcuts[j]])
                 {
                     return true;
                 }
@@ -31,7 +31,7 @@ public static class Utilities
         }
     }
 
-    public static float closestTrainPosition(Vector2 position, Room room)
+    public static float ClosestTrainPosition(Vector2 position, Room room)
     {
         List<TrainObject> trainPositions = [];
 
@@ -63,7 +63,7 @@ public static class Utilities
         return minimumTrainDistance;
     }
 
-    public static (float minimumDistance, float nearestHeight) closestTrainPosition(Player player)
+    public static (float minimumDistance, float nearestHeight) ClosestTrainPosition(Player player)
     {
         List<TrainObject> trainPositions = [];
 
@@ -438,9 +438,7 @@ public static class Utilities
         {
             if (element.type.ToString() == "TrackHologram")
             {
-                var hologramData = element.data as TrackHologramData;
-
-                if (hologramData != null && room.ViewedByAnyCamera(element.pos + hologramData.handle[1], 0f))
+                if (element.data is TrackHologramData hologramData && room.ViewedByAnyCamera(element.pos + hologramData.handle[1], 0f))
                 {
                     objects.Add(element);
                 }

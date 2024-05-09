@@ -148,7 +148,7 @@ namespace Slugpack
 
             int bellLength = 32;
 
-            for (int i = 0; i < players.Count; i++)
+            for (int i = 0; i < players.Count; )
             {
                 if (RWCustom.Custom.Dist(pos, players[i].mainBodyChunk.pos) < RWCustom.Custom.Dist(pos, pos + (placedObject.data as TrainWarningBellData).rad) && ((enabled && warning) || forceWarning))
                 {
