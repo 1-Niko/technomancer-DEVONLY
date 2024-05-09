@@ -157,7 +157,7 @@ namespace Slugpack
                     else if (stepTimer % bellLength == 0)
                         room.PlaySound(SoundID.Spear_Bounce_Off_Wall, pos, 1, 0.5f);
                 }
-                break;
+                // break;
             }
         }
 

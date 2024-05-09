@@ -416,9 +416,9 @@ namespace Slugpack
                         }
                         for (int k = 0; k < 7; k++)
                         {
-                            (scanline.arrow.creature as Lizard).jumpModule.smoke.EmitSmoke(vector, -(scanline.arrow.creature as Lizard).jumpModule.actOnJump.bestJump.initVel * UnityEngine.Random.value * 0.5f + RWCustom.Custom.RNV() * Mathf.Lerp(6f, 23f, (scanline.arrow.creature as Lizard).jumpModule.actOnJump.bestJump.power), (scanline.arrow.creature as Lizard).jumpModule.lizard.graphicsModule as LizardGraphics, true, Mathf.Lerp(30f, 140f, (scanline.arrow.creature as Lizard).jumpModule.actOnJump.bestJump.power));
+                            (scanline.arrow.creature as Lizard).jumpModule.smoke.EmitSmoke(vector, -(scanline.arrow.creature as Lizard).jumpModule.actOnJump.bestJump.initVel * Random.value * 0.5f + RWCustom.Custom.RNV() * Mathf.Lerp(6f, 23f, (scanline.arrow.creature as Lizard).jumpModule.actOnJump.bestJump.power), (scanline.arrow.creature as Lizard).jumpModule.lizard.graphicsModule as LizardGraphics, true, Mathf.Lerp(30f, 140f, (scanline.arrow.creature as Lizard).jumpModule.actOnJump.bestJump.power));
                         }
-                        for (int l = (int)((scanline.arrow.creature as Lizard).jumpModule.actOnJump.bestJump.power * 10f * UnityEngine.Random.value); l >= 0; l--)
+                        for (int l = (int)((scanline.arrow.creature as Lizard).jumpModule.actOnJump.bestJump.power * 10f * Random.value); l >= 0; l--)
                         {
                             (scanline.arrow.creature as Lizard).jumpModule.room.AddObject(new LizardBubble((scanline.arrow.creature as Lizard).jumpModule.lizard.graphicsModule as LizardGraphics, 1f, 0f, (scanline.arrow.creature as Lizard).jumpModule.actOnJump.bestJump.power * 10f));
                         }

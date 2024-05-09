@@ -8,7 +8,7 @@ public class CreatureData
 
     //ShortcutData
 
-    public bool immune;
+    public bool tempLockImmune;
 
     public Dictionary<ShortcutData, bool> isLocked = [];
 
@@ -19,6 +19,6 @@ public class CreatureData
 
         if (!IsCreature) return;
 
-        immune = false;
+        tempLockImmune = false;
     }
 }

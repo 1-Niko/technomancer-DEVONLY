@@ -40,17 +40,17 @@ internal static class GameHooks
         if (Utilities.pipeIsLocked(newRoom.world.game, pos))
         {
             // IsLockImmune should be able to be set on a per-creaturetype basis, I think? Idk, what do you think?
-            if (false) // (Creature.IsLockImmune()) // (Creature is immune to pipe locking)
+            if (self.IsLockImmune()) // (Creature is immune to pipe locking)
             {
-                /*creatureMayExit = true;
+                creatureMayExit = true;
 
                 // Break Lock
                 // Break effects
                 
-                if (Techy is on screen)
+                if (false)
                 {
                     // Stun Techy
-                }*/
+                }
             }
             else // Creature is not immune to pipe locking
             {
@@ -68,14 +68,15 @@ internal static class GameHooks
         {
             // Send the wretched beast back
             self.SuckedIntoShortCut(pos, false);
-            // Creature.grantTempPipeLockImmunity();
+            self.GrantPassthroughAllowance();
         }
     }
 
     private static void Creature_SuckedIntoShortCut(On.Creature.orig_SuckedIntoShortCut orig, Creature self, RWCustom.IntVector2 entrancePos, bool carriedByOther)
     {
-        if (Null.Check(self, 3) && Utilities.pipeIsLocked(self.room.world.game, entrancePos) || self is Player player && player.IsTechy(out var scanline) && scanline.holdTime > Constants.timeReached)
+        if (!self.HasPassthroughAllowance() && Null.Check(self, 3) && Utilities.pipeIsLocked(self.room.world.game, entrancePos) || self is Player player && player.IsTechy(out var scanline) && scanline.holdTime > Constants.timeReached)
         {
+            self.RevokePassthroughAllowance();
             self.enteringShortCut = null;
             self.inShortcut = false;
             return;
