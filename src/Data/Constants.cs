@@ -20,8 +20,6 @@ namespace Slugpack
 
         public static ConditionalWeakTable<Vulture, VultureStuff> VultureStuff = new();
 
-        public static ConditionalWeakTable<RainWorldGame, ShortcutList> DamagedShortcuts = new();
-
         public static ConditionalWeakTable<Oracle, OracleData> OracleInfo = new();
 
         public static ConditionalWeakTable<RainWorld, Shaders> SlugpackShaders = new();
@@ -30,9 +28,11 @@ namespace Slugpack
 
         public static ConditionalWeakTable<PlacedObject, TrackHologramMessenger> TrackHologramMessage = new();
 
+        public static ConditionalWeakTable<RainWorldGame, ShortcutList> DamagedShortcuts = new();
+
         public static ConditionalWeakTable<Creature, ShortcutLockImmunity> ShortcutLockImmune = new();
 
-        public static Dictionary<ShortcutData, bool> isLocked = new Dictionary<ShortcutData, bool>();
+        public static Dictionary<ShortcutData, bool> isLocked = new();
 
         public static readonly ulong[] FurData =
         [

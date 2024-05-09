@@ -1,4 +1,5 @@
-﻿using SlugBase.Features;
+﻿using Mono.WebBrowser;
+using SlugBase.Features;
 
 namespace Slugpack;
 
@@ -29,4 +30,19 @@ public static class SlugpackExtensions
         Voyager = player.Voyager();
         return Voyager.IsVoyager;
     }
+
+    //Extension for Creatures and Pipes
+
+    private static readonly ConditionalWeakTable<Creature, CreatureData> cdctw_ = new();
+
+    public static CreatureData CreatureData(this Creature creature) => cdctw_.GetValue(creature, _ => new CreatureData(creature));
+
+    public static bool IsCreature(this Creature creature) => creature.CreatureData().IsCreature;
+
+    public static bool IsCreature(this Creature creature, out CreatureData creatureData)
+    {
+        creatureData = creature.CreatureData();
+        return creatureData.IsCreature;
+    }
+
 }

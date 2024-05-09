@@ -74,9 +74,8 @@ internal static class GameHooks
 
     private static void Creature_SuckedIntoShortCut(On.Creature.orig_SuckedIntoShortCut orig, Creature self, RWCustom.IntVector2 entrancePos, bool carriedByOther)
     {
-        if (/*creature.isTempPipeLockImmune() &&*/ Null.Check(self, 3) && (Utilities.pipeIsLocked(self.room.world.game, entrancePos)) || ((self is Player) && (self as Player).IsTechy(out var scanline) && scanline.holdTime > Constants.timeReached))
+        if (Null.Check(self, 3) && Utilities.pipeIsLocked(self.room.world.game, entrancePos) || self is Player player && player.IsTechy(out var scanline) && scanline.holdTime > Constants.timeReached)
         {
-            // creature.revokeTempPipeLockImmunity();
             self.enteringShortCut = null;
             self.inShortcut = false;
             return;
