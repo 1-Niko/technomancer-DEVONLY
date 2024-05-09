@@ -1,6 +1,4 @@
-﻿using LizardCosmetics;
-
-namespace Slugpack;
+﻿namespace Slugpack;
 
 public static class HiveQueenHooks
 {

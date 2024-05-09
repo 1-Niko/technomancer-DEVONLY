@@ -1,5 +1,3 @@
-using MoreSlugcats;
-
 namespace Slugpack;
 
 public static class Utilities

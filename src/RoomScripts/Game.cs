@@ -1,5 +1,3 @@
-using MoreSlugcatsEnums = MoreSlugcats.MoreSlugcatsEnums;
-
 namespace Slugpack;
 
 internal static class GameHooks
@@ -37,7 +35,7 @@ internal static class GameHooks
 
         bool creatureMayExit;
 
-        if (Utilities.pipeIsLocked(newRoom.world.game, pos))
+        if (Utilities.PipeIsLocked(newRoom.world.game, pos))
         {
             // IsLockImmune should be able to be set on a per-creaturetype basis, I think? Idk, what do you think?
             if (self.IsLockImmune()) // (Creature is immune to pipe locking)
@@ -74,7 +72,7 @@ internal static class GameHooks
 
     private static void Creature_SuckedIntoShortCut(On.Creature.orig_SuckedIntoShortCut orig, Creature self, RWCustom.IntVector2 entrancePos, bool carriedByOther)
     {
-        if (!self.HasPassthroughAllowance() && Null.Check(self, 3) && Utilities.pipeIsLocked(self.room.world.game, entrancePos) || self is Player player && player.IsTechy(out var scanline) && scanline.holdTime > Constants.timeReached)
+        if (!self.HasPassthroughAllowance() && Null.Check(self, 3) && Utilities.PipeIsLocked(self.room.world.game, entrancePos) || self is Player player && player.IsTechy(out var scanline) && scanline.holdTime > Constants.timeReached)
         {
             self.RevokePassthroughAllowance();
             self.enteringShortCut = null;
@@ -242,7 +240,7 @@ internal static class GameHooks
                 {
                     for (int r = 0; r < ShortcutTable.locks[i].Shortcuts.Length; r++)
                     {
-                        Constants.isLocked[ShortcutTable.locks[i].Shortcuts[r]] = true;
+                        CreatureData.isLocked[ShortcutTable.locks[i].Shortcuts[r]] = true;
                     }
                     ShortcutTable.locks[i].Time--;
                     ShortcutTable.locks[i].SinceFlicker++;
@@ -263,7 +261,7 @@ internal static class GameHooks
                 {
                     for (int r = 0; r < ShortcutTable.locks[i].Shortcuts.Length; r++)
                     {
-                        Constants.isLocked[ShortcutTable.locks[i].Shortcuts[r]] = false;
+                        CreatureData.isLocked[ShortcutTable.locks[i].Shortcuts[r]] = false;
                     }
                     ShortcutTable.locks.RemoveAt(i);
                     break;

@@ -1,9 +1,5 @@
 ﻿namespace Slugpack;
 
-using LizardCosmetics;
-using RWCustom;
-using UnityEngine;
-
 public class MultipleAntennae : Template
 {
     private int Sprite(int side, int part)

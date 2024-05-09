@@ -10,7 +10,7 @@ public class CreatureData
 
     public bool tempLockImmune;
 
-    public Dictionary<ShortcutData, bool> isLocked = [];
+    public static Dictionary<ShortcutData, bool> isLocked = [];
 
     public CreatureData(Creature creature)
     {

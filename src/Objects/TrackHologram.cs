@@ -82,7 +82,7 @@ namespace Slugpack
             stepTimer++;
             trainCountdown = Mathf.Max(0, trainCountdown - 1);
 
-            if (!Constants.TrackHologramMessage.TryGetValue(placedObject, out var messenger)) Constants.TrackHologramMessage.Add(placedObject, messenger = new WeakTables.TrackHologramMessenger());
+            if (!Constants.TrackHologramMessage.TryGetValue(placedObject, out var messenger)) Constants.TrackHologramMessage.Add(placedObject, messenger = new TrackHologramMessenger());
 
             if (!messenger.playerInteracted)
             {
@@ -165,7 +165,7 @@ namespace Slugpack
                                 break;
                         }
                     }
-                    sLeaser.sprites[0].color = new UnityEngine.Color(1f, 0f, 0f); // Utilities.ColourFade(new Vector4(1f, 0f, 0f, 1f), new Vector4(1f, 1f, 1f, 0f), (-Mathf.Cos(3.141f * ((float)stepTimer / 10f) / 2) + 1) / 2);
+                    sLeaser.sprites[0].color = new Color(1f, 0f, 0f); // Utilities.ColourFade(new Vector4(1f, 0f, 0f, 1f), new Vector4(1f, 1f, 1f, 0f), (-Mathf.Cos(3.141f * ((float)stepTimer / 10f) / 2) + 1) / 2);
                     break;
             }
 

@@ -1,8 +1,4 @@
-﻿using Fisobs.Core;
-using Fisobs.Creatures;
-using Fisobs.Sandbox;
-
-namespace Slugpack;
+﻿namespace Slugpack;
 
 public class HiveQueenCritob : Critob
 {

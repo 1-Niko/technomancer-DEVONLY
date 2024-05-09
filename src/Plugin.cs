@@ -1,8 +1,4 @@
-﻿using BepInEx;
-using BepInEx.Logging;
-using Fisobs.Core;
-
-namespace Slugpack;
+﻿namespace Slugpack;
 
 [BepInPlugin(MOD_ID, MOD_NAME, VERSION)]
 public class Plugin : BaseUnityPlugin
