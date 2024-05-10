@@ -1,5 +1,3 @@
-using UnityEngine.UI;
-
 namespace Slugpack;
 
 public class WaterKillBoxData(PlacedObject owner) : ManagedData(owner, null)
@@ -8,7 +6,7 @@ public class WaterKillBoxData(PlacedObject owner) : ManagedData(owner, null)
     public Vector2 BoxArea;
 }
 
-public class WaterKillBox(PlacedObject placedObject) : UpdatableAndDeletable
+public class WaterKillBox(PlacedObject placedObject, Room room) : UpdatableAndDeletable
 {
     public override void Update(bool eu)
     {
@@ -19,8 +17,6 @@ public class WaterKillBox(PlacedObject placedObject) : UpdatableAndDeletable
             if (creature != null && creature.Room.realizedRoom == room)
             {
                 Creature realizedCreature = creature.realizedCreature;
-                //if (!Constants.WaterCounter.TryGetValue(realizedCreature, out var counter)) Constants.WaterCounter.Add(realizedCreature, counter = new WaterKillBoxCounter());
-                //{
                 Vector2 averageBodyChunkPosition = Vector2.zero;
                 foreach (var bodyChunk in realizedCreature.bodyChunks)
                 {
@@ -111,7 +107,6 @@ public class WaterKillBox(PlacedObject placedObject) : UpdatableAndDeletable
                 {
                     realizedCreature.SetNotBurning();
                 }
-                //}
             }
         }
     }

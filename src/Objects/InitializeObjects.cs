@@ -10,7 +10,7 @@ internal static class InitializeObjects
             {
                 RegisterManagedObject<TrackHologram, TrackHologramData, ManagedRepresentation>("TrackHologram", "Technomancer");
 
-                // RegisterManagedObject<DebugTrainItem, DebugTrainItemData, ManagedRepresentation>("TrainTrack", "Technomancer");
+                /// RegisterManagedObject<DebugTrainItem, DebugTrainItemData, ManagedRepresentation>("TrainTrack", "Technomancer");
                 RegisterManagedObject<TrainTrack, TrainTrackData, ManagedRepresentation>("TrainTrack", "Technomancer");
                 RegisterManagedObject<TrainWarningBell, TrainWarningBellData, ManagedRepresentation>("TrainBell", "Technomancer");
                 RegisterManagedObject<PartyBanner, PartyBannerData, ManagedRepresentation>("Banners", "Technomancer");
@@ -22,7 +22,7 @@ internal static class InitializeObjects
                 RegisterManagedObject<HypothermiaRadius, HypothermiaRadiusData, ManagedRepresentation>("HypothermiaRadius", "Technomancer");
                 // RegisterManagedObject<TrainLeftHead, TrainTrackObjectData, ManagedRepresentation>("DEBUGTRAINOBJECT", "Technomancer");
                 RegisterManagedObject<SpinningFan, SpinningFanData, ManagedRepresentation>("Spinning Fan", "Technomancer");
-                RegisterManagedObject<ProceduralTrainObject, TrainObjectData, ManagedRepresentation>("DEBUGTRAINOBJECT", "Technomancer");
+                // RegisterManagedObject<ProceduralTrainObject, TrainObjectData, ManagedRepresentation>("DEBUGTRAINOBJECT", "Technomancer");
                 RegisterManagedObject<FakeSubregionPopupObject, FakeSubregionPopupData, ManagedRepresentation>("FakeSubregionPopup", "Technomancer");
                 RegisterManagedObject<WaterKillBox, WaterKillBoxData, ManagedRepresentation>("LethalWaterKillbox", "Technomancer");
                 RegisterManagedObject<LeakyPipe, LeakyPipeData, ManagedRepresentation>("LeakyPipe", "Technomancer");

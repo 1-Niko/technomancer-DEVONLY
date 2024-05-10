@@ -145,7 +145,7 @@ public class TrainBell(PlacedObject placedObject, Vector2 pos, int waitCount, Ve
 
         int bellLength = 32;
 
-        for (int i = 0; i < players.Count; )
+        for (int i = 0; i < players.Count; i++)
         {
             if (RWCustom.Custom.Dist(pos, players[i].mainBodyChunk.pos) < RWCustom.Custom.Dist(pos, pos + (placedObject.data as TrainWarningBellData).rad) && ((enabled && warning) || forceWarning))
             {

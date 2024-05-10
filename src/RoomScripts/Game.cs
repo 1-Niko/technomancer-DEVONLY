@@ -131,7 +131,7 @@ internal static class GameHooks
         // Resolve the file path
         string filePath = AssetManager.ResolveFilePath($"world/{roomName.Split('_')[0].ToLower()}-rooms/{tMaskImageFileName}");
 
-        Plugin.DebugLog(filePath);
+        // Plugin.DebugLog(filePath);
 
         // Check if the TMASK image file exists and load it
         if (File.Exists(filePath))
@@ -140,14 +140,17 @@ internal static class GameHooks
             byte[] fileData = File.ReadAllBytes(filePath);
             tMaskImage = new Texture2D(2, 2); // Width and height are placeholders
             _ = tMaskImage.LoadImage(fileData); // LoadImage auto-resizes the texture dimensions
+            fileData = null;
         }
 
         // Here it will be added to the shaders
 
-        if (self != null && self.room != null && self.room.game != null && self.room.game.rainWorld != null && Constants.SlugpackShaders.TryGetValue(self.room.game.rainWorld, out var Shaders))
+        if (Null.Check(self, 4) && Constants.SlugpackShaders.TryGetValue(self.room.game.rainWorld, out var Shaders))
         {
             Shaders._shadowMask = tMaskImage;
         }
+
+        tMaskImage = null;
     }
 
     private static void RegionGate_customKarmaGateRequirements(On.RegionGate.orig_customKarmaGateRequirements orig, RegionGate self)

@@ -42,7 +42,7 @@ public static class Utilities
         }
 
         float minimumTrainDistance = float.MaxValue;
-        // Vector2 closestTrainPos;
+        Vector2 closestTrainPos = Vector2.zero;
         if (trainPositions.Count > 0)
         {
             for (int i = 0; i < trainPositions.Count; i++)
@@ -53,7 +53,7 @@ public static class Utilities
                     if (checkingDistance < minimumTrainDistance)
                     {
                         minimumTrainDistance = checkingDistance;
-                        // closestTrainPos = trainPositions[i].pos;
+                        closestTrainPos = trainPositions[i].pos;
                     }
                 }
             }
@@ -147,22 +147,24 @@ public static class Utilities
 1000 00000   512,513    Dronemaster's Drones       ?
         */
 
-        bool isCreature;
-        bool isObject;
-        bool isItem;
-        bool isShortcut;
+        bool isCreature = false;
+        bool isObject = false;
+        bool isItem = false;
+        bool isShortcut = false;
 
-        string nearestObjectType;
-        Creature nearestCreature;
-        PhysicalObject nearestItem;
-        PlacedObject nearestObject;
+        string nearestObjectType = null;
+        Creature nearestCreature = null;
+        PhysicalObject nearestItem = null;
+        ShortcutData nearestShortcut = new();
+        PlacedObject nearestObject = null;
+        Vector2 nearestPosition = Vector2.zero;
 
         if (thrw && inputHoldThrw) return 0;
         if (jmp && inputHoldJmp) return 0;
 
         if (arrow != null && arrow.room != null)
         {
-            (nearestObjectType, nearestCreature, nearestItem, _, nearestObject, _) = DetermineObjectFromPosition(arrow.pos, arrow.room);
+            (nearestObjectType, nearestCreature, nearestItem, nearestShortcut, nearestObject, nearestPosition) = DetermineObjectFromPosition(arrow.pos, arrow.room);
 
             isCreature = nearestCreature != null;
             isObject = nearestObject != null && arrow._object != null;

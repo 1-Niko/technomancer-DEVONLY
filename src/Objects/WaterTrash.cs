@@ -18,7 +18,7 @@ public class WaterTrashData(PlacedObject owner) : ManagedData(owner, null)
     public int BackDepth;
 }
 
-public class WaterTrash(PlacedObject placedObject) : UpdatableAndDeletable
+public class WaterTrash(PlacedObject placedObject, Room room) : UpdatableAndDeletable
 {
     public override void Update(bool eu)
     {

@@ -21,7 +21,7 @@ public class TrainTrackData(PlacedObject owner) : ManagedData(owner, null)
     public float TrainSpeed;
 }
 
-public class TrainTrack(PlacedObject placedObject, Room room) : UpdatableAndDeletable
+public class TrainTrack(PlacedObject placedObject, Room _) : UpdatableAndDeletable
 {
     public override void Update(bool eu)
     {
@@ -205,7 +205,7 @@ public class TrainObject : CosmeticSprite
 
         if (pos.x > room.PixelWidth + padding + 200)
         {
-            Destroy();
+            this.Destroy();
         }
     }
 

@@ -19,6 +19,10 @@ public static class Null
         {
             return check is Creature creature && creature != null && creature.room != null && creature.room.world != null && creature.room.world.game != null;
         }
+        if (method == 4)
+        {
+            return check is RoomCamera camera && camera != null && camera.room != null && camera.room.world != null && camera.room.world.game != null;
+        }
 
         return false;
     }

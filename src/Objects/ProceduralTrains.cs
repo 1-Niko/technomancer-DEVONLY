@@ -151,9 +151,6 @@ public class TrainSpriteObject : CosmeticSprite
         */
 
         Random.state = state;
-
-        if (slatedForDeletetion || room != rCam.room)
-            sLeaser.CleanSpritesAndRemove();
     }
 
     public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)

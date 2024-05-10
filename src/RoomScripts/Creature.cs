@@ -9,8 +9,7 @@ internal static class CreatureHooks
         On.AbstractCreatureAI.RandomMoveToOtherRoom += AbstractCreatureAI_RandomMoveToOtherRoom;
     }
 
-    // Do Not Remove, can still be useful
-    /*private static void Creature_SuckedIntoShortCut(On.Creature.orig_SuckedIntoShortCut orig, Creature self, RWCustom.IntVector2 entrancePos, bool carriedByOther)
+    private static void Creature_SuckedIntoShortCut(On.Creature.orig_SuckedIntoShortCut orig, Creature self, RWCustom.IntVector2 entrancePos, bool carriedByOther)
     {
         if (self is Player && (self as Player).IsTechy(out var scanline) && (scanline.generatedIcons || scanline.roomController != null))
         {
@@ -42,7 +41,7 @@ internal static class CreatureHooks
             }
         }
         orig(self, entrancePos, carriedByOther);
-    }*/
+    }
 
     private static void Vulture_Update(On.Vulture.orig_Update orig, Vulture self, bool eu)
     {
