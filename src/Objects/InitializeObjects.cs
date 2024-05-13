@@ -10,7 +10,7 @@ internal static class InitializeObjects
             {
                 RegisterManagedObject<TrackHologram, TrackHologramData, ManagedRepresentation>("TrackHologram", "Technomancer");
 
-                /// RegisterManagedObject<DebugTrainItem, DebugTrainItemData, ManagedRepresentation>("TrainTrack", "Technomancer");
+                // RegisterManagedObject<DebugTrainItem, DebugTrainItemData, ManagedRepresentation>("TrainTrack", "Technomancer");
                 RegisterManagedObject<TrainTrack, TrainTrackData, ManagedRepresentation>("TrainTrack", "Technomancer");
                 RegisterManagedObject<TrainWarningBell, TrainWarningBellData, ManagedRepresentation>("TrainBell", "Technomancer");
                 RegisterManagedObject<PartyBanner, PartyBannerData, ManagedRepresentation>("Banners", "Technomancer");

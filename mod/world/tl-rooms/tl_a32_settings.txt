@@ -5,4 +5,5 @@ Palette: 22
 EffectColorA: 19
 EffectColorB: 11
 PlacedObjects: EffectColourChanger><421.6724><44.39867><-156~-239~61^40~14~False~False~0~0~0~0, TrackHologram><531.5414><292.9457><100~50~2~0;0^-9;-83~0;0^-372;-103~556^-213, 
+AmbientSounds: OMNI><AM_IND-12thFloor.ogg><729.6956><358.0418><0.2173913><1, 
 WetTerrain: OFF

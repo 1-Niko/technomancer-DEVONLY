@@ -123,7 +123,8 @@ internal static class GameHooks
 
         string tMaskImageFileName = $"{roomName}_{camPos + 1}_TMASK.png";
 
-        // Initialize a default 1x1 black pixel image
+        // DO NOT REMOVE THIS
+        // It will cause it to carry the mask over between screens even if that screen shouldn't have a mask
         Texture2D tMaskImage = new(1, 1);
         tMaskImage.SetPixel(0, 0, Color.black);
         tMaskImage.Apply();
@@ -144,13 +145,11 @@ internal static class GameHooks
         }
 
         // Here it will be added to the shaders
-
         if (Null.Check(self, 4) && Constants.SlugpackShaders.TryGetValue(self.room.game.rainWorld, out var Shaders))
         {
+            if (Shaders._shadowMask != null) UnityEngine.Object.Destroy(Shaders._shadowMask);
             Shaders._shadowMask = tMaskImage;
         }
-
-        tMaskImage = null;
     }
 
     private static void RegionGate_customKarmaGateRequirements(On.RegionGate.orig_customKarmaGateRequirements orig, RegionGate self)

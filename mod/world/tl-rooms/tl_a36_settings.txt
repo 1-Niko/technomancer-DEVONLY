@@ -1,0 +1,6 @@
+Template: NONE
+DangerType: None
+Grime: 0.1086956
+Palette: 22
+PlacedObjects: TrackHologram><493.0822><152.3912><100~50~2~0;0^28;72~0;0^-333;34~-487^-218, 
+AmbientSounds: OMNI><AM_IND-12thFloor.ogg><735.3228><355.0927><0.2391304><1, 
