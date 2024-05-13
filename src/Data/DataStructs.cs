@@ -73,10 +73,10 @@ public static class DataStructures
         public Color Color { get; set; }
     }
 
-    public class ScreenSlice(WWW image)
-    {
-        public WWW Screen { get; set; } = image;
-    }
+    //public class ScreenSlice(WWW image)
+    //{
+    //    public WWW Screen { get; set; } = image;
+    //}
 
     public class Anchorpoint
     {

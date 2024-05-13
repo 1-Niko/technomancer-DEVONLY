@@ -10,6 +10,7 @@ internal static class Constants
 
     public const int timeReached = 10;
 
+    public static Dictionary<ShortcutData, bool> isLocked = [];
 
     //public static ConditionalWeakTable<Player, ScanLine> ScanLineMemory = new();
 

@@ -14,8 +14,6 @@ public class CreatureData
 
     public int burnCount;
 
-    public static Dictionary<ShortcutData, bool> isLocked = [];
-
     public CreatureData(Creature creature)
     {
         this.creature = creature;

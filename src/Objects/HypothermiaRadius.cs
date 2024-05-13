@@ -6,7 +6,7 @@ public class HypothermiaRadiusData(PlacedObject owner) : ManagedData(owner, null
     public Vector2 rad;
 }
 
-public class HypothermiaRadius(PlacedObject placedObject, Room room) : UpdatableAndDeletable
+public class HypothermiaRadius(PlacedObject placedObject) : UpdatableAndDeletable
 {
     public override void Update(bool eu)
     {

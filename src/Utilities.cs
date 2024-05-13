@@ -2,7 +2,7 @@ namespace Slugpack;
 
 public static class Utilities
 {
-    public static bool PipeIsLocked(RainWorldGame game, RWCustom.IntVector2 pos)
+    public static bool PipeIsLocked(RainWorldGame game, RWCustom.IntVector2 pos, Room room)
     {
         Constants.DamagedShortcuts.TryGetValue(game, out var ShortcutTable);
 
@@ -10,7 +10,11 @@ public static class Utilities
         {
             for (int j = 0; j < ShortcutTable.locks[i].Shortcuts.Length; j++)
             {
-                if ((ShortcutTable.locks[i].Shortcuts[j].StartTile == pos || ShortcutTable.locks[i].Shortcuts[j].DestTile == pos) && CreatureData.isLocked.ContainsKey(ShortcutTable.locks[i].Shortcuts[j]) && CreatureData.isLocked[ShortcutTable.locks[i].Shortcuts[j]])
+                if ((ShortcutTable.locks[i].Shortcuts[j].StartTile == pos ||
+                    ShortcutTable.locks[i].Shortcuts[j].DestTile == pos) &&
+                    ShortcutTable.locks[i].Shortcuts[j].room.abstractRoom.name == room.abstractRoom.name &&
+                    isLocked.ContainsKey(ShortcutTable.locks[i].Shortcuts[j]) &&
+                    isLocked[ShortcutTable.locks[i].Shortcuts[j]])
                 {
                     return true;
                 }

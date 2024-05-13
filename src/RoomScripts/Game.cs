@@ -35,26 +35,27 @@ internal static class GameHooks
 
         bool creatureMayExit;
 
-        if (Utilities.PipeIsLocked(newRoom.world.game, pos))
+        if (Utilities.PipeIsLocked(newRoom.world.game, pos, newRoom))
         {
-            // IsLockImmune should be able to be set on a per-creaturetype basis, I think? Idk, what do you think?
-            if (self.IsLockImmune()) // (Creature is immune to pipe locking)
-            {
-                creatureMayExit = true;
+            creatureMayExit = false;
+            //// IsLockImmune should be able to be set on a per-creaturetype basis, I think? Idk, what do you think?
+            //if (false/*self.IsLockImmune()*/) // (Creature is immune to pipe locking)
+            //{
+            //    creatureMayExit = true;
 
-                // Break Lock
-                // Break effects
+            //    // Break Lock
+            //    // Break effects
                 
-                if (false)
-                {
-                    // Stun Techy
-                }
-            }
-            else // Creature is not immune to pipe locking
-            {
-                creatureMayExit = false;
-                // Spawn effects
-            }
+            //    if (false)
+            //    {
+            //        // Stun Techy
+            //    }
+            //}
+            //else // Creature is not immune to pipe locking
+            //{
+            //    creatureMayExit = false;
+            //    // Spawn effects
+            //}
         }
         else // Pipe is not locked
         {
@@ -65,14 +66,14 @@ internal static class GameHooks
         if (!creatureMayExit)
         {
             // Send the wretched beast back
-            self.SuckedIntoShortCut(pos, false);
             self.GrantPassthroughAllowance();
+            self.SuckedIntoShortCut(pos, false);
         }
     }
 
     private static void Creature_SuckedIntoShortCut(On.Creature.orig_SuckedIntoShortCut orig, Creature self, RWCustom.IntVector2 entrancePos, bool carriedByOther)
     {
-        if (!self.HasPassthroughAllowance() && Null.Check(self, 3) && Utilities.PipeIsLocked(self.room.world.game, entrancePos) || self is Player player && player.IsTechy(out var scanline) && scanline.holdTime > Constants.timeReached)
+        if (!self.HasPassthroughAllowance() && Null.Check(self, 3) && Utilities.PipeIsLocked(self.room.world.game, entrancePos, self.room) || self is Player player && player.IsTechy(out var scanline) && scanline.holdTime > Constants.timeReached)
         {
             self.RevokePassthroughAllowance();
             self.enteringShortCut = null;
@@ -242,7 +243,7 @@ internal static class GameHooks
                 {
                     for (int r = 0; r < ShortcutTable.locks[i].Shortcuts.Length; r++)
                     {
-                        CreatureData.isLocked[ShortcutTable.locks[i].Shortcuts[r]] = true;
+                        isLocked[ShortcutTable.locks[i].Shortcuts[r]] = true;
                     }
                     ShortcutTable.locks[i].Time--;
                     ShortcutTable.locks[i].SinceFlicker++;
@@ -263,7 +264,7 @@ internal static class GameHooks
                 {
                     for (int r = 0; r < ShortcutTable.locks[i].Shortcuts.Length; r++)
                     {
-                        CreatureData.isLocked[ShortcutTable.locks[i].Shortcuts[r]] = false;
+                        isLocked[ShortcutTable.locks[i].Shortcuts[r]] = false;
                     }
                     ShortcutTable.locks.RemoveAt(i);
                     break;
