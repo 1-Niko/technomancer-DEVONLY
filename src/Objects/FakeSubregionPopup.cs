@@ -5,12 +5,11 @@ public class FakeSubregionPopupData(PlacedObject owner) : ManagedData(owner, nul
     [Vector2Field("radius", 50, -50, Vector2Field.VectorReprType.circle)]
     public Vector2 dir;
 
-    // If somebody adds more subregions than the 16 bit integer limit I will NOT be making this compatable
     [IntegerField("A", 1, 65535, 1, ManagedFieldWithPanel.ControlType.arrows, "Index")]
     public int index;
 }
 
-public class FakeSubregionPopupObject(PlacedObject placedObject, Room room) : UpdatableAndDeletable
+public class FakeSubregionPopupObject(PlacedObject placedObject) : UpdatableAndDeletable
 {
     public override void Update(bool eu)
     {

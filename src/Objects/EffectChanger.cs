@@ -27,7 +27,7 @@ public class EffectChangerData(PlacedObject owner) : ManagedData(owner, null)
     public float brightness;
 }
 
-public class EffectChanger(PlacedObject placedObject, Room room) : UpdatableAndDeletable
+public class EffectChanger(PlacedObject placedObject) : UpdatableAndDeletable
 {
     public override void Update(bool eu)
     {
@@ -88,9 +88,9 @@ public class EffectChangerObject(PlacedObject placedObject, Vector2 pos) : Cosme
 
         sLeaser.sprites[0].isVisible = true;
 
-        sLeaser.sprites[0].color = new Color(Utilities.EncodeBools(EffectA, EffectB), (1f - (Colour / 21f)) % 1f, Utilities.EncodeFloats(Fade, Hue, Saturation, Brightness), 0f);
+        sLeaser.sprites[0].color = new Color(EncodeBools(EffectA, EffectB), (1f - (Colour / 21f)) % 1f, EncodeFloats(Fade, Hue, Saturation, Brightness), 0f);
 
-        if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rCam.room?.world?.game?.rainWorld, out var Shaders))
+        if (shaders_enabled && SlugpackShaders.TryGetValue(rCam.room?.world?.game?.rainWorld, out var Shaders))
         {
             sLeaser.sprites[0].shader = Shaders.ColourChangerShader;
             sLeaser.sprites[0]._renderLayer?._material?.SetTexture("_EffectMask", Shaders._effectMask);

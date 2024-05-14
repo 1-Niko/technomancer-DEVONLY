@@ -11,7 +11,6 @@ public class VoyagerData
         IsVoyager = player.slugcatStats.name == TnEnums.Voyager;
         this.player = player;
 
-        if (!IsVoyager) return;
-        //Add all the values or data for Voyager below
+        if (!IsVoyager) return; 
     }
 }

@@ -24,7 +24,7 @@ internal static class GameHooks
         On.RoomCamera.MoveCamera2 += (orig, self, roomName, camPos) =>
         {
             orig(self, roomName, camPos);
-            if (Constants.DamagedShortcuts.TryGetValue(self.game, out var CameraPosition))
+            if (DamagedShortcuts.TryGetValue(self.game, out var CameraPosition))
             {
                 CameraPosition.camPosition = camPos;
             }
@@ -180,7 +180,7 @@ internal static class GameHooks
         // Even though it doesn't work with creatures already in the pipe, it does still keep creatures not yet in the pipe from passing through, so is still useful
         bool runOrigHere = true;
 
-        Constants.DamagedShortcuts.TryGetValue(self.game, out var ShortcutTable);
+        DamagedShortcuts.TryGetValue(self.game, out var ShortcutTable);
 
         for (int i = self.transportVessels.Count - 1; i >= 0; i--)
         {
@@ -237,7 +237,7 @@ internal static class GameHooks
         }
 
         // Here it will be added to the shaders
-        if (Null.Check(self, 4) && Constants.SlugpackShaders.TryGetValue(self.room.game.rainWorld, out var Shaders))
+        if (Null.Check(self, 4) && SlugpackShaders.TryGetValue(self.room.game.rainWorld, out var Shaders))
         {
             if (Shaders._shadowMask != null) UnityEngine.Object.Destroy(Shaders._shadowMask);
             Shaders._shadowMask = tMaskImage;
@@ -287,9 +287,9 @@ internal static class GameHooks
 
         for (int i = 0; i < self.entranceSpriteColors.Length; i++)
         {
-            if (Constants.DamagedShortcuts.TryGetValue(self.room.game, out var ShortcutTable) && ShortcutTable.locks.Any(lockObj => lockObj.Shortcuts.Contains(self.room.shortcuts[i])))
+            if (DamagedShortcuts.TryGetValue(self.room.game, out var ShortcutTable) && ShortcutTable.locks.Any(lockObj => lockObj.Shortcuts.Contains(self.room.shortcuts[i])))
             {
-                self.entranceSpriteColors[i] = RWCustom.Custom.RGB2RGBA(new Color(0f, 0f, 0f), Mathf.Max(self.entranceSpriteColors[i].a, (float)32 / (ShortcutTable.locks.FirstOrDefault(lockObj => lockObj.Shortcuts.Contains(self.room.shortcuts[i])).SinceFlicker + 32)));
+                self.entranceSpriteColors[i] = Custom.RGB2RGBA(new Color(0f, 0f, 0f), Mathf.Max(self.entranceSpriteColors[i].a, (float)32 / (ShortcutTable.locks.FirstOrDefault(lockObj => lockObj.Shortcuts.Contains(self.room.shortcuts[i])).SinceFlicker + 32)));
             }
         }
     }
@@ -298,13 +298,13 @@ internal static class GameHooks
     {
         orig(self, manager);
 
-        if (!Constants.DamagedShortcuts.TryGetValue(self, out var _))
-        { Constants.DamagedShortcuts.Add(self, _ = new ShortcutList()); }
+        if (!DamagedShortcuts.TryGetValue(self, out var _))
+        { DamagedShortcuts.Add(self, _ = new ShortcutList()); }
     }
 
     private static bool RoomRealizer_CanAbstractizeRoom(On.RoomRealizer.orig_CanAbstractizeRoom orig, RoomRealizer self, RoomRealizer.RealizedRoomTracker tracker)
     {
-        if (Constants.DamagedShortcuts.TryGetValue(self.world.game, out var ShortcutTable))
+        if (DamagedShortcuts.TryGetValue(self.world.game, out var ShortcutTable))
         {
             using List<AbstractCreature>.Enumerator enumerator = tracker.room.world.game.NonPermaDeadPlayers.GetEnumerator();
             while (enumerator.MoveNext())
@@ -328,7 +328,7 @@ internal static class GameHooks
     private static void RainWorldGame_Update(On.RainWorldGame.orig_Update orig, RainWorldGame self)
     {
         orig(self);
-        if (Constants.DamagedShortcuts.TryGetValue(self, out var ShortcutTable))
+        if (DamagedShortcuts.TryGetValue(self, out var ShortcutTable))
         {
             for (int i = 0; i < ShortcutTable.locks.Count; i++)
             {
@@ -346,7 +346,7 @@ internal static class GameHooks
                         {
                             for (int j = 0; j < Random.Range(10, 30); j++)
                             {
-                                Vector2 a = RWCustom.Custom.RNV();
+                                Vector2 a = Custom.RNV();
                                 ShortcutTable.locks[i].Rooms[r].AddObject(new Spark(ShortcutTable.locks[i].Rooms[r].MiddleOfTile(ShortcutTable.locks[i].Shortcuts[r].StartTile) + (a * Random.value * 40f), a * Mathf.Lerp(4f, 30f, Random.value), new Color(0.9f, 0.9f, 1f), null, 16, 30));
                             }
                             ShortcutTable.locks[i].SinceFlicker = 0;
@@ -369,7 +369,7 @@ internal static class GameHooks
     private static string Region_GetProperRegionAcronym(On.Region.orig_GetProperRegionAcronym orig, SlugcatStats.Name character, string baseAcronym)
     {
         string text = baseAcronym;
-        if (character.ToString() == Constants.Technomancer)
+        if (character.ToString() == Technomancer)
         {
             Dictionary<string, string> replacements = new() { { "SL", "LM" }, { "SB", "TL" } };
 

@@ -22,8 +22,8 @@ internal static class CreatureHooks
         {
             if (self != null && self.room != null)
             {
-                var shortcutLocation = Utilities.DetermineObjectFromPosition(self.room.MiddleOfTile(entrancePos), self.room).nearestShortcut;
-                if (Constants.DamagedShortcuts.TryGetValue(self.room.game, out var ShortcutTable))
+                var shortcutLocation = DetermineObjectFromPosition(self.room.MiddleOfTile(entrancePos), self.room).nearestShortcut;
+                if (DamagedShortcuts.TryGetValue(self.room.game, out var ShortcutTable))
                 {
                     for (int i = 0; i < ShortcutTable.locks.Count; i++)
                     {
@@ -67,8 +67,8 @@ internal static class CreatureHooks
 
                     if (self.kingTusks.tusks.ElementAtOrDefault(tusk) != null && self.kingTusks.tusks[tusk] != null && self.kingTusks.tusks[tusk].mode == KingTusks.Tusk.Mode.Attached)
                     {
-                        Vector2 vector = RWCustom.Custom.DirVec(self.kingTusks.tusks[tusk].vulture.neck.tChunks[self.kingTusks.tusks[tusk].vulture.neck.tChunks.Length - 1].pos, self.kingTusks.tusks[tusk].vulture.bodyChunks[4].pos);
-                        Vector2 a = RWCustom.Custom.PerpendicularVector(vector);
+                        Vector2 vector = Custom.DirVec(self.kingTusks.tusks[tusk].vulture.neck.tChunks[self.kingTusks.tusks[tusk].vulture.neck.tChunks.Length - 1].pos, self.kingTusks.tusks[tusk].vulture.bodyChunks[4].pos);
+                        Vector2 a = Custom.PerpendicularVector(vector);
                         Vector2 vector2 = self.kingTusks.tusks[tusk].vulture.bodyChunks[4].pos + (vector * -5f);
                         vector2 += a * self.kingTusks.tusks[tusk].zRot.x * 15f;
                         vector2 += a * self.kingTusks.tusks[tusk].zRot.y * ((self.kingTusks.tusks[tusk].side == 0) ? -1f : 1f) * 7f;

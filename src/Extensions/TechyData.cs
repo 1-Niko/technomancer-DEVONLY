@@ -6,8 +6,6 @@ public class TechyData
 
     public readonly Player player;
 
-    //ScanLine Data
-
     public bool queueThrw;
     public bool queueJmp;
     public bool isQueued;

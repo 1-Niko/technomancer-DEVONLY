@@ -12,8 +12,6 @@ internal static class Constants
 
     public static Dictionary<ShortcutData, bool> isLocked = [];
 
-    //public static ConditionalWeakTable<Player, ScanLine> ScanLineMemory = new();
-
     public static ConditionalWeakTable<PlayerGraphics, GraphicsData> Graphics = new();
 
     public static ConditionalWeakTable<Vulture, VultureStuff> VultureStuff = new();

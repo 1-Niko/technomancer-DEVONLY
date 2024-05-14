@@ -21,7 +21,7 @@ public class TrainTrackData(PlacedObject owner) : ManagedData(owner, null)
     public float TrainSpeed;
 }
 
-public class TrainTrack(PlacedObject placedObject, Room _) : UpdatableAndDeletable
+public class TrainTrack(PlacedObject placedObject) : UpdatableAndDeletable
 {
     public override void Update(bool eu)
     {
@@ -44,7 +44,7 @@ public class TrainTrack(PlacedObject placedObject, Room _) : UpdatableAndDeletab
                 connector_distance = Random.Range(6, 9);
 
                 int random_choice = car_queue == first_car_index ? Random.Range(0, 8) : Random.Range(0, 25);
-                trainCar = new TrainObject(new Vector2(placedObject.pos.x - padding - 60, placedObject.pos.y + vertical_offset + Constants.TrainOffsets[random_choice]),
+                trainCar = new TrainObject(new Vector2(placedObject.pos.x - padding - 60, placedObject.pos.y + vertical_offset + TrainOffsets[random_choice]),
                                                        (placedObject.data as TrainTrackData).TrainSpeed, random_choice, padding, placedObject.pos.y,
                                                        placedObject.pos.y + (placedObject.data as TrainTrackData).TrainArea.y,
                                                        placedObject.pos.x + (placedObject.data as TrainTrackData).TrainArea.x,
@@ -118,7 +118,7 @@ public class TrainObject : CosmeticSprite
             .SelectMany(objectGroup => objectGroup)
             .Where(physObject =>
                 physObject.bodyChunks.Any(chunk =>
-                    RWCustom.Custom.Dist(chunk.pos, pos) < 453 &&
+                    Custom.Dist(chunk.pos, pos) < 453 &&
                      chunk.pos.y < hit_upper_bound &&
                      chunk.pos.y > hit_lower_bound
                 )
@@ -129,7 +129,7 @@ public class TrainObject : CosmeticSprite
             {
                 var targetChunks = physObject.bodyChunks
                     .Where(chunk =>
-                        RWCustom.Custom.Dist(chunk.pos, pos) < 453 &&
+                        Custom.Dist(chunk.pos, pos) < 453 &&
                          chunk.pos.y < hit_upper_bound &&
                          chunk.pos.y > hit_lower_bound
                     );
@@ -174,7 +174,7 @@ public class TrainObject : CosmeticSprite
                         List<Player> players = room.physicalObjects
                             .SelectMany(category => category)
                             .OfType<Player>()
-                            .Where(player => RWCustom.Custom.Dist(pos, player.mainBodyChunk.pos) < 1000f)
+                            .Where(player => Custom.Dist(pos, player.mainBodyChunk.pos) < 1000f)
                             .ToList();
 
                         foreach (var player in players)
@@ -182,7 +182,7 @@ public class TrainObject : CosmeticSprite
                             room.PlaySound(SoundID.Spear_Bounce_Off_Wall, chunk.pos);
                             for (int j = 0; j < 4; j++)
                             {
-                                Vector2 a = RWCustom.Custom.RNV();
+                                Vector2 a = Custom.RNV();
                                 room.AddObject(new Spark(chunk.pos + (a * Random.value * 40f), a * Mathf.Lerp(4f, 5f, Random.value), new Color(0.9f, 0.9f, 1f), null, 4, 18));
                             }
                             if (physObject is Creature)
@@ -217,7 +217,7 @@ public class TrainObject : CosmeticSprite
 
         Vector2 currentPos = Vector2.Lerp(lastPos, pos, timeStacker);
 
-        Vector2 connector_offset = new(-padding, -Constants.ConnectorOffsets[connector_length - 6] - Constants.TrainOffsets[sprite]);
+        Vector2 connector_offset = new(-padding, -ConnectorOffsets[connector_length - 6] - TrainOffsets[sprite]);
 
         if (room_name == "TL_V01")
         {
@@ -247,7 +247,7 @@ public class TrainObject : CosmeticSprite
             }
 
             rainWorld = rCam.room.game.rainWorld;
-            if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rainWorld, out var Shaders))
+            if (shaders_enabled && SlugpackShaders.TryGetValue(rainWorld, out var Shaders))
             {
                 // Window Light
                 sLeaser.sprites[0].shader = Shaders.ShadowMask;

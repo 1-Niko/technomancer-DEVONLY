@@ -6,7 +6,7 @@ public class TrainObjectData(PlacedObject owner) : ManagedData(owner, null)
     public int seed;
 }
 
-public class ProceduralTrainObject(PlacedObject placedObject, Room room) : UpdatableAndDeletable
+public class ProceduralTrainObject(PlacedObject placedObject) : UpdatableAndDeletable
 {
     public override void Update(bool eu)
     {
@@ -28,6 +28,14 @@ public class ProceduralTrainObject(PlacedObject placedObject, Room room) : Updat
 
 public class ProceduralTrain(Vector2 pos, int seed, int length, float velocity, float hit_lower_bound, float hit_upper_bound, float delete_position, Room room) : CosmeticSprite
 {
+    private Room Room = room;
+    private Vector2 Pos = pos;
+    private int Seed = seed;
+    private int Length = length;
+    private float Velocity = velocity;
+    private float hit_Lower_Bound = hit_lower_bound;
+    private float hit_Upper_Bound = hit_upper_bound;
+
     private static readonly string[,] spriteNames = new string[,] {
         {
             "Train Car N_0", "Train Car N_1", "Train Car N_2",
@@ -67,7 +75,6 @@ public class ProceduralTrain(Vector2 pos, int seed, int length, float velocity, 
     public override void Update(bool eu)
     {
         base.Update(eu);
-        // Tried just copying the Update from TrainObject, did not work as intended. Will definitely use it as a guide, but have to rewrite everything
 
         pos += new Vector2(velocity, 0);
 
@@ -183,9 +190,9 @@ public class ProceduralTrain(Vector2 pos, int seed, int length, float velocity, 
 
                     sLeaser.sprites[i + (k * length) + isShadow].color = new Color(i / 9f, seed / 65535f, 0f, -(k / 30) + (29f / 30f));
 
-                    sLeaser.sprites[i + (k * length) + isShadow].isVisible = Utilities.CheckIfOnScreen(currentPos + pieceOffset, ROOM);
+                    sLeaser.sprites[i + (k * length) + isShadow].isVisible = CheckIfOnScreen(currentPos + pieceOffset, ROOM);
 
-                    if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var shaders))
+                    if (shaders_enabled && SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var shaders))
                     {
                         sLeaser.sprites[i + (k * length) + isShadow].shader = shaders.DynamicTrain;
                         sLeaser.sprites[i + (k * length) + isShadow]._renderLayer?._material?.SetTexture("_ShadowMask", shaders._shadowMask);
@@ -208,11 +215,11 @@ public class ProceduralTrain(Vector2 pos, int seed, int length, float velocity, 
 
             Vector2 screenPosition = adjustedPos / new Vector2(1364f / 2f, 770f / 2f);
 
-            sLeaser.sprites[i].isVisible = top_isVisible[random_index] && Utilities.CheckIfOnScreen(globalPos, ROOM);
+            sLeaser.sprites[i].isVisible = top_isVisible[random_index] && CheckIfOnScreen(globalPos, ROOM);
 
             sLeaser.sprites[i].SetPosition(adjustedPos - new Vector2(i % 10 * (screenPosition.x - 1f), i % 10 * (screenPosition.y - 1f)));
 
-            if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var shaders))
+            if (shaders_enabled && SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var shaders))
             {
                 sLeaser.sprites[i].shader = shaders.DynamicTrain;
                 sLeaser.sprites[i]._renderLayer?._material?.SetTexture("_ShadowMask", shaders._shadowMask);

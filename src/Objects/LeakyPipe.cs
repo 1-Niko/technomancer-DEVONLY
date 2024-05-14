@@ -18,7 +18,7 @@ public class LeakyPipe(PlacedObject placedObject, Room room) : UpdatableAndDelet
 
         if ((placedObject.data as LeakyPipeData).chance >= Random.value)
         {
-            int length = Random.RandomRange(0, 3);
+            int length = Random.Range(0, 3);
 
             Vector2 randomPosition = Vector2.zero;
 

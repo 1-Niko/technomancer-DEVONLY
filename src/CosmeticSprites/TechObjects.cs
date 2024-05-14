@@ -2,7 +2,7 @@ namespace Slugpack;
 
 public class RoomController : CosmeticSprite
 {
-    public List<HighlightSprite> Nodes { get; }
+    public List<HighlightSprite> Nodes { get; private set; }
     public bool ScheduledRegenerateConnections { get; set; }
     public Color Colour { get; set; }
     public SlugArrow Arrow { get; }
@@ -16,7 +16,6 @@ public class RoomController : CosmeticSprite
         Nodes = [];
         PreviousNodeCount = 0;
         GenerateEmptyNodes();
-
     }
 
     public override void Update(bool eu)
@@ -66,7 +65,7 @@ public class RoomController : CosmeticSprite
     // 2. Connections continuously flicker
     public void GenerateEmptyNodes()
     {
-        List<Node> nodeData = Utilities.GetAllNodeInformation(room);
+        List<Node> nodeData = GetAllNodeInformation(room);
 
         int addedNodes = 0;
 
@@ -116,13 +115,13 @@ public class HighlightSprite : CosmeticSprite
     public PlacedObject ObjectAnchor { get; }
     public bool MarkedForDeletion { get; set; }
     public RoomController Owner { get; }
-    public Dictionary<HighlightSprite, ConnectingLine> ConnectionTable { get; }
+    public Dictionary<HighlightSprite, ConnectingLine> ConnectionTable { get; private set; }
     public bool IsSmall { get; set; }
     public bool Selected { get; set; }
 
     public HighlightSprite(Vector2 pos, int nodeLevel, int protectionLevels, Room room, RoomController owner, PhysicalObject anchor, PlacedObject anchor2)
     {
-        Age = Utilities.Timestamp();
+        Age = Timestamp();
         MarkedForDeletion = false;
         IsSmall = false;
         ConnectionCount = 0;
@@ -193,7 +192,7 @@ public class HighlightSprite : CosmeticSprite
         EnableValid();
         CalculateSmallness();
 
-        Selected = RWCustom.Custom.Dist(Owner.Arrow.pos, pos) < 1;
+        Selected = Custom.Dist(Owner.Arrow.pos, pos) < 1;
 
         if (Owner.Arrow._object != null && Owner.Arrow._object == ObjectAnchor)
         {
@@ -214,8 +213,8 @@ public class HighlightSprite : CosmeticSprite
 
         for (int i = 0; i < Owner.Nodes.Count; i++)
         {
-            ConnectingLine connection = new((pos + Owner.Nodes[i].pos) / 2, Utilities.CalculateAngleBetweenVectorsForLineSegment(pos, Owner.Nodes[i].pos),
-                                                     RWCustom.Custom.Dist(pos, Owner.Nodes[i].pos) - (Padding * 2), Padding, this, Owner.Nodes[i]);
+            ConnectingLine connection = new((pos + Owner.Nodes[i].pos) / 2, CalculateAngleBetweenVectorsForLineSegment(pos, Owner.Nodes[i].pos),
+                                                     Custom.Dist(pos, Owner.Nodes[i].pos) - (Padding * 2), Padding, this, Owner.Nodes[i]);
             Connections.Add(connection);
             room.AddObject(Connections[i]);
             if (!ConnectionTable.ContainsKey(Owner.Nodes[i]))
@@ -242,7 +241,7 @@ public class HighlightSprite : CosmeticSprite
     {
         IsSmall = false;
         for (int i = 0; i < Owner.Nodes.Count; i++)
-            if (Owner.Nodes[i] != this && RWCustom.Custom.Dist(pos, Owner.Nodes[i].pos) < 45)
+            if (Owner.Nodes[i] != this && Custom.Dist(pos, Owner.Nodes[i].pos) < 45)
                 IsSmall = true;
     }
 
@@ -256,7 +255,7 @@ public class HighlightSprite : CosmeticSprite
         //if (Utilities.CheckIfOnScreen(this.pos, this.room))
         //{
         // At least one is bound to be valid
-        var (up, left, right, down) = Utilities.GetNearestNodesInAllDirections(this, Owner.Nodes, room);
+        var (up, left, right, down) = GetNearestNodesInAllDirections(this, Owner.Nodes, room);
 
         // Must also check to see if partner has theirs enabled
         if (ReturnValid(up)) { ConnectionTable[up].Enabled = true; }
@@ -305,7 +304,7 @@ public class HighlightSprite : CosmeticSprite
         sLeaser.sprites[2].color = new Color(0, 0, Selected ? 1 : 0, 0);
         sLeaser.sprites[3].color = new Color(0, 0, Selected ? 1 : 0, 0);
 
-        if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var Shaders))
+        if (shaders_enabled && SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var Shaders))
         {
             sLeaser.sprites[0].shader = Shaders.SelectionShader;
             sLeaser.sprites[1].shader = Shaders.SelectionShader;
@@ -414,8 +413,8 @@ public class ConnectingLine : CosmeticSprite
         lastPadding = Padding;
 
         Pos = (Mother.pos + Father.pos) / 2;
-        Rot = Utilities.CalculateAngleBetweenVectorsForLineSegment(Mother.pos, Father.pos);
-        Length = RWCustom.Custom.Dist(Mother.pos, Father.pos);// - (this.padding * 2);
+        Rot = CalculateAngleBetweenVectorsForLineSegment(Mother.pos, Father.pos);
+        Length = Custom.Dist(Mother.pos, Father.pos);// - (this.padding * 2);
     }
 
     public override void Destroy()
@@ -489,7 +488,7 @@ public class ConnectingLine : CosmeticSprite
 
         sLeaser.sprites[0].rotation = currentRot;
 
-        if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var Shaders))
+        if (shaders_enabled && SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var Shaders))
         {
             sLeaser.sprites[0].shader = Shaders.ConnectingLine;
 

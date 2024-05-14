@@ -9,7 +9,6 @@ public static class CaveLeechHooks
         On.LeechGraphics.DrawSprites += LeechGraphics_DrawSprites;
     }
 
-
     private static void LeechGraphics_DrawSprites(On.LeechGraphics.orig_DrawSprites orig, LeechGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         orig(self, sLeaser, rCam, timeStacker, camPos);

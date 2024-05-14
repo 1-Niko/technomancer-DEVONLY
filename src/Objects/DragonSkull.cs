@@ -30,7 +30,7 @@ public class DragonSkullData(PlacedObject owner) : ManagedData(owner, null)
     public int jaw;
 
     [IntegerField("ZZZ_C", 0, 6, 0, ManagedFieldWithPanel.ControlType.arrows, "Teeth")]
-    public int teeth; // 0 is none
+    public int teeth;
 
     [FloatField("DepthColourOffset", 0, 1, 0, 1, ManagedFieldWithPanel.ControlType.slider, "Colour Depth")]
     public float colOffset;
@@ -39,7 +39,7 @@ public class DragonSkullData(PlacedObject owner) : ManagedData(owner, null)
     public bool flipped;
 }
 
-public class DragonSkull(PlacedObject placedObject, Room room) : UpdatableAndDeletable
+public class DragonSkull(PlacedObject placedObject) : UpdatableAndDeletable
 {
     public override void Update(bool eu)
     {
@@ -94,14 +94,14 @@ public class SkullOfTheDragon(PlacedObject placedObject, Vector2 pos) : Cosmetic
         sLeaser.sprites[0].SetPosition(pos - rCam.pos);
         sLeaser.sprites[0].isVisible = true;
         sLeaser.sprites[0].alpha = depth / 30f;
-        sLeaser.sprites[0].color = Utilities.ColourLerp(colour, new Color(0.149f, 0.121f, 0.098f), colourOffset);
+        sLeaser.sprites[0].color = ColourLerp(colour, new Color(0.149f, 0.121f, 0.098f), colourOffset);
         sLeaser.sprites[0].rotation = sLeaser.sprites[1].scaleX * rotation;
 
         sLeaser.sprites[1].element = Futile.atlasManager.GetElementWithName($"Jaw_{jaw}");
-        sLeaser.sprites[1].SetPosition(Utilities.RotateAroundPoint(pos - rCam.pos, new Vector2(sLeaser.sprites[1].scaleX * 17f, -5f), sLeaser.sprites[1].scaleX * -rotation));
+        sLeaser.sprites[1].SetPosition(RotateAroundPoint(pos - rCam.pos, new Vector2(sLeaser.sprites[1].scaleX * 17f, -5f), sLeaser.sprites[1].scaleX * -rotation));
         sLeaser.sprites[1].isVisible = true;
         sLeaser.sprites[1].alpha = depth / 30f;
-        sLeaser.sprites[1].color = Utilities.ColourLerp(colour, new Color(0.149f, 0.121f, 0.098f), colourOffset);
+        sLeaser.sprites[1].color = ColourLerp(colour, new Color(0.149f, 0.121f, 0.098f), colourOffset);
         sLeaser.sprites[1].rotation = sLeaser.sprites[1].scaleX * (-jawRotation + rotation);
 
         if (teeth != 0)
@@ -109,29 +109,29 @@ public class SkullOfTheDragon(PlacedObject placedObject, Vector2 pos) : Cosmetic
             sLeaser.sprites[2].element = Futile.atlasManager.GetElementWithName($"Teeth_{teeth - 1}a");
             if ((teeth != 4))
             {
-                sLeaser.sprites[2].SetPosition(Utilities.RotateAroundPoint(pos - rCam.pos, new Vector2(sLeaser.sprites[1].scaleX * ((teeth == 6) ? -8f : -9f), ((teeth == 2) ? -9f : -10f) + ((skull == 2) ? 3f : 0f)), sLeaser.sprites[1].scaleX * -rotation));
+                sLeaser.sprites[2].SetPosition(RotateAroundPoint(pos - rCam.pos, new Vector2(sLeaser.sprites[1].scaleX * ((teeth == 6) ? -8f : -9f), ((teeth == 2) ? -9f : -10f) + ((skull == 2) ? 3f : 0f)), sLeaser.sprites[1].scaleX * -rotation));
             }
             else
             {
-                sLeaser.sprites[2].SetPosition(Utilities.RotateAroundPoint(pos - rCam.pos, new Vector2(sLeaser.sprites[1].scaleX * ((teeth == 6) ? -8f : -9f), ((teeth == 2) ? -9f : -11) + ((skull == 2) ? 3f : 0f)), sLeaser.sprites[1].scaleX * -rotation));
+                sLeaser.sprites[2].SetPosition(RotateAroundPoint(pos - rCam.pos, new Vector2(sLeaser.sprites[1].scaleX * ((teeth == 6) ? -8f : -9f), ((teeth == 2) ? -9f : -11) + ((skull == 2) ? 3f : 0f)), sLeaser.sprites[1].scaleX * -rotation));
             }
             sLeaser.sprites[2].isVisible = true;
             sLeaser.sprites[2].alpha = depth / 30f;
-            sLeaser.sprites[2].color = Utilities.ColourLerp(Utilities.ColourLerp(colour, new Color(0f, 0f, 0f), teethShade), new Color(0.149f, 0.121f, 0.098f), colourOffset);
+            sLeaser.sprites[2].color = ColourLerp(ColourLerp(colour, new Color(0f, 0f, 0f), teethShade), new Color(0.149f, 0.121f, 0.098f), colourOffset);
             sLeaser.sprites[2].rotation = sLeaser.sprites[1].scaleX * (rotation + 180);
 
             sLeaser.sprites[3].element = Futile.atlasManager.GetElementWithName($"Teeth_{teeth - 1}a");
             if ((teeth != 4))
             {
-                sLeaser.sprites[3].SetPosition(Utilities.RotateAroundPoint(sLeaser.sprites[1].GetPosition(), new Vector2(sLeaser.sprites[1].scaleX * -25f, ((teeth == 2) ? 0f : 1f) - 1f), sLeaser.sprites[1].scaleX * (-rotation + jawRotation)));
+                sLeaser.sprites[3].SetPosition(RotateAroundPoint(sLeaser.sprites[1].GetPosition(), new Vector2(sLeaser.sprites[1].scaleX * -25f, ((teeth == 2) ? 0f : 1f) - 1f), sLeaser.sprites[1].scaleX * (-rotation + jawRotation)));
             }
             else
             {
-                sLeaser.sprites[3].SetPosition(Utilities.RotateAroundPoint(sLeaser.sprites[1].GetPosition(), new Vector2(sLeaser.sprites[1].scaleX * -25f, ((teeth == 2) ? 0f : 2f) - 1f), sLeaser.sprites[1].scaleX * (-rotation + jawRotation)));
+                sLeaser.sprites[3].SetPosition(RotateAroundPoint(sLeaser.sprites[1].GetPosition(), new Vector2(sLeaser.sprites[1].scaleX * -25f, ((teeth == 2) ? 0f : 2f) - 1f), sLeaser.sprites[1].scaleX * (-rotation + jawRotation)));
             }
             sLeaser.sprites[3].isVisible = true;
             sLeaser.sprites[3].alpha = depth / 30f;
-            sLeaser.sprites[3].color = Utilities.ColourLerp(Utilities.ColourLerp(colour, new Color(0f, 0f, 0f), teethShade), new Color(0.149f, 0.121f, 0.098f), colourOffset);
+            sLeaser.sprites[3].color = ColourLerp(ColourLerp(colour, new Color(0f, 0f, 0f), teethShade), new Color(0.149f, 0.121f, 0.098f), colourOffset);
             sLeaser.sprites[3].rotation = sLeaser.sprites[1].scaleX * (-jawRotation + rotation);
         }
         else
@@ -153,7 +153,7 @@ public class SkullOfTheDragon(PlacedObject placedObject, Vector2 pos) : Cosmetic
 
         if (teeth == 0)
             sLeaser.sprites[2].isVisible = false;
-        if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out _))
+        if (shaders_enabled && SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out _))
         {
             sLeaser.sprites[0].shader = rCam.game.rainWorld.Shaders["CustomDepth"];
             sLeaser.sprites[1].shader = rCam.game.rainWorld.Shaders["CustomDepth"];
