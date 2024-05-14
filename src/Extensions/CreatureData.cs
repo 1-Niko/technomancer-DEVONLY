@@ -14,6 +14,8 @@ public class CreatureData
 
     public int burnCount;
 
+    public bool processing_pipe_intake;
+
     public CreatureData(Creature creature)
     {
         this.creature = creature;

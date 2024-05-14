@@ -35,54 +35,122 @@ internal static class GameHooks
     {
         // Creature attempts to exit pipe
 
-        bool creatureMayExit;
-
-        Plugin.DebugLog($"---------START OF {self.abstractCreature.creatureTemplate.type}---------");
-
-        if (PipeIsLocked(newRoom.world.game, pos, newRoom))
+        if (self.IsPipeProcessing())
         {
-            Plugin.DebugLog("Check 1: Pipe is locked");
-            if (self.HasPassthroughAllowance()) // Creature has already bounced and may exit
-            {
-                Plugin.DebugLog("Check 2: Creature has passthrough allowance");
-                self.RevokePassthroughAllowance();
-                creatureMayExit = true;
-            }
-            else // Send them back
-            {
-                Plugin.DebugLog("Check 2: Creature does not have passthrough allowance");
-                creatureMayExit = false;
-                // Spawn effects
-            }
-        }
-        else // Pipe is not locked
-        {
-            Plugin.DebugLog("Check 1: Pipe was not locked");
-            creatureMayExit = true;
-        }
-
-        orig(self, pos, newRoom, spitOutAllSticks);
-        if (!creatureMayExit)
-        {
-            Plugin.DebugLog("End Result: Creature was sent back");
-            // Send the wretched beast back
-            self.GrantPassthroughAllowance();
-            self.SuckedIntoShortCut(pos, false);
+            orig(self, pos, newRoom, spitOutAllSticks);
         }
         else
         {
-            Plugin.DebugLog("End Result: Creature was allowed to exit");
+            self.SetPipeProcessing();
+
+            bool creatureMayExit;
+
+            Plugin.DebugLog($"---------START OF {self.abstractCreature.creatureTemplate.type}---------");
+
+            if (PipeIsLocked(newRoom.world.game, pos, newRoom))
+            {
+                Plugin.DebugLog("Check 1: Pipe is locked");
+                if (self.HasPassthroughAllowance()) // Creature has already bounced and may exit
+                {
+                    Plugin.DebugLog("Check 2: Creature has passthrough allowance");
+                    self.RevokePassthroughAllowance();
+                    creatureMayExit = true;
+                }
+                else // Send them back
+                {
+                    Plugin.DebugLog("Check 2: Creature does not have passthrough allowance");
+                    creatureMayExit = false;
+                    // Spawn effects
+                }
+            }
+            else // Pipe is not locked
+            {
+                Plugin.DebugLog("Check 1: Pipe was not locked");
+                creatureMayExit = true;
+            }
+
+            orig(self, pos, newRoom, spitOutAllSticks);
+            if (!creatureMayExit)
+            {
+                Plugin.DebugLog("End Result: Creature was sent back");
+                // Send the wretched beast back
+                self.GrantPassthroughAllowance();
+                self.SuckedIntoShortCut(pos, false);
+            }
+            else
+            {
+                Plugin.DebugLog("End Result: Creature was allowed to exit");
+            }
+            Plugin.DebugLog($"---------END OF {self.abstractCreature.creatureTemplate.type}---------");
+
+            self.EndPipeProcessing();
         }
-        Plugin.DebugLog($"---------END OF {self.abstractCreature.creatureTemplate.type}---------");
     }
 
     private static void Creature_SuckedIntoShortCut(On.Creature.orig_SuckedIntoShortCut orig, Creature self, RWCustom.IntVector2 entrancePos, bool carriedByOther)
     {
-        if (Null.Check(self, 3) && PipeIsLocked(self.room.world.game, entrancePos, self.room) || self is Player player && player.IsTechy(out var scanline) && scanline.holdTime > timeReached)
+        if (self.IsPipeProcessing())
         {
-            self.enteringShortCut = null;
-            self.inShortcut = false;
-            return;
+            Plugin.DebugLog(">   CREATURE SUCKED_INTO_SHORTCUT BEGIN");
+
+            if (self is Player player)
+            {
+                Plugin.DebugLog("    Check 1: Creature is player");
+                if (player.IsTechy(out var scanline))
+                {
+                    Plugin.DebugLog("    Check 2: Creature is Techy");
+                    if (scanline.holdTime > timeReached)
+                    {
+                        Plugin.DebugLog("    Check 3: Hold time is reached, forbidding access");
+                        self.enteringShortCut = null;
+                        self.inShortcut = false;
+                        Plugin.DebugLog("    CREATURE SUCKED_INTO_SHORTCUT END");
+                        return;
+                    }
+                    else
+                    {
+                        Plugin.DebugLog("    Check 3: Hold time is not reached, aborting");
+                    }
+                }
+                else
+                {
+                    Plugin.DebugLog("    Check 2: Creature is not Techy, aborting");
+                }
+            }
+            else
+            {
+                Plugin.DebugLog("    Check 1: Creature is not player");
+                if (PipeIsLocked(self.room.world.game, entrancePos, self.room))
+                {
+                    Plugin.DebugLog("    Check 2: Pipe is locked");
+                    if (Null.Check(self, 3))
+                    {
+                        Plugin.DebugLog("    Check 3: Null check passed");
+                        if (self.HasPassthroughAllowance())
+                        {
+                            Plugin.DebugLog("    Check 4: Creature has passthrough allowance, letting them through");
+                        }
+                        else
+                        {
+                            Plugin.DebugLog("    Check 4: Creature does not have passthrough allowance, blocking them");
+                            self.enteringShortCut = null;
+                            self.inShortcut = false;
+                            Plugin.DebugLog("    CREATURE SUCKED_INTO_SHORTCUT END");
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        Plugin.DebugLog("    Check 3: Null check failed, aborting");
+                    }
+                }
+                else
+                {
+                    Plugin.DebugLog("    Check 2: Pipe is not locked, aborting");
+                }
+            }
+
+            Plugin.DebugLog("    CREATURE SUCKED_INTO_SHORTCUT END");
         }
 
         orig(self, entrancePos, carriedByOther);

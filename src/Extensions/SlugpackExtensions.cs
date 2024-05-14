@@ -50,6 +50,10 @@ public static class SlugpackExtensions
     public static bool HasPassthroughAllowance(this Creature creature) => creature.CreatureData().tempLockImmune;
     public static void RevokePassthroughAllowance(this Creature creature) { creature.CreatureData().tempLockImmune = false; }
 
+    public static void SetPipeProcessing(this Creature creature) { creature.CreatureData().processing_pipe_intake = true; }
+    public static bool IsPipeProcessing(this Creature creature) => creature.CreatureData().processing_pipe_intake;
+    public static void EndPipeProcessing(this Creature creature) { creature.CreatureData().processing_pipe_intake = false; }
+
     public static void Burn(this Creature creature) { creature.CreatureData().burnCount++; }
     public static int BurnLevel(this Creature creature) => creature.CreatureData().burnCount;
     public static void SetBurning(this Creature creature) { creature.CreatureData().burning = true; }
