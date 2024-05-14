@@ -4,7 +4,7 @@ namespace Slugpack;
 
 public class RoomBackgroundData(PlacedObject owner) : ManagedData(owner, null)
 {
-    [Vector2ArrayField("handle", 2, true, Vector2ArrayRepresentationType.Chain, new float[4] { 0, 0, 20, 60 })]
+    [Vector2ArrayField("handle", 2, true, Vector2ArrayRepresentationType.Chain, new float[4] { 0, 0, -60, -20 })]
     public Vector2[] handle;
 
     [IntegerField("A", 0, 50, -1, ManagedFieldWithPanel.ControlType.arrows, "Screen")]
@@ -58,13 +58,20 @@ public class RoomBackground(PlacedObject placedObject) : UpdatableAndDeletable
 
                     // Load expected atlas
 
-                    string atlasPath = $"Screens/{this.room.abstractRoom.name}_{CameraPosition.camPosition}.png";
+                    string atlasPath = $"tn_atlases/Screens/{this.room.abstractRoom.name}_{CameraPosition.camPosition}.png";
 
-                    screenAtlas = File.Exists(Path.ChangeExtension(atlasPath, ".txt"))
-                    ? Futile.atlasManager.LoadAtlas(Path.ChangeExtension(atlasPath, null))
-                    : Futile.atlasManager.LoadImage(Path.ChangeExtension(atlasPath, null));
+                    if (File.Exists(Path.ChangeExtension(atlasPath, ".txt")))
+                    {
+                        screenAtlas = Futile.atlasManager.LoadAtlas(Path.ChangeExtension(atlasPath, null));
+                    }
+                    else
+                    {
+                        screenAtlas = Futile.atlasManager.LoadImage(Path.ChangeExtension(atlasPath, null));
+                    }
 
-                    Background = new RoomBackgroundSprite($"{this.room.abstractRoom.name}_{CameraPosition.camPosition}");
+                    string background_name = $"{this.room.abstractRoom.name}_{CameraPosition.camPosition}";
+                    Background = new RoomBackgroundSprite();
+                    Background.background = screenAtlas._elementsByName[background_name];
                     room.AddObject(Background);
                 }
                 if (!keepBackground && !createBackground && screenAtlas != null)
@@ -85,14 +92,16 @@ public class RoomBackground(PlacedObject placedObject) : UpdatableAndDeletable
     private PlacedObject placedObject = placedObject;
 }
 
-public class RoomBackgroundSprite(string background_name) : CosmeticSprite
+public class RoomBackgroundSprite() : CosmeticSprite
 {
 
     public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
 
-        sLeaser.sprites[0].element = Futile.atlasManager.GetElementWithName(background_name);
+        if (background != null)
+            sLeaser.sprites[0].element = background;
+        sLeaser.sprites[0].color = new Color(1f,1f,1f);
         sLeaser.sprites[0].SetPosition(pos - rCam.pos);
         sLeaser.sprites[0].isVisible = true;
         sLeaser.sprites[0].scaleX = 1f;
@@ -108,14 +117,14 @@ public class RoomBackgroundSprite(string background_name) : CosmeticSprite
     {
         sLeaser.sprites = new FSprite[1];
 
-        sLeaser.sprites[0] = new FSprite(background_name, true);
+        sLeaser.sprites[0] = new FSprite("pixel", true);
 
         AddToContainer(sLeaser, rCam, null);
     }
 
     public override void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
-        newContatiner ??= rCam.ReturnFContainer("Background");
+        newContatiner ??= rCam.ReturnFContainer("Foreground");
         foreach (FSprite fsprite in sLeaser.sprites)
         {
             fsprite.RemoveFromContainer();
@@ -128,5 +137,5 @@ public class RoomBackgroundSprite(string background_name) : CosmeticSprite
         }
     }
 
-    string background_name;
+    public FAtlasElement background;
 }
