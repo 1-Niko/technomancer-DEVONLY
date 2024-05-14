@@ -20,6 +20,7 @@ global using BepInEx.Logging;
 global using Fisobs.Core;
 global using MoreSlugcatsEnums = MoreSlugcats.MoreSlugcatsEnums;
 global using static Slugpack.Constants;
+global using static Slugpack.Logs;
 global using static Slugpack.Utilities;
 global using static Pom.Pom;
 global using static Pom.Pom.Vector2ArrayField;
