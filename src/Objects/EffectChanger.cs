@@ -35,7 +35,7 @@ public class EffectChanger(PlacedObject placedObject) : UpdatableAndDeletable
 
         if (EffectObject == null)
         {
-            EffectObject = new EffectChangerObject(placedObject, placedObject.pos);
+            EffectObject = new EffectChangerObject(placedObject);
             room.AddObject(EffectObject);
         }
         EffectObject.pos = placedObject.pos;
@@ -53,7 +53,7 @@ public class EffectChanger(PlacedObject placedObject) : UpdatableAndDeletable
     private PlacedObject placedObject = placedObject;
 }
 
-public class EffectChangerObject(PlacedObject placedObject, Vector2 pos) : CosmeticSprite
+public class EffectChangerObject(PlacedObject placedObject) : CosmeticSprite
 {
     private readonly PlacedObject placedObject = placedObject;
     public int Colour { get; set; }

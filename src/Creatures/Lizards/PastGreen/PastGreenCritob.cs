@@ -34,11 +34,11 @@ internal sealed class PastGreenCritob : Critob
         }
     }
 
-    public override IEnumerable<string> WorldFileAliases() => [nameof(TnEnums.CreatureType.PastGreen)];
+    public override IEnumerable<string> WorldFileAliases() => ["pastGreen", "pGreen", "guardLizard", "glizard"];
 
     public override CreatureType ArenaFallback() => CreatureType.GreenLizard;
 
-    public override string DevtoolsMapName(AbstractCreature acrit) => "pastGreen";
+    public override string DevtoolsMapName(AbstractCreature acrit) => "GL";
 
     public override CreatureState CreateState(AbstractCreature acrit) => new LizardState(acrit);
 

@@ -26,6 +26,7 @@ internal static class InitializeObjects
                 RegisterManagedObject<FakeSubregionPopupObject, FakeSubregionPopupData, ManagedRepresentation>("FakeSubregionPopup", "Technomancer");
                 RegisterManagedObject<WaterKillBox, WaterKillBoxData, ManagedRepresentation>("LethalWaterKillbox", "Technomancer");
                 RegisterManagedObject<LeakyPipe, LeakyPipeData, ManagedRepresentation>("LeakyPipe", "Technomancer");
+                RegisterManagedObject<RoomBackground, RoomBackgroundData, ManagedRepresentation>("ImageBackground", "Technomancer");
 
                 // RegisterManagedObject<ColourObject, ColourObjectData, ManagedRepresentation>("COLOURGRABBER", "Technomancer");
 

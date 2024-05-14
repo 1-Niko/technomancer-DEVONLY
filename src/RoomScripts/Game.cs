@@ -27,6 +27,7 @@ internal static class GameHooks
             if (DamagedShortcuts.TryGetValue(self.game, out var CameraPosition))
             {
                 CameraPosition.camPosition = camPos;
+                CameraPosition.room = roomName;
             }
         };
     }

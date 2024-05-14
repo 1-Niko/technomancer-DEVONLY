@@ -18,7 +18,7 @@ namespace Slugpack
         public int index;
     }
 
-    public class TrackHologram(PlacedObject placedObject, Room room) : UpdatableAndDeletable
+    public class TrackHologram(PlacedObject placedObject) : UpdatableAndDeletable
     {
         public override void Update(bool eu)
         {

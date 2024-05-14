@@ -54,6 +54,7 @@ internal static class WeakTables
     {
         public List<Lock> locks = [];
         public int camPosition = 0;
+        public string room;
     }
 
     public class GraphicsData

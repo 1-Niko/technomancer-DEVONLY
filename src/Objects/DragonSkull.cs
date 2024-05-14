@@ -47,7 +47,7 @@ public class DragonSkull(PlacedObject placedObject) : UpdatableAndDeletable
 
         if (DragonsSkull == null)
         {
-            DragonsSkull = new SkullOfTheDragon(placedObject, placedObject.pos);
+            DragonsSkull = new SkullOfTheDragon();
             room.AddObject(DragonsSkull);
         }
         DragonsSkull.depth = (placedObject.data as DragonSkullData).depth;
@@ -68,7 +68,7 @@ public class DragonSkull(PlacedObject placedObject) : UpdatableAndDeletable
     private readonly PlacedObject placedObject = placedObject;
 }
 
-public class SkullOfTheDragon(PlacedObject placedObject, Vector2 pos) : CosmeticSprite
+public class SkullOfTheDragon() : CosmeticSprite
 {
 
     public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)

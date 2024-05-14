@@ -9,10 +9,9 @@ public class CaveLeechCritob : Critob
         SandboxPerformanceCost = new SandboxPerformanceCost(1f, 0.1f);
         RegisterUnlock(KillScore.Constant(1), TnEnums.SandboxUnlock.CaveLeech);
     }
+    public override IEnumerable<string> WorldFileAliases() => ["caveLeech", "CaveLeech"];
 
-    public override IEnumerable<string> WorldFileAliases() => [nameof(TnEnums.CreatureType.CaveLeech)];
-
-    public override string DevtoolsMapName(AbstractCreature acrit) => nameof(TnEnums.CreatureType.CaveLeech);
+    public override string DevtoolsMapName(AbstractCreature acrit) => "CL";
 
     public override Color DevtoolsMapColor(AbstractCreature acrit) => new(0f, 0.5f, 0f);
 
