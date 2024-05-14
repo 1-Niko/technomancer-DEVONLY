@@ -426,9 +426,11 @@ public class ConnectingLine : CosmeticSprite
                 spriteLeaser.sprites[i].RemoveFromContainer();
             room.RemoveObject(this);
         }
-        catch
+        catch (Exception ex)
         {
             // ignore the problem :)
+            Plugin.DebugError(ex);
+            Debug.LogException(ex);
         }
         base.Destroy();
     }

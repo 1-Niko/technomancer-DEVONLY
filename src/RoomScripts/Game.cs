@@ -8,6 +8,8 @@ internal static class GameHooks
         On.RoomRealizer.CanAbstractizeRoom += RoomRealizer_CanAbstractizeRoom;
         On.RainWorldGame.Update += RainWorldGame_Update;
         On.Region.GetProperRegionAcronym += Region_GetProperRegionAcronym;
+        On.Region.EquivalentRegion += Region_EquivalentRegion;
+        On.Region.GetVanillaEquivalentRegionAcronym += Region_GetVanillaEquivalentRegionAcronym;
         On.ShortcutGraphics.Update += ShortcutGraphics_Update;
         On.RoomCamera.SpriteLeaser.RemoveAllSpritesFromContainer += SpriteLeaser_RemoveAllSpritesFromContainer;
         On.RegionGate.customKarmaGateRequirements += RegionGate_customKarmaGateRequirements;
@@ -35,47 +37,49 @@ internal static class GameHooks
 
         bool creatureMayExit;
 
-        if (Utilities.PipeIsLocked(newRoom.world.game, pos, newRoom))
-        {
-            creatureMayExit = false;
-            //// IsLockImmune should be able to be set on a per-creaturetype basis, I think? Idk, what do you think?
-            //if (false/*self.IsLockImmune()*/) // (Creature is immune to pipe locking)
-            //{
-            //    creatureMayExit = true;
+        Plugin.DebugLog($"---------START OF {self.abstractCreature.creatureTemplate.type}---------");
 
-            //    // Break Lock
-            //    // Break effects
-                
-            //    if (false)
-            //    {
-            //        // Stun Techy
-            //    }
-            //}
-            //else // Creature is not immune to pipe locking
-            //{
-            //    creatureMayExit = false;
-            //    // Spawn effects
-            //}
+        if (PipeIsLocked(newRoom.world.game, pos, newRoom))
+        {
+            Plugin.DebugLog("Check 1: Pipe is locked");
+            if (self.HasPassthroughAllowance()) // Creature has already bounced and may exit
+            {
+                Plugin.DebugLog("Check 2: Creature has passthrough allowance");
+                self.RevokePassthroughAllowance();
+                creatureMayExit = true;
+            }
+            else // Send them back
+            {
+                Plugin.DebugLog("Check 2: Creature does not have passthrough allowance");
+                creatureMayExit = false;
+                // Spawn effects
+            }
         }
         else // Pipe is not locked
         {
+            Plugin.DebugLog("Check 1: Pipe was not locked");
             creatureMayExit = true;
         }
 
         orig(self, pos, newRoom, spitOutAllSticks);
         if (!creatureMayExit)
         {
+            Plugin.DebugLog("End Result: Creature was sent back");
             // Send the wretched beast back
             self.GrantPassthroughAllowance();
             self.SuckedIntoShortCut(pos, false);
         }
+        else
+        {
+            Plugin.DebugLog("End Result: Creature was allowed to exit");
+        }
+        Plugin.DebugLog($"---------END OF {self.abstractCreature.creatureTemplate.type}---------");
     }
 
     private static void Creature_SuckedIntoShortCut(On.Creature.orig_SuckedIntoShortCut orig, Creature self, RWCustom.IntVector2 entrancePos, bool carriedByOther)
     {
-        if (!self.HasPassthroughAllowance() && Null.Check(self, 3) && Utilities.PipeIsLocked(self.room.world.game, entrancePos, self.room) || self is Player player && player.IsTechy(out var scanline) && scanline.holdTime > Constants.timeReached)
+        if (Null.Check(self, 3) && PipeIsLocked(self.room.world.game, entrancePos, self.room) || self is Player player && player.IsTechy(out var scanline) && scanline.holdTime > timeReached)
         {
-            self.RevokePassthroughAllowance();
             self.enteringShortCut = null;
             self.inShortcut = false;
             return;
@@ -169,7 +173,7 @@ internal static class GameHooks
         {
             orig(self);
         }
-        catch
+        catch (Exception ex)
         {
             if (self != null && self.sprites != null && self.sprites.Length > 0)
             {
@@ -185,6 +189,8 @@ internal static class GameHooks
                     }
                 }
             }
+            Plugin.DebugError(ex);
+            Debug.LogException(ex);
         }
     }
 
@@ -276,40 +282,42 @@ internal static class GameHooks
     private static string Region_GetProperRegionAcronym(On.Region.orig_GetProperRegionAcronym orig, SlugcatStats.Name character, string baseAcronym)
     {
         string text = baseAcronym;
-        if (character.ToString() == Constants.Technomancer && text == "SL")
+        if (character.ToString() == Constants.Technomancer)
         {
-            text = "LM";
-            foreach (var path in AssetManager.ListDirectory("World", true, false)
-                .Select(p => AssetManager.ResolveFilePath($"World{Path.DirectorySeparatorChar}{Path.GetFileName(p)}{Path.DirectorySeparatorChar}equivalences.txt"))
-                .Where(File.Exists)
-                .SelectMany(p => File.ReadAllText(p).Trim().Split(',')))
+            Dictionary<string, string> replacements = new() { { "SL", "LM" }, { "SB", "TL" } };
+
+            if (replacements.ContainsKey(text))
             {
-                var parts = path.Contains("-") ? path.Split('-') : [path];
-                if (parts[0] == baseAcronym && (parts.Length == 1 || character.value.Equals(parts[1], StringComparison.OrdinalIgnoreCase)))
+                text = replacements[text];
+                foreach (var path in AssetManager.ListDirectory("World", true, false)
+                    .Select(p => AssetManager.ResolveFilePath($"World{Path.DirectorySeparatorChar}{Path.GetFileName(p)}{Path.DirectorySeparatorChar}equivalences.txt"))
+                    .Where(File.Exists)
+                    .SelectMany(p => File.ReadAllText(p).Trim().Split(',')))
                 {
-                    text = Path.GetFileName(path).ToUpper();
-                    break;
+                    var parts = path.Contains("-") ? path.Split('-') : [path];
+                    if (parts[0] == baseAcronym && (parts.Length == 1 || character.value.Equals(parts[1], StringComparison.OrdinalIgnoreCase)))
+                    {
+                        text = Path.GetFileName(path).ToUpper();
+                        break;
+                    }
                 }
+                return text;
             }
-            return text;
-        }
-        if (character.ToString() == Constants.Technomancer && text == "SB")
-        {
-            text = "TL";
-            foreach (var path in AssetManager.ListDirectory("World", true, false)
-                .Select(p => AssetManager.ResolveFilePath($"World{Path.DirectorySeparatorChar}{Path.GetFileName(p)}{Path.DirectorySeparatorChar}equivalences.txt"))
-                .Where(File.Exists)
-                .SelectMany(p => File.ReadAllText(p).Trim().Split(',')))
-            {
-                var parts = path.Contains("-") ? path.Split('-') : [path];
-                if (parts[0] == baseAcronym && (parts.Length == 1 || character.value.Equals(parts[1], StringComparison.OrdinalIgnoreCase)))
-                {
-                    text = Path.GetFileName(path).ToUpper();
-                    break;
-                }
-            }
-            return text;
         }
         return orig(character, baseAcronym);
+    }
+
+    private static string Region_GetVanillaEquivalentRegionAcronym(On.Region.orig_GetVanillaEquivalentRegionAcronym orig, string baseAcronym)
+    {
+        if (baseAcronym == "TL")
+            return "SB";
+        return orig(baseAcronym);
+    }
+
+    private static bool Region_EquivalentRegion(On.Region.orig_EquivalentRegion orig, string regionA, string regionB)
+    {
+        if ((regionA == "SB" || regionA == "TL") && (regionB == "TL" || regionB == "SB"))
+            return true;
+        return orig(regionA, regionB);
     }
 }

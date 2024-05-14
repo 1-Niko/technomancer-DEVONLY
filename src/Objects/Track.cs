@@ -195,9 +195,11 @@ public class TrainObject : CosmeticSprite
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             //Nothing 
+            Plugin.DebugError(ex);
+            Debug.LogException(ex);
         }
 
 

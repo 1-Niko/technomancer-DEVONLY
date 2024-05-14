@@ -45,7 +45,7 @@ public static class SlugpackExtensions
         return creatureData.IsCreature;
     }
 
-    public static bool IsLockImmune(this Creature creature) => creature.CreatureData().tempLockImmune;
+    public static bool IsLockImmune(this Creature creature) => false;
     public static void GrantPassthroughAllowance(this Creature creature) { creature.CreatureData().tempLockImmune = true; }
     public static bool HasPassthroughAllowance(this Creature creature) => creature.CreatureData().tempLockImmune;
     public static void RevokePassthroughAllowance(this Creature creature) { creature.CreatureData().tempLockImmune = false; }
