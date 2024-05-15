@@ -114,7 +114,8 @@ public class RoomBackground(PlacedObject placedObject) : UpdatableAndDeletable
 
                 if (backgroundSprite != null)
                 {
-                    backgroundSprite.show = (placedObject.data as RoomBackgroundData).screen == cameraPosition.camPosition;
+                    backgroundSprite.currentScreen = cameraPosition.camPosition;
+                    backgroundSprite.myScreen = (placedObject.data as RoomBackgroundData).screen;
                     backgroundSprite.pos = placedObject.pos + (placedObject.data as RoomBackgroundData).handle[1];
                 }
             }
@@ -136,7 +137,7 @@ public class RoomBackgroundSprite : CosmeticSprite
             sLeaser.sprites[0].alpha = 0f;
             // sLeaser.sprites[0].shader = rCam.game.rainWorld.Shaders["CustomDepth"];
             sLeaser.sprites[0].SetPosition(pos - rCam.pos);
-            sLeaser.sprites[0].isVisible = show;
+            sLeaser.sprites[0].isVisible = currentScreen == myScreen;
             sLeaser.sprites[0].scaleX = 1f;
             sLeaser.sprites[0].scaleY = 1f;
             sLeaser.sprites[0].anchorX = 0f;
@@ -176,5 +177,7 @@ public class RoomBackgroundSprite : CosmeticSprite
         }
     }
 
-    public bool show;
+    public int currentScreen;
+
+    public int myScreen;
 }
