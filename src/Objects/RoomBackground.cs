@@ -59,7 +59,8 @@ public class RoomBackground(PlacedObject placedObject) : UpdatableAndDeletable
                             screenAtlas = Futile.atlasManager.LoadImage(atlasPath);
 
                             // Extract the background element name from the file path
-                            string backgroundName = Path.GetFileNameWithoutExtension(file).ToLower(); // Convert to lowercase for comparison
+                            string backgroundRoomName = $"{room.abstractRoom.name.ToLower()}_{cameraPosition.camPosition}";
+                            backgroundRoomName = Path.GetFileNameWithoutExtension(backgroundRoomName).ToLower();
 
                             //Plugin.DebugWarning($"Processing file: {file}, Background name: {backgroundName}"); Console spam causes lag
                             if (screenAtlas != null)
@@ -70,9 +71,11 @@ public class RoomBackground(PlacedObject placedObject) : UpdatableAndDeletable
                                 {
                                     //Plugin.DebugWarning(element); Console Spam causes lag
                                     // Extract the filename from the full element name
-                                    string elementName = Path.GetFileNameWithoutExtension(element.Key).ToLower();
+                                    string spriteBackgroundName = Path.GetFileNameWithoutExtension(element.Key).ToLower();
 
-                                    if (elementName == backgroundName)
+                                    Plugin.DebugWarning($"Checking element: {element.Key}, Expected background name: {backgroundRoomName}, Actual sprite background name: {spriteBackgroundName}");
+
+                                    if (spriteBackgroundName == backgroundRoomName)
                                     {
                                         backgroundSprite = new()
                                         {
@@ -86,7 +89,7 @@ public class RoomBackground(PlacedObject placedObject) : UpdatableAndDeletable
 
                                 if (!foundElement)
                                 {
-                                    Debug.LogError("Background element not found: " + backgroundName);
+                                    Debug.LogError("Background element not found: " + backgroundRoomName);
                                 }
                             }
                             else
