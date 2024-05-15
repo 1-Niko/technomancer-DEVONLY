@@ -102,11 +102,19 @@ public class RoomBackground(PlacedObject placedObject) : UpdatableAndDeletable
                     }
                 }
 
-                if (!keepBackground && !createBackground && screenAtlas != null && room != null && backgroundSprite != null)
+                // if (!keepBackground && !createBackground && screenAtlas != null && room != null && backgroundSprite != null)
+                // {
+                //     //screenAtlas.Unload();
+                //     room.RemoveObject(backgroundSprite);
+                //     backgroundSprite.Destroy();
+                // }
+
+                Plugin.DebugLog(backgroundSprite == null);
+
+                if (backgroundSprite != null)
                 {
-                    //screenAtlas.Unload();
-                    room.RemoveObject(backgroundSprite);
-                    backgroundSprite.Destroy();
+                    backgroundSprite.show = (placedObject.data as RoomBackgroundData).screen == cameraPosition.camPosition;
+                    Plugin.DebugLog($"{(placedObject.data as RoomBackgroundData).screen} == {cameraPosition.camPosition} : {backgroundSprite.show}");
                 }
             }
         }
@@ -125,9 +133,10 @@ public class RoomBackgroundSprite : CosmeticSprite
         if (background != null)
         {
             sLeaser.sprites[0].element = background;
-            sLeaser.sprites[0].color = new Color(1f, 1f, 1f);
+            sLeaser.sprites[0].alpha = 0f;
+            sLeaser.sprites[0].shader = rCam.game.rainWorld.Shaders["CustomDepth"];
             sLeaser.sprites[0].SetPosition(pos - rCam.pos);
-            sLeaser.sprites[0].isVisible = true;
+            sLeaser.sprites[0].isVisible = show;
             sLeaser.sprites[0].scaleX = 1f;
             sLeaser.sprites[0].scaleY = 1f;
             sLeaser.sprites[0].anchorX = 0f;
@@ -162,4 +171,6 @@ public class RoomBackgroundSprite : CosmeticSprite
             sLeaser.sprites[i].MoveBehindOtherNode(sLeaser.sprites[i - 1]);
         }
     }
+
+    public bool show = true;
 }
