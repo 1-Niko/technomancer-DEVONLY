@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 2901837632
+CRC: 63097305
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 065914b43d2373186a3735df6ef457db
+    Hash: 612768c6f2981435f5ea7fcdc5e372dd
   TypeTreeHash:
     serializedVersion: 2
     Hash: 4e2ed3ca814c5fd84935ce64aaf97f38
@@ -31,4 +31,5 @@ Assets:
 - Assets/HSL2RGB.png
 - Assets/NoTex.shader
 - Assets/fanBlade.shader
+- Assets/CustomCustomDepth.shader
 Dependencies: []
