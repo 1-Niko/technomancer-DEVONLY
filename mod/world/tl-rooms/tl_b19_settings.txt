@@ -1,9 +1,10 @@
 Template: NONE
 DangerType: Flood
 Grime: 0.4021739
+WaterReflectionAlpha: 0
 Palette: 26
 Effects: SilenceWater-1-20-20, 
-PlacedObjects: LightFixture><300.3953><638.4204><RedLight~17.32051~-10~61, LightFixture><1711.94><671.5592><RedLight~17.32051~-10~77, LightFixture><865.1863><670.3104><RedLight~17.32051~-10~10, ImageBackground><297.3351><410.569><100~50~0~False~0;0^-81;-27, 
+PlacedObjects: LightFixture><300.3953><638.4204><RedLight~17.32051~-10~61, LightFixture><1711.94><671.5592><RedLight~17.32051~-10~77, LightFixture><865.1863><670.3104><RedLight~17.32051~-10~10, ImageBackground><297.3351><410.569><100~50~0~False~0;0^-279;-381, ImageBackground><1249.808><404.5575><100~50~1~False~0;0^-419;-376, 
 AmbientSounds: OMNI><AM_ENV-SubTerr.ogg><748.0577><445.0549><0.2173913><1, OMNI><MSC-RitualMetal.ogg><742.8344><280.8622><0.1630435><1, OMNI><MSC-StructureStrain.ogg><742.2273><203.4487><0.2608696><0.2173913, OMNI><SO_SFX-DeepLake.ogg><751.4062><364.6249><0.5><1, OMNI><SO_WAT-LilDrips.ogg><471.7><274.2509><0.5><1, OMNI><SO_WAT-MoreDrips.ogg><729.138><103.8947><0.5><1, SPOT><AM_IND-50hz.ogg><729.4672><336.8027><0.5><1><299.4672><641.8027><-35.35534><-35.35534><0><0.1, SPOT><AM_IND-50hz.ogg><749.7296><341.699><0.5><1><868.7296><669.699><-35.35534><-35.35534><0><0.1, SPOT><AM_IND-50hz.ogg><766.3419><337.5724><0.5><1><1707.342><662.5724><-35.35534><-35.35534><0><0.1, 
 FadePalette: 10, 0.6413044, 0.6521739
 MorePalette0: 0, 1, 1

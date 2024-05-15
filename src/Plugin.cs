@@ -87,6 +87,7 @@ public class Plugin : BaseUnityPlugin
                         Utilities.InPlaceTryCatch(ref Shaders.ModifiedLightBeamShader, FShader.CreateShader("ModifiedLightBeamShader", Shaders.SlugShaders.LoadAsset<Shader>("Assets/ModifiedLightBeam.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"ModifiedLightBeamShader\" Failed to set!");
                         Utilities.InPlaceTryCatch(ref Shaders.DynamicTrain, FShader.CreateShader("DynamicTrainShader", Shaders.SlugShaders.LoadAsset<Shader>("Assets/dynamicTrains.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"DynamicTrain\" Failed to set!");
                         Utilities.InPlaceTryCatch(ref Shaders.SpinningFan, FShader.CreateShader("SpinningFan", Shaders.SlugShaders.LoadAsset<Shader>("Assets/fanBlade.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"SpinningFan\" Failed to set!");
+                        Utilities.InPlaceTryCatch(ref Shaders.CustomCustomDepth, FShader.CreateShader("CustomCustomDepth", Shaders.SlugShaders.LoadAsset<Shader>("Assets/CustomCustomDepth.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"CustomCustomDepth\" Failed to set!");
                     }
                     else
                     {

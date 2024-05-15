@@ -34,6 +34,7 @@ internal static class WeakTables
         public FShader ModifiedLightBeamShader = null;
         public FShader DynamicTrain = null;
         public FShader SpinningFan = null;
+        public FShader CustomCustomDepth = null;
 
         public AssetBundle SlugShaders = null;
         public Texture _shadowMask = null;
