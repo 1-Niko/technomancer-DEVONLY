@@ -74,7 +74,7 @@ public class RoomBackground(PlacedObject placedObject) : UpdatableAndDeletable
 
                                     if (elementName == backgroundName)
                                     {
-                                        RoomBackgroundSprite backgroundSprite = new()
+                                        backgroundSprite = new()
                                         {
                                             background = element.Value
                                         };
@@ -109,17 +109,13 @@ public class RoomBackground(PlacedObject placedObject) : UpdatableAndDeletable
                 //     backgroundSprite.Destroy();
                 // }
 
-                Plugin.DebugLog(backgroundSprite == null);
-
                 if (backgroundSprite != null)
                 {
                     backgroundSprite.show = (placedObject.data as RoomBackgroundData).screen == cameraPosition.camPosition;
-                    Plugin.DebugLog($"{(placedObject.data as RoomBackgroundData).screen} == {cameraPosition.camPosition} : {backgroundSprite.show}");
                 }
             }
         }
     }
-
 }
 
 public class RoomBackgroundSprite : CosmeticSprite
@@ -172,5 +168,5 @@ public class RoomBackgroundSprite : CosmeticSprite
         }
     }
 
-    public bool show = true;
+    public bool show;
 }
