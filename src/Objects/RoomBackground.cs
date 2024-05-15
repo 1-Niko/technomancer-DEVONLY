@@ -73,7 +73,7 @@ public class RoomBackground(PlacedObject placedObject) : UpdatableAndDeletable
                                     // Extract the filename from the full element name
                                     string spriteBackgroundName = Path.GetFileNameWithoutExtension(element.Key).ToLower();
 
-                                    Plugin.DebugWarning($"Checking element: {element.Key}, Expected background name: {backgroundRoomName}, Actual sprite background name: {spriteBackgroundName}");
+                                    //Plugin.DebugWarning($"Checking element: {element.Key}, Expected background name: {backgroundRoomName}, Actual sprite background name: {spriteBackgroundName}");
 
                                     if (spriteBackgroundName == backgroundRoomName)
                                     {
@@ -135,7 +135,7 @@ public class RoomBackgroundSprite : CosmeticSprite
         {
             sLeaser.sprites[0].element = background;
             sLeaser.sprites[0].alpha = 0f;
-            // sLeaser.sprites[0].shader = rCam.game.rainWorld.Shaders["CustomDepth"];
+            //sLeaser.sprites[0].shader = rCam.game.rainWorld.Shaders["CustomDepth"];
             sLeaser.sprites[0].SetPosition(pos - rCam.pos);
             sLeaser.sprites[0].isVisible = currentScreen == myScreen;
             sLeaser.sprites[0].scaleX = 1f;
@@ -163,7 +163,7 @@ public class RoomBackgroundSprite : CosmeticSprite
 
     public override void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContainer)
     {
-        newContainer ??= rCam.ReturnFContainer("Foreground");
+        newContainer ??= rCam.ReturnFContainer(nodeList[2]);
 
         foreach (FSprite fsprite in sLeaser.sprites)
         {
