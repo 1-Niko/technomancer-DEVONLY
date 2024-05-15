@@ -1,5 +1,3 @@
-using Newtonsoft.Json;
-
 namespace Slugpack;
 
 public class RoomBackgroundData(PlacedObject owner) : ManagedData(owner, null)
@@ -12,37 +10,34 @@ public class RoomBackgroundData(PlacedObject owner) : ManagedData(owner, null)
 
     [BooleanField("B", false, ManagedFieldWithPanel.ControlType.button, "Set Screen To Current")]
     public bool setScreen;
-
 }
 
 public class RoomBackground(PlacedObject placedObject) : UpdatableAndDeletable
 {
+    private readonly PlacedObject placedObject = placedObject;
+    private FAtlas screenAtlas;
+    private RoomBackgroundSprite backgroundSprite;
+
     public override void Update(bool eu)
     {
         base.Update(eu);
 
-        // This should only be active if
-        // 1. The player is in the room
-        // 2. The player is on the correct screen
-        // Otherwise it should unload the atlas and remove the sprite
-
-        if (Constants.DamagedShortcuts.TryGetValue(room.game, out var CameraPosition))
+        if (DamagedShortcuts.TryGetValue(room.game, out var cameraPosition))
         {
             if ((placedObject.data as RoomBackgroundData).setScreen)
             {
-                (placedObject.data as RoomBackgroundData).screen = CameraPosition.camPosition;
+                (placedObject.data as RoomBackgroundData).screen = cameraPosition.camPosition;
                 (placedObject.data as RoomBackgroundData).setScreen = false;
             }
 
             bool createBackground = false;
-
             bool keepBackground = false;
 
-            if (this.room.abstractRoom.name == CameraPosition.room) // If player in room
+            if (room.abstractRoom.name == cameraPosition.room) // If player in room
             {
-                if ((placedObject.data as RoomBackgroundData).screen == CameraPosition.camPosition) // If player on screen
+                if ((placedObject.data as RoomBackgroundData).screen == cameraPosition.camPosition) // If player on screen
                 {
-                    if (Background == null)
+                    if (backgroundSprite == null)
                     {
                         createBackground = true;
                     }
@@ -54,81 +49,112 @@ public class RoomBackground(PlacedObject placedObject) : UpdatableAndDeletable
 
                 if (createBackground)
                 {
-                    // Background will be null here so no need to check
-
-                    // Load expected atlas
-
-                    string atlasPath = $"tn_atlases/Screens/{this.room.abstractRoom.name}_{CameraPosition.camPosition}.png";
-
-                    if (File.Exists(Path.ChangeExtension(atlasPath, ".txt")))
+                    try
                     {
-                        screenAtlas = Futile.atlasManager.LoadAtlas(Path.ChangeExtension(atlasPath, null));
-                    }
-                    else
-                    {
-                        screenAtlas = Futile.atlasManager.LoadImage(Path.ChangeExtension(atlasPath, null));
-                    }
+                        foreach (string file in from file in AssetManager.ListDirectory("tn_atlases/Screens")
+                                                where Path.GetExtension(file).Equals(".png")
+                                                select file)
+                        {
+                            string atlasPath = Path.ChangeExtension(file, null);
+                            screenAtlas = Futile.atlasManager.LoadImage(atlasPath);
 
-                    string background_name = $"{this.room.abstractRoom.name}_{CameraPosition.camPosition}";
-                    Background = new RoomBackgroundSprite();
-                    Background.background = screenAtlas._elementsByName[background_name];
-                    room.AddObject(Background);
+                            // Extract the background element name from the file path
+                            string backgroundName = Path.GetFileNameWithoutExtension(file).ToLower(); // Convert to lowercase for comparison
+
+                            //Plugin.DebugWarning($"Processing file: {file}, Background name: {backgroundName}"); Console spam causes lag
+                            if (screenAtlas != null)
+                            {
+                                // Iterate through atlas elements to find a matching element
+                                bool foundElement = false;
+                                foreach (var element in screenAtlas._elementsByName)
+                                {
+                                    //Plugin.DebugWarning(element); Console Spam causes lag
+                                    // Extract the filename from the full element name
+                                    string elementName = Path.GetFileNameWithoutExtension(element.Key).ToLower();
+
+                                    if (elementName == backgroundName)
+                                    {
+                                        RoomBackgroundSprite backgroundSprite = new()
+                                        {
+                                            background = element.Value
+                                        };
+                                        room.AddObject(backgroundSprite);
+                                        foundElement = true;
+                                        break;
+                                    }
+                                }
+
+                                if (!foundElement)
+                                {
+                                    Debug.LogError("Background element not found: " + backgroundName);
+                                }
+                            }
+                            else
+                            {
+                                Debug.LogError("Screen atlas is null!");
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Plugin.DebugError(ex);
+                        throw new Exception($"Failed to load {Plugin.MOD_NAME} atlases!");
+                    }
                 }
-                if (!keepBackground && !createBackground && screenAtlas != null)
+
+                if (!keepBackground && !createBackground && screenAtlas != null && room != null && backgroundSprite != null)
                 {
-                    // Unload the object and the atlas
-                    screenAtlas.Unload();
-                    room.RemoveObject(Background);
-                    Background.Destroy();
+                    //screenAtlas.Unload();
+                    room.RemoveObject(backgroundSprite);
+                    backgroundSprite.Destroy();
                 }
             }
         }
     }
 
-    private FAtlas screenAtlas;
-
-    private RoomBackgroundSprite Background;
-
-    private PlacedObject placedObject = placedObject;
 }
 
-public class RoomBackgroundSprite() : CosmeticSprite
+public class RoomBackgroundSprite : CosmeticSprite
 {
+    public FAtlasElement background;
 
     public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
 
         if (background != null)
+        {
             sLeaser.sprites[0].element = background;
-        sLeaser.sprites[0].color = new Color(1f,1f,1f);
-        sLeaser.sprites[0].SetPosition(pos - rCam.pos);
-        sLeaser.sprites[0].isVisible = true;
-        sLeaser.sprites[0].scaleX = 1f;
-        sLeaser.sprites[0].scaleY = 1f;
-        sLeaser.sprites[0].anchorX = 0f;
-        sLeaser.sprites[0].anchorY = 0f;
+            sLeaser.sprites[0].color = new Color(1f, 1f, 1f);
+            sLeaser.sprites[0].SetPosition(pos - rCam.pos);
+            sLeaser.sprites[0].isVisible = true;
+            sLeaser.sprites[0].scaleX = 1f;
+            sLeaser.sprites[0].scaleY = 1f;
+            sLeaser.sprites[0].anchorX = 0f;
+            sLeaser.sprites[0].anchorY = 0f;
+        }
 
         if (slatedForDeletetion || room != rCam.room)
+        {
             sLeaser.CleanSpritesAndRemove();
+        }
     }
 
     public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     {
         sLeaser.sprites = new FSprite[1];
-
         sLeaser.sprites[0] = new FSprite("pixel", true);
-
         AddToContainer(sLeaser, rCam, null);
     }
 
-    public override void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
+    public override void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContainer)
     {
-        newContatiner ??= rCam.ReturnFContainer("Foreground");
+        newContainer ??= rCam.ReturnFContainer("Foreground");
+
         foreach (FSprite fsprite in sLeaser.sprites)
         {
             fsprite.RemoveFromContainer();
-            newContatiner.AddChild(fsprite);
+            newContainer.AddChild(fsprite);
         }
 
         for (int i = 1; i < sLeaser.sprites.Length; i++)
@@ -136,6 +162,4 @@ public class RoomBackgroundSprite() : CosmeticSprite
             sLeaser.sprites[i].MoveBehindOtherNode(sLeaser.sprites[i - 1]);
         }
     }
-
-    public FAtlasElement background;
 }

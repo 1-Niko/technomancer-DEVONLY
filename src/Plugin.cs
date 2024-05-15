@@ -135,13 +135,21 @@ public class Plugin : BaseUnityPlugin
 
     private void LoadAtlases()
     {
-        foreach (var file in from string file in AssetManager.ListDirectory("tn_atlases")
-                             where ".png".Equals(Path.GetExtension(file))
-                             select file)
+        try
         {
-            _ = File.Exists(Path.ChangeExtension(file, ".txt"))
-                ? Futile.atlasManager.LoadAtlas(Path.ChangeExtension(file, null))
-                : Futile.atlasManager.LoadImage(Path.ChangeExtension(file, null));
+            foreach (string file in from file in AssetManager.ListDirectory("tn_atlases")
+                                    where Path.GetExtension(file).Equals(".png")
+                                    select file)
+            {
+                _ = File.Exists(Path.ChangeExtension(file, ".txt"))
+                    ? Futile.atlasManager.LoadAtlas(Path.ChangeExtension(file, null))
+                    : Futile.atlasManager.LoadImage(Path.ChangeExtension(file, null));
+            }
+        }
+        catch (Exception ex)
+        {
+            DebugError(ex);
+            throw new Exception($"Failed to load {MOD_NAME} atlases!");
         }
     }
 }

@@ -3,8 +3,9 @@
     <TargetFramework>net48</TargetFramework>
     <LangVersion>preview</LangVersion>
     <AssemblyName>Slugpack</AssemblyName>
-	  <Nullable>disable</Nullable>
+	<Nullable>disable</Nullable>
     <RootNamespace>Slugpack</RootNamespace>
+  <PathMap>$(MSBuildProjectDirectory)=/$(SolutionName)</PathMap>
   </PropertyGroup>
 
   <ItemGroup>
