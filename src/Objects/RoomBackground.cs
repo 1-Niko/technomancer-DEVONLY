@@ -1,5 +1,11 @@
 namespace Slugpack;
 
+// TODO
+// 1. Find some way to have the background sprite appear through water
+// 2. Fix the flickering that happens when changing screens
+// 3. Watch for any possible memory leaks caused by this
+// 4. Maximally optimize the code
+
 public class RoomBackgroundData(PlacedObject owner) : ManagedData(owner, null)
 {
     [Vector2ArrayField("handle", 2, true, Vector2ArrayRepresentationType.Chain, new float[4] { 0, 0, -60, -20 })]
@@ -114,7 +120,6 @@ public class RoomBackground(PlacedObject placedObject) : UpdatableAndDeletable
 
                 if (backgroundSprite != null)
                 {
-                    backgroundSprite.currentScreen = cameraPosition.camPosition;
                     backgroundSprite.myScreen = (placedObject.data as RoomBackgroundData).screen;
                     backgroundSprite.pos = placedObject.pos + (placedObject.data as RoomBackgroundData).handle[1];
                 }
@@ -127,6 +132,14 @@ public class RoomBackgroundSprite : CosmeticSprite
 {
     public FAtlasElement background;
 
+    public override void Update(bool eu)
+    {
+        base.Update(eu);
+
+        if (DamagedShortcuts.TryGetValue(room.game, out var cameraPosition))
+            currentScreen = cameraPosition.camPosition;
+    }
+
     public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
         base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
@@ -134,7 +147,7 @@ public class RoomBackgroundSprite : CosmeticSprite
         if (background != null)
         {
             sLeaser.sprites[0].element = background;
-            sLeaser.sprites[0].alpha = 0f;
+            sLeaser.sprites[0].alpha = 0.0f;
             //sLeaser.sprites[0].shader = rCam.game.rainWorld.Shaders["CustomDepth"];
             sLeaser.sprites[0].SetPosition(pos - rCam.pos);
             sLeaser.sprites[0].isVisible = currentScreen == myScreen;
@@ -163,7 +176,7 @@ public class RoomBackgroundSprite : CosmeticSprite
 
     public override void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContainer)
     {
-        newContainer ??= rCam.ReturnFContainer(nodeList[2]);
+        newContainer ??= rCam.ReturnFContainer(nodeList[5]);
 
         foreach (FSprite fsprite in sLeaser.sprites)
         {

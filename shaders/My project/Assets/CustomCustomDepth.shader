@@ -127,6 +127,8 @@ return float4(0,0,0,0);
 
 //returnCol = lerp(returnCol, tex2D(_PalTex, float2(1.5/32.0, 7.5/8.0)), dpth*_fogAmount);
  
+// Genuinely interesting patterns appear after a while. Not something we want ingame, but certainly mesmerising
+//return half4(tex2D(_MainTex, i.uv).x, float2(1.0,1.0), tex2D(_MainTex, i.uv).w);
 return half4(tex2D(_MainTex, i.uv).xyz, tex2D(_MainTex, i.uv).w);
  
 
