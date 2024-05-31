@@ -1,0 +1,9 @@
+Template: NONE
+DangerType: None
+Grime: 0.2391304
+Palette: 21
+EffectColorA: 19
+PlacedObjects: LightSource><610.5684><325.8337><0.2934783~EffectColor1~20~9~297~42.60254~0~1~None~0~0, LightSource><569.9028><410.879><0.2826087~EffectColor1~32~2~327~179.6026~0~1~None~0~0, LightSource><632.9122><427.6331><0.2608696~EffectColor1~27~4~269~49.60251~0~1~None~0~0, 
+AmbientSounds: OMNI><AM_ENV-SubTerr.ogg><843.2718><590.4489><0.09782609><1, SPOT><AM_WIN-MedWind.ogg><863.1121><456.8344><0.7282609><1><644.1121><35.83435><-73.35535><-18.35535><0><0.3065219, SPOT><SO_IND-Boiler.ogg><858.8168><205.1699><0.3913043><1><424.8168><653.1699><-63.35535><-85.35535><0><0.1760871, 
+FadePalette: 20, 0.6086956
+MorePalette0: 10, 0.4347826

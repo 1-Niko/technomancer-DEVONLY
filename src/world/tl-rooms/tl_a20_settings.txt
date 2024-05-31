@@ -1,0 +1,10 @@
+Template: NONE
+DangerType: None
+CeilingDrips: 1
+WaveSpeed: 0.5217391
+Grime: 0.1304348
+Palette: 21
+Effects: SilenceWater-1-20-20, 
+PlacedObjects: CGDrySpot><79.10593><-100.6387><100~50~476^272~False~None, 
+AmbientSounds: OMNI><AM_ENV-SubTerr.ogg><737.9496><442.7628><0.2391304><1, SPOT><AM_WIN-HowlingWnd.ogg><766.3808><546.8488><0.1630435><1><307.3808><43.84875><44.64465><7.644653><0><0.05652187, OMNI><AM_IND-50hz.ogg><735.5331><338.6972><0.2065217><1, 
+FadePalette: 8, 0.6086956

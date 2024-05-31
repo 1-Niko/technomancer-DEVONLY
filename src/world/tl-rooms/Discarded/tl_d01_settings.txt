@@ -1,0 +1,17 @@
+Template: NONE
+DangerType: Blizzard
+CeilingDrips: 0
+WaveSpeed: 0.2191992
+WaveLength: 0.8595996
+WaveAmplitude: 3.387714E-08
+SecondWaveLength: 0.1666667
+SecondWaveAmplitude: 0
+Clouds: 1
+Grime: 0.1847826
+WaterReflectionAlpha: 0.2065217
+Palette: 22
+EffectColorB: 21
+Effects: SilenceWater-0.6956522-20-20, WaterDepth-0.07608695-101-128, 
+PlacedObjects: GlowWeed><302.9964><490.45><0~0~2~3, GlowWeed><590.2136><355.6967><-6~-105~2~3, GlowWeed><290.1105><403.8933><0~0~2~3, GlowWeed><227.2836><437.5529><0~0~2~3, GlowWeed><682.2789><432.9479><69~61~2~2, GlowWeed><383.45><438.7447><0~0~2~3, LightSource><154.7155><2712.803><0.7717391~White~60~34~50~86.60254~0~1~None~0~0, LightBeam><309.4565><2294.195><-165~413~-146~422~251~133~-382~461~0.08478247~1~0~0~None~0~0, 
+AmbientSounds: DIR><MSC-LowGroans.ogg><842.6683><546.8175><0.1304348><1><-25.01689><0, 
+FadePalette: 10, 0.25, 0.3043478, 0.6739131, 1

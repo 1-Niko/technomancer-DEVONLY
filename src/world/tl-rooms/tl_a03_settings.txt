@@ -1,0 +1,7 @@
+Template: NONE
+DangerType: FloodAndRain
+Grime: 0
+Palette: 10
+Effects: SilenceWater-1-20-20, 
+PlacedObjects: PlacedWaterfall><680.6883><716.8172><170~-98~0.5217444~1, PlacedWaterfall><502.1906><718.9395><371~-180~0.7391357~2, LightFixture><493.8606><205.4167><RedLight~-274.6795~-233~37, LightFixture><710.3027><441.2824><RedLight~17.32051~-10~51, LightFixture><116.6854><614.3253><RedLight~-194.6795~-216~54, 
+AmbientSounds: OMNI><SO_WAT-OpenFlow.ogg><712.5536><278.4623><0.75><1, OMNI><AM_SUB-BlankState.ogg><744.602><363.1345><0.2608696><1, OMNI><AM_ENV-SubTerr.ogg><748.1046><445.1373><0.1630435><1, 

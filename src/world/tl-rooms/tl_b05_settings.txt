@@ -1,0 +1,7 @@
+Template: NONE
+DangerType: Flood
+CeilingDrips: 1
+Grime: 0.2391304
+Palette: 22
+EffectColorA: 8
+PlacedObjects: DeadTokenStalk><889.8857><359.6031><-78~-7, DataPearl><895.0878><312.1797><0~83~0~0~Misc~0, DataPearl><859.8428><313.3228><35~211~0~0~Misc~0, LightSource><755.827><350.3505><1~EffectColor1~23~111~-261~74.60254~0~0~None~0~0, 

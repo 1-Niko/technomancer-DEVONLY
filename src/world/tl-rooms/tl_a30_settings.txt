@@ -1,0 +1,9 @@
+Template: NONE
+DangerType: None
+CeilingDrips: 0.5760869
+Grime: 0
+Palette: 21
+Effects: SilenceWater-1-20-20, 
+PlacedObjects: LightFixture><78.202><113.5559><RedLight~17.32051~-10~90, LightFixture><522.571><180.9109><RedLight~17.32051~-10~91, 
+AmbientSounds: OMNI><AM_ENV-SubTerr.ogg><725.6154><440.3521><0.173913><1, SPOT><AM_IND-50hz.ogg><552.843><352.4271><0.5><1><521.843><177.4271><-35.35534><-35.35534><0><0.1, SPOT><AM_IND-50hz.ogg><716.6917><337.9413><0.5><1><75.69171><116.9413><-35.35534><-35.35534><0><0.1, 
+FadePalette: 8, 0.5

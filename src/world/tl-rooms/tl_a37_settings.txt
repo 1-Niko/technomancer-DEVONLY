@@ -1,0 +1,6 @@
+Template: NONE
+DangerType: None
+Grime: 0.1304348
+Palette: 22
+PlacedObjects: LightSource><522.2154><114.803><0.5434783~White~-518~-16~-187~315.6025~0~0~None~0~0, 
+AmbientSounds: SPOT><Basic Mech.ogg><690.3157><447.1722><0.3152174><1><520.3157><143.1722><-137.3553><-82.35535><0><0.3391306, OMNI><AM_IND-12thFloor.ogg><718.4474><351.9681><0.2282609><1, 

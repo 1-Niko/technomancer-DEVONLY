@@ -1,0 +1,32 @@
+{
+  "id": "technomancer",
+  "name": "THE TECHNOMANCER",
+  "description": "Able to bend the ancient technology around you to your whim,<LINE>what sorts of things might you do with it?",
+  "features": {
+	"color" : "ef7aea",
+    "custom_colors": [
+      { "name": "Body", "story": "ef7aea" },
+      { "name": "Eyes", "story": "020202" }
+    ],
+	"auto_grab_batflies": false,
+	
+    "start_room": ["GATE_TL_OE", "SB_S09"],
+	
+	"cycle_length_min": 10.89,
+	"cycle_length_max": 16.9476,
+	
+	"karma": 0,
+	"karma_cap": 4,
+    
+	"select_menu_scene": "Slugcat_Technomancer",
+	"sleep_scene": "Sleep_Technomancer",
+	
+	"walk_speed" : 1,
+	"climb_speed" : 1,
+	"crouch_stealth" : 0.6,
+	"throw_skill" : 0.8,
+	"tunnel_speed" : 1.3,
+	"can_maul": false,
+	"back_spear": false
+  }
+}

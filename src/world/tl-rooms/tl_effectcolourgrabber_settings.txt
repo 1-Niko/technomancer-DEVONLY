@@ -1,0 +1,4 @@
+Template: NONE
+Palette: 29
+EffectColorA: 19
+EffectColorB: 19

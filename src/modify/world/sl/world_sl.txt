@@ -1,0 +1,5 @@
+[MERGE]
+CREATURES
+(technomancer)OFFSCREEN : 0-Vulture-3, 0-Leviathan-2
+END CREATURES
+[ENDMERGE]

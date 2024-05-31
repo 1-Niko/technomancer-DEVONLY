@@ -1,0 +1,21 @@
+{
+  "Title": "[DEVBUILD] The Technomancer",
+  "Description": "Adds a new playable slugcat to the game: The Technomancer!\u003CLINE\u003EWith the ability to manipulate the ancient technologies around you to your whim, what might you do with it?",
+  "ID": "splugpack.DEVONLY",
+  "Version": "1.3.0",
+  "TargetGameVersion": "v1.9.06",
+  "Requirements": "slime-cubed.slugbase,moreslugcats,regionkit,crs,pom,fisobs",
+  "RequirementNames": "SlugBase,More Slugcats Expansion,RegionKit,Custom Regions Support,POM,Fisobs",
+  "Authors": "Technomancer Development Team\r\n\r\nNiko - Project Lead, Lead Coder, Lead Leditor\r\nLurzard - Menu Art\r\nSupernova - Bugtester",
+  "Visibility": "Unlisted",
+  "Tags": [
+    "Regions",
+    "Campaigns",
+    "Creatures",
+    "Game Mechanics",
+    "Custom Slugcat"
+  ],
+  "WorkshopID": 3054822223,
+  "UploadFilesOnly": true,
+  "UploadThumbnail": false
+}

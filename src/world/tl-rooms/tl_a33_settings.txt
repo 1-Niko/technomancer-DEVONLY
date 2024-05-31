@@ -1,0 +1,7 @@
+Template: NONE
+DangerType: None
+Grime: 0.09782609
+Palette: 22
+EffectColorA: 15
+PlacedObjects: LightSource><241.9273><107.1575><1~EffectColor1~23~-95~-212~-250.3975~0~0~None~0~0, TrackHologram><521.0528><105.7833><100~50~2~0;0^0;121~0;0^-359;83~-588^-45, 
+AmbientSounds: OMNI><AM_IND-12thFloor.ogg><754.8583><354.8588><0.2065217><1, 

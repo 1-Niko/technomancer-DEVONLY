@@ -1,0 +1,9 @@
+Template: NONE
+DangerType: None
+Grime: 0
+Palette: 20
+EffectColorA: 15
+EffectColorB: 19
+PlacedObjects: LightSource><256.6075><133.9186><0.1413043~EffectColor1~31~-35~-227~254.6025~0~1~None~0~0, LightSource><716.3068><63.80145><0.2608698~EffectColor1~-3~-47~85~269.6025~0~1~None~0~0, LightSource><675.8719><70.15356><1~EffectColor2~0~100~95~246.6002~0~0~None~0~0, LightSource><807.8661><67.14859><0.3369565~EffectColor2~0~100~73.00006~334.6026~0~0~None~0~0, DataPearl><731.5113><107.4497><0~0~0~0~Misc~0, DataPearl><752.4122><109.4298><0~0~0~0~Misc~0, DataPearl><772.5203><109.449><0~0~0~0~Misc~0, DataPearl><305.9488><111.9779><0~0~0~0~Misc~0, DataPearl><325.5522><111.0297><0~0~0~0~Misc~0, DataPearl><345.9455><110.9578><0~0~0~0~Misc~0, 
+AmbientSounds: OMNI><AM_IND-50hz.ogg><725.1604><343.8694><0.2065217><1, 
+FadePalette: 34, 0.6195652

@@ -1,0 +1,6 @@
+Template: NONE
+Palette: 22
+EffectColorA: 0
+EffectColorB: 6
+PlacedObjects: CGDrySpot><570.2><651.4966><311^202, CGDrySpot><209.4491><897.2313><100^100, 
+FadePalette: 10, 0.6195652, 0.6195652, 0.6195652

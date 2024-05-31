@@ -1,0 +1,11 @@
+Template: NONE
+DangerType: Flood
+Grime: 0.4021739
+WaterReflectionAlpha: 0
+Palette: 26
+EffectColorA: 6
+Effects: SilenceWater-1-20-20, 
+PlacedObjects: LightFixture><313.3953><685.4204><RedLight~17.32051~-10~61, LightFixture><1711.94><671.5592><RedLight~17.32051~-10~77, LightFixture><865.1863><670.3104><RedLight~17.32051~-10~10, ImageBackground><300.3351><375.569><-50.00003~156~0~False~1~0;0^-483;-371, ImageBackground><1246.808><433.5575><100~50~1~False~1~0;0^-479;-427, GlowWeed><324.9208><245.6041><-457~215~2~3, GlowWeed><267.5246><333.9485><-404~202~2~3, GlowWeed><568.8733><310.4048><-707~40~2~3, GlowWeed><1584.319><277.5858><303~130~2~3, GlowWeed><1369.061><321.9347><514~178~2~3, LightSource><409.1871><142.0708><0.25~EffectColor1~-214~23~-396~39.60254~0~0~None~0~0, LightSource><1485.554><170.4618><0.3586957~EffectColor1~-201~64~50~86.60254~0~0~None~0~0, 
+AmbientSounds: OMNI><AM_ENV-SubTerr.ogg><748.0577><445.0549><0.2173913><1, OMNI><MSC-RitualMetal.ogg><742.8344><280.8622><0.1630435><1, OMNI><MSC-StructureStrain.ogg><742.2273><203.4487><0.2608696><0.2173913, OMNI><SO_SFX-DeepLake.ogg><751.4062><364.6249><0.5><1, OMNI><SO_WAT-LilDrips.ogg><471.7><274.2509><0.5><1, OMNI><SO_WAT-MoreDrips.ogg><729.138><103.8947><0.5><1, SPOT><AM_IND-50hz.ogg><729.4672><336.8027><0.5><1><315.4672><683.8027><-35.35534><-35.35534><0><0.1, SPOT><AM_IND-50hz.ogg><749.7296><341.699><0.5><1><868.7296><669.699><-35.35534><-35.35534><0><0.1, SPOT><AM_IND-50hz.ogg><766.3419><337.5724><0.5><1><1707.342><662.5724><-35.35534><-35.35534><0><0.1, 
+FadePalette: 10, 0.6413044, 0.6521739
+WetTerrain: OFF

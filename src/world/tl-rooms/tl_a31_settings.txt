@@ -1,0 +1,7 @@
+Template: NONE
+DangerType: None
+Grime: 0
+Palette: 21
+Effects: SilenceWater-1-20-20, 
+PlacedObjects: GlowWeed><731.099><283.1311><-438~-66~2~3, GlowWeed><648.3057><333.2027><-351~35~2~3, GlowWeed><1030.302><422.2789><-323~15~2~3, 
+FadePalette: 10, 0.6847826
