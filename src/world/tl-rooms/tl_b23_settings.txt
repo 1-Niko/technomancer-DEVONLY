@@ -1,2 +1,0 @@
-Template: NONE
-Effects: SilenceWater-1-20-20, 

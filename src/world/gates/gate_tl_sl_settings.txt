@@ -1,8 +1,0 @@
-Template: NONE
-DangerType: FloodAndRain
-Grime: 0
-Palette: 13
-Effects: SilenceWater-1-20-20, 
-PlacedObjects: NoSpearStickZone><482.6039><242.1367><7~264, 
-AmbientSounds: SPOT><AM_IND-Utility02.ogg><745.379><458.6528><0.3478261><1><1093.379><269.6528><-192.3553><-38.35535><0><0.2630436, SPOT><AM_IND-Utility02.ogg><469.0529><265.4662><0.4456522><1><-44.94714><238.4662><122.6447><-100.3553><0><0.4152175, SPOT><AM_IND-DeepHum.ogg><768.8017><74.97382><0.3043478><1><468.8017><32.97382><-125.3553><76.64465><0><0.4478262, 
-FadePalette: 10, 0.6847826

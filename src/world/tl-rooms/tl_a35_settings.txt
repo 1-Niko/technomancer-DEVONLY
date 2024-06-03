@@ -1,7 +1,0 @@
-Template: NONE
-DangerType: None
-Grime: 0.1521739
-Palette: 22
-EffectColorA: 18
-PlacedObjects: LightSource><337.8026><186.2825><0.5217391~EffectColor1~11~-8~50~86.60254~0~1~Flash~0.6304348~0, TrackHologram><522.0867><133.8655><100~50~2~0;0^-3;88~0;0^-360;53~-527^-166, 
-AmbientSounds: OMNI><AM_IND-12thFloor.ogg><748.696><485.5574><0.2173913><1, SPOT><SO_SFX-DataTrans2.ogg><559.1273><511.908><0.5><1><292.1273><196.908><-47.35535><-39.35535><0><0.1, SPOT><Basic Mech.wav><756.7111><317.3038><0.1413043><1><531.7111><86.30383><-35.35534><-35.35534><0><0.1, 

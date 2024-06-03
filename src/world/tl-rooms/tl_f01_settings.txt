@@ -1,2 +1,0 @@
-Template: NONE
-PlacedObjects: CGDrySpot><1404.739><151.9497><714^296, ClimbableWire><1624.903><115.175><-152~224~17.32051~-10~Black~2, ClimbableWire><1555.948><75.28067><-151~222~17.32051~-10~Black~2, ClimbableWire><1413.302><268.4742><78~53~-122.6795~157~Black~2, ClimbableWire><1449.079><221.3536><79~54~-317.6795~113~Black~2, ClimbableWire><1479.923><171.3498><82~52~-437.6795~57~Black~2, ClimbableWire><1505.427><114.9075><96~62~-235.6795~140~Black~2, 

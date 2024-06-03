@@ -1,2 +1,0 @@
-[ADD]GATE_TL_OE : 5 : 5
-[ADD]GATE_TL_SL : 2 : 5

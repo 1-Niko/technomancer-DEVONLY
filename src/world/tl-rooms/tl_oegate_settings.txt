@@ -1,9 +1,0 @@
-Template: NONE
-DangerType: None
-RainIntensity: 0
-RumbleIntensity: 0
-Clouds: 0.8586956
-Grime: 0.1630435
-Palette: 19
-PlacedObjects: TrainTrack><-203.1908><702.559><29~-129~True~TL_OEGATE~1363^88~30~150~10, 
-FadePalette: 8, 0.6630435

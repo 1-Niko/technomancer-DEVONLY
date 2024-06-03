@@ -1,3 +1,0 @@
-Effects: BrokenZeroG-0-30-30, ZeroG-1-29-92, 
-PlacedObjects: LightFixture><394.9061><462.0959><RedLight~17.32051~-10~78, LightFixture><566.6547><54.41964><RedLight~17.32051~-10~4, 
-FadePalette: 10, 0.4891304

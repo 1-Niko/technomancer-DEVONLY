@@ -1,3 +1,0 @@
-Template: NONE
-Clouds: 0.4130435
-FadePalette: 10, 0.2717391

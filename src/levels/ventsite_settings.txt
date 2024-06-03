@@ -1,7 +1,0 @@
-Template: NONE
-DangerType: None
-Palette: 21
-EffectColorA: 15
-EffectColorB: 12
-PlacedObjects: LightSource><146.0527><514.3071><0.9673913~White~105~90~174~31.60254~0~1~Fade~0.01086957~0, LightBeam><287.0551><-24.44226><-142~522~-144~555~851~317~-170~197~0.6500002~1~0~0~Fade~0.01086957~0, InsectGroup><217.785><239.6368><179~14~-225~-103~ColoredCamoBeetle~0.5, InsectGroup><815.6284><271.4087><-58~148~0~0~ColoredCamoBeetle~0.5, InsectGroup><779.4162><195.8887><0~100~0~0~RockFlea~0.5, InsectGroup><216.1825><179.4181><-9~111~0~0~RockFlea~0.5, InsectGroup><160.4438><511.5495><-1~61~0~0~Moth~0.1413043, InsectGroup><229.3127><304.6801><-103~-3~-330~60~FireFly~0.2282609, InsectGroup><759.1883><341.3175><0~100~0~0~FireFly~0.2282609, LightFixture><909.8254><607.5976><RedLight~17.32051~-10~21, 
-FadePalette: 10, 0.6195652

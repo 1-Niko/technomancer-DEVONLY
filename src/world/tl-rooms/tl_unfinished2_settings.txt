@@ -1,6 +1,0 @@
-Template: NONE
-DangerType: None
-Grime: 0
-Palette: 12
-PlacedObjects: RoomPopupTrigger><933.95><1813.24><-12~144~Sorry%2this area is unfinished too! The mast is just around the corner though%2have fun exploring!~1.304348~8.565231~-1~1~True~True~-1, 
-AmbientSounds: OMNI><AM_IND-Factory01.ogg><724.1772><217.9363><0.1521739><1, OMNI><AM_IND-Factory04.ogg><723.4073><178.1772><0.173913><1, OMNI><AM_ENV-WallHum.ogg><745.3257><426.0648><0.2391304><1, 

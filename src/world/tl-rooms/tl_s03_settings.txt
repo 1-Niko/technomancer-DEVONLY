@@ -1,5 +1,0 @@
-Template: NONE
-Grime: 0
-Palette: 10
-PlacedObjects: LightFixture><220.1157><479.8517><RedLight~17.32051~-10~83, LightFixture><944.663><369.3199><RedLight~17.32051~-10~38, 
-AmbientSounds: SPOT><SO_IND-FlourLight.ogg><721.8701><492.8479><0.5><1><217.8701><482.8479><-35.35534><-35.35534><0><0.1, OMNI><AM_ENV-SubTerr.ogg><824.7942><444.4451><0.2608696><1, OMNI><AM_SUB-BlankState.ogg><698.1644><260.3861><0.4130435><1, 

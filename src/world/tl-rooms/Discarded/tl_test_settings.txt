@@ -1,8 +1,0 @@
-Template: NONE
-DangerType: None
-WaveSpeed: 0.5
-WaveLength: 0.75
-WaveAmplitude: 0.04324574
-SecondWaveLength: 0.1666667
-SecondWaveAmplitude: 0
-PlacedObjects: CustomEntranceSymbol><512.0518><566.7772><-564.6795~-204~ShortcutInputArrow~0.5, CustomEntranceSymbol><449.5505><572.0142><-506.6795~-129~ShortcutInputArrow~0, 

@@ -1,4 +1,0 @@
-Template: NONE
-Grime: 0
-Palette: 21
-FadePalette: 20, 0.1630435
