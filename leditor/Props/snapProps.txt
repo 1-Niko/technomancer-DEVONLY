@@ -1,0 +1,52 @@
+
+
+-["Snap Pipes", color(80, 255, 80)]
+[#nm:"Big Pipe Vertical", #tp:"standard", #colorTreatment:"standard", #sz:point(6,2), #repeatL:[1,1,1,1,1,1,1,1,1,1,   1,1,1,1,1,1,1,1,2,2], #tags:["snapToGrid","notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Big Pipe Horizontal", #tp:"standard", #colorTreatment:"standard", #sz:point(2,6), #repeatL:[1,1,1,1,1,1,1,1,1,1,   1,1,1,1,1,1,2,2], #tags:["snapToGrid","notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Big Pipe LU", #tp:"standard", #colorTreatment:"standard", #sz:point(6,6), #repeatL:[1,1,1,1,1,1,1,1,1,1,   1,1,1,1,1,1,2,2], #tags:["snapToGrid","notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Big Pipe RU", #tp:"standard", #colorTreatment:"standard", #sz:point(6,6), #repeatL:[1,1,1,1,1,1,1,1,1,1,   1,1,1,1,1,1,2,2], #tags:["snapToGrid","notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Big Pipe RD", #tp:"standard", #colorTreatment:"standard", #sz:point(6,6), #repeatL:[1,1,1,1,1,1,1,1,1,1,   1,1,1,1,1,1,2,2], #tags:["snapToGrid","notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Big Pipe LD", #tp:"standard", #colorTreatment:"standard", #sz:point(6,6), #repeatL:[1,1,1,1,1,1,1,1,1,1,   1,1,1,1,1,1,2,2], #tags:["snapToGrid","notTrashProp"], #layerExceptions:[], #notes:[]]
+
+[#nm:"Vertical Pipe", #tp:"standard", #colorTreatment:"standard", #sz:point(2,2), #repeatL:[1,1,1,4,1,1,1], #tags:["snapToGrid","notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Horizontal Pipe", #tp:"standard", #colorTreatment:"standard", #sz:point(2,2), #repeatL:[1,1,1,4,1,1,1], #tags:["snapToGrid","notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Pipe WS", #tp:"standard", #colorTreatment:"standard", #sz:point(2,2), #repeatL:[1,1,1,4,1,1,1], #tags:["snapToGrid","notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Pipe WN", #tp:"standard", #colorTreatment:"standard", #sz:point(2,2), #repeatL:[1,1,1,4,1,1,1], #tags:["snapToGrid","notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Pipe ES", #tp:"standard", #colorTreatment:"standard", #sz:point(2,2), #repeatL:[1,1,1,4,1,1,1], #tags:["snapToGrid","notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Pipe EN", #tp:"standard", #colorTreatment:"standard", #sz:point(2,2), #repeatL:[1,1,1,4,1,1,1], #tags:["snapToGrid","notTrashProp"], #layerExceptions:[], #notes:[]]
+
+[#nm:"Thick pipe vertical", #tp:"standard", #colorTreatment:"standard", #sz:point(2,2), #repeatL:[1,1,1,4,1,1,1], #tags:["snapToGrid","notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Thick pipe horizontal", #tp:"standard", #colorTreatment:"standard", #sz:point(2,2), #repeatL:[1,1,1,4,1,1,1], #tags:["snapToGrid","notTrashProp"], #layerExceptions:[], #notes:[]]
+
+[#nm:"Thick pipe vertical filler", #tp:"standard", #colorTreatment:"standard", #sz:point(2,2), #repeatL:[1,1,1,4,1,1,1], #tags:["snapToGrid","notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Thick pipe horizontal filler", #tp:"standard", #colorTreatment:"standard", #sz:point(2,2), #repeatL:[1,1,1,4,1,1,1], #tags:["snapToGrid","notTrashProp"], #layerExceptions:[], #notes:[]]
+
+[#nm:"Thick Pipe WS", #tp:"standard", #colorTreatment:"standard", #sz:point(2,2), #repeatL:[1,1,1,4,1,1,1], #tags:["snapToGrid","notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Thick Pipe WN", #tp:"standard", #colorTreatment:"standard", #sz:point(2,2), #repeatL:[1,1,1,4,1,1,1], #tags:["snapToGrid","notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Thick Pipe ES", #tp:"standard", #colorTreatment:"standard", #sz:point(2,2), #repeatL:[1,1,1,4,1,1,1], #tags:["snapToGrid","notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Thick Pipe EN", #tp:"standard", #colorTreatment:"standard", #sz:point(2,2), #repeatL:[1,1,1,4,1,1,1], #tags:["snapToGrid","notTrashProp"], #layerExceptions:[], #notes:[]]
+
+-["Snap Trains", color(80, 255, 80)]
+[#nm:"Train Car NE", #tp:"standard", #colorTreatment:"standard", #sz:point(8,12), #repeatL:[1,1,1,1,1,1,4], #tags:["snapToGrid", "notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Train Car NW", #tp:"standard", #colorTreatment:"standard", #sz:point(8,12), #repeatL:[1,1,1,1,1,1,4], #tags:["snapToGrid", "notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Train Car N", #tp:"standard", #colorTreatment:"standard", #sz:point(2,12), #repeatL:[1,1,1,1,1,1,4], #tags:["snapToGrid", "notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Train Wheel N", #tp:"standard", #colorTreatment:"standard", #sz:point(8,14), #repeatL:[1,1,1,1,1,5], #tags:["snapToGrid", "notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Train Connector N", #tp:"standard", #colorTreatment:"standard", #sz:point(6,14), #repeatL:[1,1,1,1,1,5], #tags:["snapToGrid", "notTrashProp"], #layerExceptions:[], #notes:[]]
+
+[#nm:"Train Car SE", #tp:"standard", #colorTreatment:"standard", #sz:point(8,12), #repeatL:[1,1,1,1,1,1,4], #tags:["snapToGrid", "notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Train Car SW", #tp:"standard", #colorTreatment:"standard", #sz:point(8,12), #repeatL:[1,1,1,1,1,1,4], #tags:["snapToGrid", "notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Train Car S", #tp:"standard", #colorTreatment:"standard", #sz:point(2,12), #repeatL:[1,1,1,1,1,1,4], #tags:["snapToGrid", "notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Train Wheel S", #tp:"standard", #colorTreatment:"standard", #sz:point(8,14), #repeatL:[1,1,1,1,1,5], #tags:["snapToGrid", "notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"Train Connector S", #tp:"standard", #colorTreatment:"standard", #sz:point(6,14), #repeatL:[1,1,1,1,1,5], #tags:["snapToGrid", "notTrashProp"], #layerExceptions:[], #notes:[]]
+
+[#nm:"Train Connector", #tp:"standard", #colorTreatment:"standard", #sz:point(6,28), #repeatL:[1,1,1,1,1,5], #tags:["snapToGrid", "notTrashProp"], #layerExceptions:[], #notes:[]]
+
+[#nm:"ConnectionPipeDown", #tp:"standard", #colorTreatment:"standard", #sz:point(3,4), #repeatL:[1,7,2], #tags:["effectColorB", "notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"ConnectionPipeUp", #tp:"standard", #colorTreatment:"standard", #sz:point(3,4), #repeatL:[1,7,2], #tags:["effectColorB", "notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"ConnectionPipeLeft", #tp:"standard", #colorTreatment:"standard", #sz:point(4,3), #repeatL:[1,7,2], #tags:["effectColorB", "notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"ConnectionPipeRight", #tp:"standard", #colorTreatment:"standard", #sz:point(4,3), #repeatL:[1,7,2], #tags:["effectColorB", "notTrashProp"], #layerExceptions:[], #notes:[]]
+
+[#nm:"PipeDown", #tp:"standard", #colorTreatment:"standard", #sz:point(3,4), #repeatL:[1,7,2], #tags:["notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"PipeUp", #tp:"standard", #colorTreatment:"standard", #sz:point(3,4), #repeatL:[1,7,2], #tags:["notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"PipeLeft", #tp:"standard", #colorTreatment:"standard", #sz:point(4,3), #repeatL:[1,7,2], #tags:["notTrashProp"], #layerExceptions:[], #notes:[]]
+[#nm:"PipeRight", #tp:"standard", #colorTreatment:"standard", #sz:point(4,3), #repeatL:[1,7,2], #tags:["notTrashProp"], #layerExceptions:[], #notes:[]]

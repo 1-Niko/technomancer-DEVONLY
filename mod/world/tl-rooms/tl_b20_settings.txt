@@ -1,0 +1,10 @@
+Template: NONE
+DangerType: Flood
+CeilingDrips: 1
+Grime: 0
+RandomItemDensity: 0.7282609
+RandomItemSpearChance: 0
+WaterReflectionAlpha: 0
+Palette: 10
+Effects: SilenceWater-1-20-20, 
+AmbientSounds: OMNI><SO_WAT-LilDrips.ogg><739.8392><517.631><0.5><1, OMNI><SO_WAT-MoreDrips.ogg><800.5646><429.5607><0.5><1, OMNI><AM_ENV-SubTerr.ogg><847.95><345.7503><0.3043478><1, 

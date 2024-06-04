@@ -1,0 +1,10 @@
+THINGS IT SHOULD DO
+1. Copy all geometry, tiles, effects, props, and lighting from all selected rooms
+2. All things for each room should be in the proper location according to the input map
+3. All rooms with connections to each other which are present on the input map should have the corresponding connections connected to make an in-room connection
+4. Should be capable of detecting partially missing geometry and will ignore the missing parts
+5. Add all cameras to be in their corresponding correct positions
+
+INPUTS: Region in question (Region connections), cropped room map, rooms to add, room data
+
+OUTPUT: A singular large room

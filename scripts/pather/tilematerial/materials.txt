@@ -1,0 +1,5 @@
+-Level Editor Path
+[#path:"C:\Niko\Desktop\Rain World Level Editor"]
+
+-Materials
+[#nm:"PlaceholderMateralplacer", #effectivePath:"C:\Niko\Desktop\pather\level", #defaultMaterial:"RandomMachines", #tiles:["Metal Holes", "Dyson Fan", "machine box A", "machine box B", "machine box C_E", "machine box C_W", "machine box C_Sym", "Tank Holder", "Machine Box D", "Machine Box E L", "Machine Box E R", "Mud Elevator", "Elevator Track", "Hub Machine", "Feather Box - W", "Feather Box - E", "Compressor L", "Compressor R", "Compressor Segment", "Giant Screw", "Pipe Box R", "Pipe Box L", "Door Holder R", "Door Holder L", "Piston Top", "Piston Segment Empty", "Piston Head", "Piston Segment Filled", "Piston Bottom", "Ventilation Box", "Ventilation Box Empty", "Drill A", "Drill B", "Drill Shell A", "Drill Shell B", "Drill Rim", "Small Metal", "Metal Floor", "Square Metal", "Big Metal", "Big Metal Marked"], #weights:[1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0]]

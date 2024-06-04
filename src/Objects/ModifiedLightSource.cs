@@ -1,5 +1,12 @@
 namespace Slugpack;
 
+public enum BlinkType
+{
+    None,
+    Flash,
+    Fade
+}
+
 public class ModifiedLightSourceData(PlacedObject owner) : ManagedData(owner, null)
 {
     [Vector2ArrayField("ExtraPosition", 2, true, Vector2ArrayRepresentationType.Chain, new float[4] { 0, 0, -50, 50 })]
@@ -23,20 +30,29 @@ public class ModifiedLightSourceData(PlacedObject owner) : ManagedData(owner, nu
     [FloatField("BC", 0, 1, 11f, 0.01f, ManagedFieldWithPanel.ControlType.slider, displayName: "B")]
     public float blue;
 
-    [IntegerField("C", 0, 50, -1, ManagedFieldWithPanel.ControlType.arrows, "Screen A")]
+    [BooleanField("C", false, ManagedFieldWithPanel.ControlType.button, "Flat")]
+    public bool flat;
+
+    [FloatField("D", 0f, 1f, 0f, 0.01f, ManagedFieldWithPanel.ControlType.slider, "Blink Rate")]
+    public float blinkRate;
+
+    [EnumField<BlinkType>("E", BlinkType.None, [BlinkType.None, BlinkType.Flash, BlinkType.Fade], ManagedFieldWithPanel.ControlType.arrows, "Blink Type")]
+    public BlinkType blink;
+
+    [IntegerField("F", 0, 50, -1, ManagedFieldWithPanel.ControlType.arrows, "Screen A")]
     public int screenA;
 
-    [BooleanField("D", false, ManagedFieldWithPanel.ControlType.button, "Set Screen A To Current")]
+    [BooleanField("G", false, ManagedFieldWithPanel.ControlType.button, "Set Screen A To Current")]
     public bool setScreenA;
 
-    [IntegerField("E", 0, 50, -1, ManagedFieldWithPanel.ControlType.arrows, "Screen B")]
+    [IntegerField("H", 0, 50, -1, ManagedFieldWithPanel.ControlType.arrows, "Screen B")]
     public int screenB;
 
-    [BooleanField("F", false, ManagedFieldWithPanel.ControlType.button, "Set Screen B To Current")]
+    [BooleanField("I", false, ManagedFieldWithPanel.ControlType.button, "Set Screen B To Current")]
     public bool setScreenB;
 }
 
-public class ModifiedLightSource(PlacedObject placedObject, Room room) : UpdatableAndDeletable
+public class ModifiedLightSource(PlacedObject placedObject) : UpdatableAndDeletable
 {
     public override void Update(bool eu)
     {
@@ -68,6 +84,36 @@ public class ModifiedLightSource(PlacedObject placedObject, Room room) : Updatab
 
         lightSourceA.rad = RWCustom.Custom.Dist(Vector2.zero, (placedObject.data as ModifiedLightSourceData).rad1);
         lightSourceB.rad = RWCustom.Custom.Dist(Vector2.zero, (placedObject.data as ModifiedLightSourceData).rad2);
+
+        lightSourceA.flat = (placedObject.data as ModifiedLightSourceData).flat;
+        lightSourceB.flat = (placedObject.data as ModifiedLightSourceData).flat;
+
+        lightSourceA.blinkRate = (placedObject.data as ModifiedLightSourceData).blinkRate;
+        lightSourceB.blinkRate = (placedObject.data as ModifiedLightSourceData).blinkRate;
+
+        BlinkType BLINK_TYPE = (placedObject.data as ModifiedLightSourceData).blink;
+
+        switch (BLINK_TYPE)
+        {
+            case BlinkType.None:
+                {
+                    lightSourceA.blinkType = PlacedObject.LightSourceData.BlinkType.None;
+                    lightSourceB.blinkType = PlacedObject.LightSourceData.BlinkType.None;
+                    break;
+                }
+            case BlinkType.Fade:
+                {
+                    lightSourceA.blinkType = PlacedObject.LightSourceData.BlinkType.Fade;
+                    lightSourceB.blinkType = PlacedObject.LightSourceData.BlinkType.Fade;
+                    break;
+                }
+            case BlinkType.Flash:
+                { 
+                    lightSourceA.blinkType = PlacedObject.LightSourceData.BlinkType.Flash;
+                    lightSourceB.blinkType = PlacedObject.LightSourceData.BlinkType.Flash;
+                    break;
+                }
+        }
 
         if (Constants.DamagedShortcuts.TryGetValue(room.game, out var CameraPosition))
         {
@@ -101,7 +147,7 @@ public class ModifiedLightSource(PlacedObject placedObject, Room room) : Updatab
         }
     }
 
-    private PlacedObject placedObject = placedObject;
+    private readonly PlacedObject placedObject = placedObject;
 
     private LightSource lightSourceA;
     private LightSource lightSourceB;

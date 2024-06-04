@@ -1,0 +1,5 @@
+// -["PB Tiles", color(16, 16, 180)]
+// [#nm:"lamp shelter W", #sz:point(7,7), #specs:[1,0,0,0,0,0,1, 1,0,0,0,0,0,1, 1,0,0,0,0,0,1, 1,0,0,0,0,0,1, 1,0,0,0,0,0,1, 1,0,0,0,0,0,1, 1,1,1,1,1,1,1], #specs2:0, #tp:"voxelStruct", #repeatL:[1, 7, 1, 1], #bfTiles:1, #rnd:50, #ptPos:0, #tags:["effectColorA"]]
+// [#nm:"lamp shelter E", #sz:point(7,7), #specs:[1,1,1,1,1,1,1, 1,0,0,0,0,0,1, 1,0,0,0,0,0,1, 1,0,0,0,0,0,1, 1,0,0,0,0,0,1, 1,0,0,0,0,0,1, 1,0,0,0,0,0,1], #specs2:0, #tp:"voxelStruct", #repeatL:[1, 7, 1, 1], #bfTiles:1, #rnd:50, #ptPos:0, #tags:["effectColorA"]]
+// [#nm:"lamp shelter N", #sz:point(7,7), #specs:[1,1,1,1,1,1,1, 0,0,0,0,0,0,1, 0,0,0,0,0,0,1, 0,0,0,0,0,0,1, 0,0,0,0,0,0,1, 0,0,0,0,0,0,1, 1,1,1,1,1,1,1], #specs2:0, #tp:"voxelStruct", #repeatL:[1, 7, 1, 1], #bfTiles:1, #rnd:50, #ptPos:0, #tags:["effectColorA"]]
+// [#nm:"lamp shelter S", #sz:point(7,7), #specs:[1,1,1,1,1,1,1, 1,0,0,0,0,0,0, 1,0,0,0,0,0,0, 1,0,0,0,0,0,0, 1,0,0,0,0,0,0, 1,0,0,0,0,0,0, 1,1,1,1,1,1,1], #specs2:0, #tp:"voxelStruct", #repeatL:[1, 7, 1, 1], #bfTiles:1, #rnd:50, #ptPos:0, #tags:["effectColorA"]]
