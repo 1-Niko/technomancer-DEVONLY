@@ -10,7 +10,7 @@ public class Plugin : BaseUnityPlugin
     public const string VERSION = "1.0.1";
 
     public bool IsInit;
-    private OptionsMenu optionsMenuInstance;
+    public OptionsMenu optionsMenuInstance;
 
     public static void DebugWarning(object ex) => Logger.LogWarning(ex);
 
@@ -102,7 +102,7 @@ public class Plugin : BaseUnityPlugin
             optionsMenuInstance = new OptionsMenu(this);
             try
             {
-                MachineConnector.SetRegisteredOI("REMIX MENU TEMPLATE TEST", optionsMenuInstance);
+                MachineConnector.SetRegisteredOI("splugpack.DEVONLY", optionsMenuInstance);
             }
             catch (Exception ex)
             {
@@ -172,51 +172,20 @@ public class OptionsMenu : OptionInterface
 {
     public OptionsMenu(Plugin plugin)
     {
-        furToggle = this.config.Bind<bool>("Slugpack_Bool_Checkbox", true); // All of these are where the game saves your settings, the important part is the "Key" field, make sure this will never conflict with another mod's key by having a prefix, like your mod name
+        furToggle = this.config.Bind<bool>("splugpack_Bool_Checkbox", true);
     }
     public override void Initialize()
     {
         var opTab1 = new OpTab(this, "Default Canvas");
-        this.Tabs = new[] { opTab1 }; // Add the tabs into your list of tabs. If there is only a single tab, it will not show the flap on the side because there is not need to.
+        this.Tabs = new[] { opTab1 };
 
         // Tab 1
         OpContainer tab1Container = new OpContainer(new Vector2(0, 0));
         opTab1.AddItems(tab1Container);
-        for (int i = 0; i <= 600; i += 10) // Line grid to help align things, don't leave this in your final code. Almost every element starts from bottom-left.
-        {
-            Color c;
-            c = Color.grey;
-            if (i % 50 == 0) { c = Color.yellow; }
-            if (i % 100 == 0) { c = Color.red; }
-            FSprite lineSprite = new FSprite("pixel");
-            lineSprite.color = c;
-            lineSprite.alpha = 0.2f;
-            lineSprite.SetAnchor(new Vector2(0.5f, 0f));
-            Vector2 a = new Vector2(i, 0);
-            lineSprite.SetPosition(a);
-            Vector2 b = new Vector2(i, 600);
-            float rot = Custom.VecToDeg(Custom.DirVec(a, b));
-            lineSprite.rotation = rot;
-            lineSprite.scaleX = 2f;
-            lineSprite.scaleY = Custom.Dist(a, b);
-            tab1Container.container.AddChild(lineSprite);
-            a = new Vector2(0, i);
-            b = new Vector2(600, i);
-            lineSprite = new FSprite("pixel");
-            lineSprite.color = c;
-            lineSprite.alpha = 0.2f;
-            lineSprite.SetAnchor(new Vector2(0.5f, 0f));
-            lineSprite.SetPosition(a);
-            rot = Custom.VecToDeg(Custom.DirVec(a, b));
-            lineSprite.rotation = rot;
-            lineSprite.scaleX = 2f;
-            lineSprite.scaleY = Custom.Dist(a, b);
-            tab1Container.container.AddChild(lineSprite);
-        }
 
-        UIelement[] UIArrayElements2 = new UIelement[] //create an array of ui elements
+        UIelement[] UIArrayElements2 = new UIelement[]
         {
-                new OpLabel(0f, 550f, "Awri Lynn's Remix Menu Template Example", true),
+                new OpLabel(0f, 550f, "The Technomancer - Remix Menu", true),
                 new OpCheckBox(furToggle, 50, 500),
         };
         opTab1.AddItems(UIArrayElements2);
@@ -225,9 +194,6 @@ public class OptionsMenu : OptionInterface
     {
         base.Update();
     }
-
-    // Configurable values. They are bound to the config in constructor, and then passed to UI elements.
-    // They will contain values set in the menu. And to fetch them in your code use their NAME.Value. For example to get the boolean testCheckBox.Value, to get the integer testSlider.Value
-    //public readonly Configurable<TYPE> NAME;        
-    public readonly Configurable<bool> furToggle;
+  
+    static public Configurable<bool> furToggle;
 }
