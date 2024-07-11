@@ -172,7 +172,7 @@ public class OptionsMenu : OptionInterface
 {
     public OptionsMenu(Plugin plugin)
     {
-        furToggle = this.config.Bind<bool>("splugpack_Bool_Checkbox", true);
+        furToggle = this.config.Bind<bool>("splugpack_Bool_Checkbox", false);
     }
     public override void Initialize()
     {
@@ -186,7 +186,8 @@ public class OptionsMenu : OptionInterface
         UIelement[] UIArrayElements2 = new UIelement[]
         {
                 new OpLabel(0f, 550f, "The Technomancer - Remix Menu", true),
-                new OpCheckBox(furToggle, 50, 500),
+                new OpCheckBox(furToggle, 0, 500),
+                new OpLabel(30, 502, "Disable Fur"),
         };
         opTab1.AddItems(UIArrayElements2);
     }

@@ -96,6 +96,7 @@ Room_Attr: TL_A36: BlackLizard-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbi
 Room_Attr: TL_A37: BlackLizard-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,
 Room_Attr: TL_A38: BlackLizard-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,
 Room_Attr: TL_D06: BlackLizard-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,MotherSpider-Forbidden,
+Room_Attr: TL_D04: Vulture-Forbidden,
 Room_Attr: TL_V01: BlackLizard-Forbidden,LanternMouse-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,
 Room_Attr: TL_A27: BlackLizard-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,
 Room_Attr: OffScreenDen_TL: BigSpider-Forbidden,SpitterSpider-Forbidden,

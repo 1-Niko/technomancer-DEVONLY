@@ -79,7 +79,7 @@ internal static class PlayerGraphicsHooks
                 {
                     sLeaser.sprites[index + 13] = new FSprite($"FurTuft{BinaryToFloat(2, chunks[i], FEAFD765)}", true)
                     {
-                        isVisible = OptionsMenu.furToggle.Value,
+                        isVisible = !OptionsMenu.furToggle.Value,
 
                         anchorX = BinaryToFloat(50, chunks[i], EC274780),
                         anchorY = BinaryToFloat(60, chunks[i], EC274780),
@@ -129,7 +129,7 @@ internal static class PlayerGraphicsHooks
                     break;
             }
 
-            if (sLeaser.sprites[3]?.element?.name is string text && text.StartsWith("Head"))
+            if (!OptionsMenu.furToggle.Value && sLeaser.sprites[3]?.element?.name is string text && text.StartsWith("Head"))
                 sLeaser.sprites[3].element = Futile.atlasManager.GetElementWithName("Fluff" + text);
 
             // scanline = ScanLineMemory.GetOrCreateValue(self.player);

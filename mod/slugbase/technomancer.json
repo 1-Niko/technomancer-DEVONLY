@@ -12,8 +12,8 @@
 	
     "start_room": ["GATE_TL_OE", "SB_S09"],
 	
-	"cycle_length_min": 10.89,
-	"cycle_length_max": 16.9476,
+	"cycle_length_min": 5.45,
+	"cycle_length_max": 8.47,
 	
 	"karma": 0,
 	"karma_cap": 4,
