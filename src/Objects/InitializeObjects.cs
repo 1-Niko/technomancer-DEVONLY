@@ -27,6 +27,8 @@ internal static class InitializeObjects
                 RegisterManagedObject<WaterKillBox, WaterKillBoxData, ManagedRepresentation>("LethalWaterKillbox", "Technomancer");
                 RegisterManagedObject<LeakyPipe, LeakyPipeData, ManagedRepresentation>("LeakyPipe", "Technomancer");
                 RegisterManagedObject<RoomBackground, RoomBackgroundData, ManagedRepresentation>("ImageBackground", "Technomancer");
+                RegisterManagedObject<RadioLight, RadioLightObjectData, ManagedRepresentation>("BackgroundRadioLights", "Technomancer");
+                RegisterManagedObject<RadioLightExtender, RadioLightExtenderData, ManagedRepresentation>("BackgroundRadioExtender", "Technomancer");
 
                 // RegisterManagedObject<ColourObject, ColourObjectData, ManagedRepresentation>("COLOURGRABBER", "Technomancer");
 

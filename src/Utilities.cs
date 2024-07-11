@@ -796,6 +796,12 @@ public static class Utilities
         return start + ((end - start) * t);
     }
 
+    public static Vector3 Lerp(Vector3 start, Vector3 end, float t)
+    {
+        t = Mathf.Clamp(t, 0f, 1f); // Ensure t is within the range [0, 1]
+        return start + ((end - start) * t);
+    }
+
     public static Vector4 Lerp(Vector4 start, Vector4 end, float t)
     {
         t = Mathf.Clamp(t, 0f, 1f); // Ensure t is within the range [0, 1]
