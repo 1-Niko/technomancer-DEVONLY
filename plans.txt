@@ -1,0 +1,14 @@
+TECHNOMANCER TODO
+- Redo Trains
+- Sounds for train and train bell
+- Fix the map errors
+- Add remix menu options for several things
+- Attempt to fix the launch bug
+- "Train" lizards
+- Customizable train lengths
+- Customizable ability button
+- Toggle Allow eat food
+- explode for dangerous creatures
+- Add compat for fluffycats
+- Add hints for controls
+- ADD MORE FOOD

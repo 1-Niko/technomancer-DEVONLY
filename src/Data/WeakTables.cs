@@ -35,9 +35,12 @@ internal static class WeakTables
         public FShader DynamicTrain = null;
         public FShader SpinningFan = null;
         public FShader CustomCustomDepth = null;
+        public FShader DistantCityLights = null;
+        public FShader Satellite = null;
 
         public AssetBundle SlugShaders = null;
         public Texture _shadowMask = null;
+        public Texture _skymask = null;
         public Texture _effectMask = null;
         public Texture _RGB2HSL = null;
         public Texture _HSL2RGB = null;

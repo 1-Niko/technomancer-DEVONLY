@@ -1,9 +1,9 @@
 ManifestFileVersion: 0
-CRC: 3116953059
+CRC: 3414548330
 Hashes:
   AssetFileHash:
     serializedVersion: 2
-    Hash: 0f7308b761485f202b5afeb2b23a28ea
+    Hash: 7b2e5ec7a63edda3dc5d396d8d4ca344
   TypeTreeHash:
     serializedVersion: 2
     Hash: 4e2ed3ca814c5fd84935ce64aaf97f38
@@ -21,6 +21,7 @@ Assets:
 - Assets/dynamicTrains.shader
 - Assets/ModifiedLightBeam.shader
 - Assets/Hologram.shader
+- Assets/Satellite.shader
 - Assets/EFFECT_MASK.png
 - Assets/RGB2HSL.png
 - Assets/SelectionObject.shader
@@ -32,4 +33,5 @@ Assets:
 - Assets/NoTex.shader
 - Assets/fanBlade.shader
 - Assets/CustomCustomDepth.shader
+- Assets/BackgroundCityLights.shader
 Dependencies: []

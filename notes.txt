@@ -1,0 +1,4 @@
+PROBLEMS:
+1. The city lights on the distant iterators randomly change completely when they should not
+2. The Remix Menu does not work
+3. 

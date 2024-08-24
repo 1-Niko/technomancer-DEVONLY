@@ -72,6 +72,9 @@ internal static class PlayerGraphicsHooks
 
             Array.Resize(ref sLeaser.sprites, sLeaser.sprites.Length + slugTufts);
 
+            bool furEnabled = OptionsMenu.furToggle.Value;
+            // Plugin.DebugLog($"Current Fur state : {furEnabled}");
+
             int index = 0;
             for (int i = 0; i < chunks.Count; i++)
             {
@@ -79,7 +82,7 @@ internal static class PlayerGraphicsHooks
                 {
                     sLeaser.sprites[index + 13] = new FSprite($"FurTuft{BinaryToFloat(2, chunks[i], FEAFD765)}", true)
                     {
-                        isVisible = !OptionsMenu.furToggle.Value,
+                        isVisible = !furEnabled,
 
                         anchorX = BinaryToFloat(50, chunks[i], EC274780),
                         anchorY = BinaryToFloat(60, chunks[i], EC274780),
@@ -154,6 +157,8 @@ internal static class PlayerGraphicsHooks
                     float maximumRotation = BinaryToFloat(88, chunks[i], CCFC91A1);
 
                     sLeaser.sprites[index + 13].rotation = sLeaser.sprites[int.Parse(chunks[i][1].ToString())].rotation + CalculateFurRotation(defaultRotation, minimumRotation, maximumRotation, scanline.wetness, scanline.danger, num);
+
+                    sLeaser.sprites[index + 13].isVisible = !OptionsMenu.furToggle.Value;
 
                     index++;
                 }

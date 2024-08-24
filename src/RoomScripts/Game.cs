@@ -13,6 +13,7 @@ internal static class GameHooks
         On.ShortcutGraphics.Update += ShortcutGraphics_Update;
         On.RoomCamera.SpriteLeaser.RemoveAllSpritesFromContainer += SpriteLeaser_RemoveAllSpritesFromContainer;
         On.RegionGate.customKarmaGateRequirements += RegionGate_customKarmaGateRequirements;
+        On.AboveCloudsView.ctor += AboveCloudsView_ctor;
 
         On.ShortcutHandler.Update += ShortcutHandler_Update;
 
@@ -30,6 +31,84 @@ internal static class GameHooks
                 CameraPosition.room = roomName;
             }
         };
+    }
+
+    private static void AboveCloudsView_ctor(On.AboveCloudsView.orig_ctor orig, AboveCloudsView self, Room room, RoomSettings.RoomEffect effect)
+    {
+        orig(self, room, effect);
+        if (self.room.world.game.GetStorySession?.saveStateNumber.value == Technomancer)
+        {
+            // self.elements.Remove(self.daySky);
+            // self.daySky = new BackgroundScene.Simple2DBackgroundIllustration(self, "AtC_Sky-technomancer", new Vector2(683f, 384f));
+            // self.AddElement(self.daySky);
+
+            self.daySky.illustrationName = "atc_sky-technomancer";
+            self.LoadGraphic("atc_sky-technomancer", true, true);
+            self.duskSky.illustrationName = "atc_dusksky-technomancer";
+            self.LoadGraphic("atc_dusksky-technomancer", true, true);
+            self.nightSky.illustrationName = "atc_nightsky-technomancer";
+            self.LoadGraphic("atc_nightsky-technomancer", true, true);
+
+            int[] removeList = { 29, 28, 26, 25, 24, 23, 22, 21, 20, 19, 18, 17, 16, 15, 13, 12, 11, 10, 9, 8, 7, 6, 4 };
+
+            for (int i = 0; i < removeList.Length; i++)
+            {
+                self.elements.RemoveAt(removeList[i]);
+            }
+
+            // (self.elements[4] as AboveCloudsView.DistantBuilding).assetName = "atc_structure1-technomancer";
+            // self.LoadGraphic("atc_structure1-technomancer", true, true);
+
+            float depth = 160f;
+            self.elements.Add(new AnimatedIterator(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(-520f, -85f), depth), depth, -20f));
+            depth = 110f;
+            self.elements.Add(new DistantBlinkingLight(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(-594f, 152f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), new UnityEngine.Color(1f, 0f, 0f, 1f), 54, 0.06f, 77, 0.53f, 3085, false, false, false, false));
+            depth = 385;
+            self.elements.Add(new DistantBlinkingLight(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(330f, 90f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), new UnityEngine.Color(1f, 0f, 0f, 1f), 61, 0.23f, 76, 0.28f, 3066, false, false, false, false));
+            depth = 9999;
+            self.elements.Add(new DistantBlinkingLight(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(28f, 1f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 0.35f), new UnityEngine.Color(1f, 0f, 0f, 0.35f), 64, 0.43f, 62, 0.73f, 2980, false, false, false, true));
+            self.elements.Add(new DistantBlinkingLight(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(-9f, -3f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 0.15f), new UnityEngine.Color(1f, 0f, 0f, 0.15f), 56, 0.22f, 93, 0.32f, 2979, false, false, false, true));
+            self.elements.Add(new DistantBlinkingLight(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(-155f, -3f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 0.35f), new UnityEngine.Color(1f, 0f, 0f, 0.35f), 59, 0.34f, 78, 0.35f, 3015, false, false, false, true));
+            self.elements.Add(new DistantBlinkingLight(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(-167f, 5f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 0.15f), new UnityEngine.Color(1f, 0f, 0f, 0.15f), 60, 0.18f, 84, 0.44f, 2984, false, false, false, true));
+            self.elements.Add(new DistantBlinkingLight(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(-176f, -3f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 0.35f), new UnityEngine.Color(1f, 0f, 0f, 0.35f), 75, 0.08f, 78, 0.57f, 2993, false, false, false, true));
+            self.elements.Add(new DistantBlinkingLight(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(-281f, -3f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 0.15f), new UnityEngine.Color(1f, 0f, 0f, 0.15f), 63, 0.3f, 64, 0.65f, 3042, false, false, false, true));
+            self.elements.Add(new DistantBlinkingLight(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(-353f, 9f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 0.15f), new UnityEngine.Color(1f, 0f, 0f, 0.15f), 66, 0.32f, 75, 0.37f, 3074, false, false, false, true));
+            self.elements.Add(new DistantBlinkingLight(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(-370f, 32f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 0.75f), new UnityEngine.Color(1f, 0f, 0f, 0.75f), 53, 0.22f, 91, 0.54f, 3037, false, false, false, true));
+            self.elements.Add(new DistantBlinkingLight(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(-402f, 16f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 0.85f), new UnityEngine.Color(1f, 0f, 0f, 0.85f), 77, 0.43f, 72, 0.59f, 3034, false, false, false, true));
+            self.elements.Add(new DistantBlinkingLight(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(-408f, -3f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 0.6f), new UnityEngine.Color(1f, 0f, 0f, 0.6f), 60, 0.04f, 85, 0.28f, 3017, false, false, false, true));
+            self.elements.Add(new DistantBlinkingLight(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(-617f, -3f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 0.15f), new UnityEngine.Color(1f, 0f, 0f, 0.15f), 71, 0.08f, 69, 0.55f, 2944, false, false, false, true));
+            self.elements.Add(new DistantBlinkingLight(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(-672f, 22f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 0.35f), new UnityEngine.Color(1f, 0f, 0f, 0.35f), 52, 0.11f, 79, 0.63f, 3019, false, false, false, true));
+            self.elements.Add(new DistantBlinkingLight(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(-677f, -2f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 0.15f), new UnityEngine.Color(1f, 0f, 0f, 0.15f), 72, 0.16f, 85, 0.57f, 3010, false, false, false, true));
+
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 0));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 1));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 2));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 3));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 4));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 5));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 6));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 7));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 8));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 9));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 10));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 11));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 12));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 13));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 14));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 15));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 16));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 17));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 18));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 19));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 20));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 21));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 22));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 23));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 24));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 25));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 26));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 27));
+        }
     }
 
     private static void Creature_SpitOutOfShortCut(On.Creature.orig_SpitOutOfShortCut orig, Creature self, RWCustom.IntVector2 pos, Room newRoom, bool spitOutAllSticks)
@@ -242,6 +321,32 @@ internal static class GameHooks
         {
             if (Shaders._shadowMask != null) UnityEngine.Object.Destroy(Shaders._shadowMask);
             Shaders._shadowMask = tMaskImage;
+
+            // Above Clouds View Satellite sky mask
+            if (self.room.roomSettings.GetEffectAmount(RoomSettings.RoomEffect.Type.AboveCloudsView) == 1f)
+            {
+                Texture2D skyMaskImage = new(1, 1);
+                skyMaskImage.SetPixel(0, 0, Color.red);
+                skyMaskImage.Apply();
+
+                // Resolve the file path
+                string PATH = AssetManager.ResolveFilePath("illustrations/masks/atc_sky-technomancer-overlaymask.png");
+
+                // Plugin.DebugLog(filePath);
+
+                // Check if the TMASK image file exists and load it
+                if (File.Exists(PATH))
+                {
+                    // Load the image from the file
+                    byte[] skyFileData = File.ReadAllBytes(PATH);
+                    skyMaskImage = new Texture2D(2, 2); // Width and height are placeholders
+                    _ = skyMaskImage.LoadImage(skyFileData); // LoadImage auto-resizes the texture dimensions
+                    skyFileData = null;
+                }
+                Shaders._skymask = skyMaskImage;
+            }
+            else
+            { UnityEngine.Object.Destroy(Shaders._skymask); }
         }
     }
 

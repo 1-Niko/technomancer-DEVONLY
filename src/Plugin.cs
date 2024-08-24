@@ -91,6 +91,8 @@ public class Plugin : BaseUnityPlugin
                         Utilities.InPlaceTryCatch(ref Shaders.DynamicTrain, FShader.CreateShader("DynamicTrainShader", Shaders.SlugShaders.LoadAsset<Shader>("Assets/dynamicTrains.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"DynamicTrain\" Failed to set!");
                         Utilities.InPlaceTryCatch(ref Shaders.SpinningFan, FShader.CreateShader("SpinningFan", Shaders.SlugShaders.LoadAsset<Shader>("Assets/fanBlade.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"SpinningFan\" Failed to set!");
                         Utilities.InPlaceTryCatch(ref Shaders.CustomCustomDepth, FShader.CreateShader("CustomCustomDepth", Shaders.SlugShaders.LoadAsset<Shader>("Assets/CustomCustomDepth.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"CustomCustomDepth\" Failed to set!");
+                        Utilities.InPlaceTryCatch(ref Shaders.DistantCityLights, FShader.CreateShader("BackgroundCityLights", Shaders.SlugShaders.LoadAsset<Shader>("Assets/BackgroundCityLights.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"BackgroundCityLights\" Failed to set!");
+                        Utilities.InPlaceTryCatch(ref Shaders.Satellite, FShader.CreateShader("Satellite", Shaders.SlugShaders.LoadAsset<Shader>("Assets/Satellite.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"Satellite\" Failed to set!");
                     }
                     else
                     {
@@ -102,7 +104,8 @@ public class Plugin : BaseUnityPlugin
             optionsMenuInstance = new OptionsMenu(this);
             try
             {
-                MachineConnector.SetRegisteredOI("splugpack.DEVONLY", optionsMenuInstance);
+                MachineConnector.SetRegisteredOI("splugpack", optionsMenuInstance);
+                MachineConnector.SetRegisteredOI("splugpack.DEVBUILD", optionsMenuInstance);
             }
             catch (Exception ex)
             {

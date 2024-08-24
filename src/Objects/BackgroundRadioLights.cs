@@ -266,7 +266,7 @@ public class RadioLightObject : CosmeticSprite
 
                 if (i > 0)
                 {
-                    sLeaser.sprites[i].color = Lerp(new Color(0f, 0f, 0f, 1f), new Color(colour_night.x, colour_night.y, colour_night.z, 1f), ALPHA[i]);
+                    sLeaser.sprites[i].color = Lerp(new Color(0f, 0f, 0f, 0f), new Color(colour_night.x, colour_night.y, colour_night.z, colour_night.w), ALPHA[i]);
                 }
                 sLeaser.sprites[i].isVisible = ((((timer % night_timer) / (float)night_timer) < night_activity) && ALPHA[i] > (1f / 3f)) || forceVisible;
                 // sLeaser.sprites[i].alpha = 0.5f;
@@ -276,9 +276,9 @@ public class RadioLightObject : CosmeticSprite
         else
         {
             if (forceVisible)
-            { sLeaser.sprites[0].color = Lerp(new Color(0f, 0f, 0f, 1f), new Color(colour_day.x, colour_day.y, colour_day.z, 1f), Mathf.Clamp((1f * colour_day.w * 2), 0, 1)); }
+            { sLeaser.sprites[0].color = Lerp(new Color(0f, 0f, 0f, 1f), new Color(colour_day.x, colour_day.y, colour_day.z, colour_day.w), Mathf.Clamp((1f * colour_day.w * 2), 0, 1)); }
             else
-            { sLeaser.sprites[0].color = Lerp(new Color(0f, 0f, 0f, 1f), new Color(colour_day.x, colour_day.y, colour_day.z, 1f), Mathf.Clamp((1f * colour_day.w) + Twinkle(134f + randomizedTwinkleOffset[0]), 0, 1)); }
+            { sLeaser.sprites[0].color = Lerp(new Color(0f, 0f, 0f, 1f), new Color(colour_day.x, colour_day.y, colour_day.z, colour_day.w), Mathf.Clamp((1f * colour_day.w) + Twinkle(134f + randomizedTwinkleOffset[0]), 0, 1)); }
 
             for (int i = 0; i < 5; i++)
             {
@@ -286,7 +286,7 @@ public class RadioLightObject : CosmeticSprite
 
                 if (i > 0)
                 {
-                    sLeaser.sprites[i].color = Lerp(new Color(0f, 0f, 0f, 1f), new Color(colour_day.x, colour_day.y, colour_day.z, 1f), ALPHA[i]);
+                    sLeaser.sprites[i].color = Lerp(new Color(0f, 0f, 0f, 1f), new Color(colour_day.x, colour_day.y, colour_day.z, colour_day.w), ALPHA[i]);
                 }
                 sLeaser.sprites[i].isVisible = ((((timer % day_timer) / (float)day_timer) < day_activity) && ALPHA[i] > (1f / 3f) && ALPHA[0] > (1f / 3f)) || forceVisible;
                 sLeaser.sprites[i].alpha = 1f;
