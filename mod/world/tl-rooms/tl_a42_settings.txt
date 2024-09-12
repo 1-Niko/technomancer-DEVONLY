@@ -1,0 +1,7 @@
+Template: NONE
+Clouds: 0.9021739
+Grime: 0.1195652
+Palette: 14
+EffectColorA: 19
+Effects: LightRain-0.2282609-20-20, Desaturation-0.2826087-20-86, 
+FadePalette: 10, 0.25

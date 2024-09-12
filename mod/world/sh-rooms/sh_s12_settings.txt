@@ -1,0 +1,2 @@
+AmbientSounds: OMNI><AM_ENV-NatWind.ogg><816.5699><490.5626><0.2934783><1, OMNI><AM_RAIN-QuietThunder.ogg><775.1028><319.8854><0.1304348><1, 
+FadePalette: 9, 0.2391304

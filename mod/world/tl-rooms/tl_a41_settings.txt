@@ -1,0 +1,11 @@
+Template: NONE
+DangerType: None
+Grime: 0
+RandomItemSpearChance: 0
+Palette: 28
+EffectColorA: 19
+EffectColorB: 3
+Effects: AboveCloudsView-1-20-20, DayNight-1-34-92, SkyBloom-1-42-129, Bloom-1-276-21, LightBurn-1-282-75, 
+PlacedObjects: DataPearl><664.1998><188.509><108~118~0~0~Misc~0, SeedCob><497.4182><307.3918><-103~-339~7~10, CustomEntranceSymbol><230.1726><98.85107><17.32051~-10~ShortcutShelter~0.5, InsectGroup><580.6631><134.0698><183~155~228~-96~RockFlea~0.2173913, CustomDecal><372.288><177.8036><-7~118~211~100~198~-6~-475~-151~0.6847826~1~0~scribble~0.9347826~0.1847826~0.8152174~0.1847826~0.9130435~0.1847826~0.8804348~0.1847826, DeadSeedCob><528.9891><277.1997><, ReliableSpear><145.0756><165.6522><, NoSpearStickZone><-2.169739><271.6442><47~170, NoSpearStickZone><1018.695><347.9536><-145~214, DayNightSettings><-165.9464><539.212><5~8.660254~3~33, 
+AmbientSounds: OMNI><AM_ENV-LightWind.ogg><751.1064><521.6392><0.2717391><1, OMNI><AM_RAIN-QuietThunder.ogg><743.6131><330.3958><0.2826087><1, OMNI><AM_WIN-HowlingWnd.ogg><758.1295><443.4025><0.2173913><1, OMNI><AM_WIN-NiceWnd.ogg><755.1927><595.8083><0.4456522><1, 
+BackgroundOffset: 0,543.4781

@@ -1,2 +1,4 @@
 Template: NONE
-Palette: 10
+Grime: 0.07608695
+Palette: 17
+FadePalette: 21, 0.3043478, 0.2065217, 0.1086956

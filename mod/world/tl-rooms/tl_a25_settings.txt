@@ -2,6 +2,6 @@ Template: NONE
 DangerType: None
 Grime: 0
 Palette: 21
-PlacedObjects: LightFixture><718.1671><178.8599><RedLight~-166.6795~86~22, 
+PlacedObjects: LightFixture><718.1671><178.8599><RedLight~-166.6795~86~21, CentipedeAttractor><536.1513><46.6192><-258~130, 
 AmbientSounds: OMNI><AM_ENV-SubTerr.ogg><755.053><446.6928><0.2717391><1, SPOT><AM_IND-50hz.ogg><712.8124><339.9307><0.5><1><723.8124><179.9307><-35.35534><-35.35534><0><0.1, 
 FadePalette: 8, 0.5

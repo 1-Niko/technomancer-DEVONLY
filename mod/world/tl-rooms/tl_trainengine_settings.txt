@@ -1,0 +1,4 @@
+Template: NONE
+EffectColorA: 12
+EffectColorB: 9
+WetTerrain: OFF

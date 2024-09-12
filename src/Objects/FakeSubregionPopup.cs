@@ -15,107 +15,115 @@ public class FakeSubregionPopupObject(PlacedObject placedObject) : UpdatableAndD
     {
         base.Update(eu);
 
-        FakeSubregionPopupData dataObj = placedObject.data as FakeSubregionPopupData;
-
-        bool nothingNull = room != null && room.world != null && room.world.region != null && room.world.region.subRegions != null;
-
-        if (nothingNull && subRegions == null)
+        try
         {
-            subRegions = room.world.region.subRegions;
+            FakeSubregionPopupData dataObj = placedObject.data as FakeSubregionPopupData;
+
+            bool nothingNull = room != null && room.world != null && room.world.region != null && room.world.region.subRegions != null;
+
+            if (nothingNull && subRegions == null)
+            {
+                subRegions = room.world.region.subRegions;
+            }
+
+            if (dataObj.index > subRegions.Count)
+                dataObj.index = subRegions.Count - 1;
+
+            // So that it loops
+            if (dataObj.index == subRegions.Count)
+                dataObj.index = 1;
+
+            name = subRegions[dataObj.index];
+
+            if (nothingNull && room == room.game.Players[0].realizedCreature.room && room.game.cameras[0].hud.textPrompt.subregionTracker.lastShownRegion != dataObj.index)
+            {
+                Vector2 a = dataObj.dir;
+
+                Vector2 c = placedObject.pos;
+                Vector2 d = room.game.Players[0].realizedCreature.mainBodyChunk.pos;
+
+                Vector2 b = d - c;
+
+                a /= a.magnitude;
+                b /= b.magnitude;
+
+                float dot = (a.x * b.x) + (a.y * b.y);
+
+                inRadius = inRegion = false;
+
+                if (Vector2.Distance(c, d) < dataObj.dir.magnitude) // Entered the radius of the object
+                {
+                    inRadius = true;
+
+                    inRegion = dot >= 0;
+                }
+
+                if (!inRadius)
+                {
+                    regionID = 0;
+                }
+                else if (inRadius && !inRegion)
+                {
+                    regionID = 1;
+                }
+                else if (inRadius && inRegion)
+                {
+                    regionID = 2;
+                }
+
+                if (regionID != previousRegionID)
+                {
+                    // Someone has moved between the regions and something must happen
+
+                    // if (previousRegionID == 0 && regionID == 1) { } // nothing
+                    // if (previousRegionID == 1 && regionID == 0) { } // nothing
+                    // if (previousRegionID == 1 && regionID == 2) { primed = true; DebugLog("Primed!"); } // prime
+                    // if (previousRegionID == 2 && regionID == 1) { primed = false; DebugLog("Unprimed"); } // unprime
+
+                    // It should also automatically supress if you enter the room with your last seen subregion being its display
+
+                    if (previousRegionID == 0 && regionID == 2 && !triggered && !suppressed) // supress
+                    {
+                        suppressed = true;
+                    }
+                    if (previousRegionID == 2 && regionID == 0 && !suppressed && !triggered) // trigger
+                    {
+                        triggered = true;
+                    }
+
+                    previousRegionID = regionID;
+                }
+
+                if (triggered)
+                {
+                    if (counter <= 81) // So it doesn't keep counting pointlessly (wouldn't affect anything but can't hurt)
+                    {
+                        counter++;
+                    }
+                    if (counter == 81)
+                    {
+                        room.game.cameras[0].hud.textPrompt.AddMessage(subRegions[dataObj.index], 0, 160, false, true);
+                        room.game.cameras[0].hud.textPrompt.subregionTracker.lastShownRegion = dataObj.index;
+                    }
+                }
+            }
+
+            if (room is null)
+            {
+                return;
+            }
+
+            if (room != room.game.Players[0].realizedCreature.room)
+            {
+                inRadius = inRegion = suppressed = triggered = false;
+
+                regionID = previousRegionID = counter = 0;
+            }
+
         }
-
-        if (dataObj.index > subRegions.Count)
-            dataObj.index = subRegions.Count - 1;
-
-        // So that it loops
-        if (dataObj.index == subRegions.Count)
-            dataObj.index = 1;
-
-        name = subRegions[dataObj.index];
-
-        if (nothingNull && room == room.game.Players[0].realizedCreature.room && room.game.cameras[0].hud.textPrompt.subregionTracker.lastShownRegion != dataObj.index)
+        catch (Exception e)
         {
-            Vector2 a = dataObj.dir;
-
-            Vector2 c = placedObject.pos;
-            Vector2 d = room.game.Players[0].realizedCreature.mainBodyChunk.pos;
-
-            Vector2 b = d - c;
-
-            a /= a.magnitude;
-            b /= b.magnitude;
-
-            float dot = (a.x * b.x) + (a.y * b.y);
-
-            inRadius = inRegion = false;
-
-            if (Vector2.Distance(c, d) < dataObj.dir.magnitude) // Entered the radius of the object
-            {
-                inRadius = true;
-
-                inRegion = dot >= 0;
-            }
-
-            if (!inRadius)
-            {
-                regionID = 0;
-            }
-            else if (inRadius && !inRegion)
-            {
-                regionID = 1;
-            }
-            else if (inRadius && inRegion)
-            {
-                regionID = 2;
-            }
-
-            if (regionID != previousRegionID)
-            {
-                // Someone has moved between the regions and something must happen
-
-                // if (previousRegionID == 0 && regionID == 1) { } // nothing
-                // if (previousRegionID == 1 && regionID == 0) { } // nothing
-                // if (previousRegionID == 1 && regionID == 2) { primed = true; DebugLog("Primed!"); } // prime
-                // if (previousRegionID == 2 && regionID == 1) { primed = false; DebugLog("Unprimed"); } // unprime
-
-                // It should also automatically supress if you enter the room with your last seen subregion being its display
-
-                if (previousRegionID == 0 && regionID == 2 && !triggered && !suppressed) // supress
-                {
-                    suppressed = true;
-                }
-                if (previousRegionID == 2 && regionID == 0 && !suppressed && !triggered) // trigger
-                {
-                    triggered = true;
-                }
-
-                previousRegionID = regionID;
-            }
-
-            if (triggered)
-            {
-                if (counter <= 81) // So it doesn't keep counting pointlessly (wouldn't affect anything but can't hurt)
-                {
-                    counter++;
-                }
-                if (counter == 81)
-                {
-                    room.game.cameras[0].hud.textPrompt.AddMessage(subRegions[dataObj.index], 0, 160, false, true);
-                    room.game.cameras[0].hud.textPrompt.subregionTracker.lastShownRegion = dataObj.index;
-                }
-            }
-        }
-
-        if (room is null)
-        {
-            return;
-        }
-
-        if (room != room.game.Players[0].realizedCreature.room)
-        {
-            inRadius = inRegion = suppressed = triggered = false;
-
-            regionID = previousRegionID = counter = 0;
+            // Ignore it :3
         }
     }
 

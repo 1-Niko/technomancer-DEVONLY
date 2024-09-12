@@ -1,4 +1,14 @@
 [MERGE]
+ROOMS
+LF_E03_COLLAPSE : LF_A10, LF_E02 : SCAVOUTPOST
+END ROOMS
+
+CONDITIONAL LINKS
+X-technomancer,Artificer,Spearmaster : EXCLUSIVEROOM : LF_E03_COLLAPSE
+X-technomancer,Artificer,Spearmaster : LF_A10 : LF_E03 : LF_E03_COLLAPSE
+X-technomancer,Artificer,Spearmaster : LF_E02 : LF_E03 : LF_E03_COLLAPSE
+END CONDITIONAL LINKS
+
 CREATURES
 (technomancer)OFFSCREEN : 0-Deer-6, 0-Vulture-3, 0-Scavenger-8
 (technomancer)OFFSCREEN : 0-Deer-4, 0-Vulture-1, 0-KingVulture-2, 0-Scavenger-17

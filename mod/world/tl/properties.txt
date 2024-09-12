@@ -8,6 +8,9 @@ Subregion: Subway
 Subregion: Maintenance
 Subregion: Filtration System
 Subregion: Aquifer
+Subregion: Pipework
+Subregion: Silos
+Subregion: Retaining Wall
 Room_Attr: GATE_TL_OE: BlackLizard-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,
 Room_Attr: GATE_TL_SL: BlackLizard-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,
 Room_Attr: GATE_DS_SB: BlackLizard-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,MotherSpider-Forbidden,
@@ -69,7 +72,6 @@ Room_Attr: TL_A23: BlackLizard-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbi
 Room_Attr: TL_A24: BlackLizard-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,
 Room_Attr: TL_H04: BlackLizard-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,
 Room_Attr: TL_A25: BlackLizard-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,
-Room_Attr: TL_D05: BlackLizard-Like,BigSpider-Like,SpitterSpider-Like,MotherSpider-Like,
 Room_Attr: TL_F04: BlackLizard-Like,BigSpider-Like,SpitterSpider-Like,MotherSpider-Like,
 Room_Attr: TL_S10: BlackLizard-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,MotherSpider-Forbidden,
 Room_Attr: TL_S12: BlackLizard-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,
