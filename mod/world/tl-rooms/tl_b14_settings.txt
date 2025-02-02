@@ -1,5 +1,6 @@
 Template: NONE
 DangerType: None
+Grime: 0.2826087
 Palette: 21
 EffectColorA: 19
 Effects: SilenceWater-1-20-20, HeatWave-0.2173913-19-71, WaterFluxSpeed-1-538-16, WaterFluxMaxDelay-0.1086956-540-134, WaterFluxMinDelay-0.04347826-540-81, WaterFluxMaxLevel-0.7826087-279-17, WaterFluxMinLevel-0.6195652-282-71, WaterFluxFrequency-1-279-128, WaterFluxOffset-0-19-126, 

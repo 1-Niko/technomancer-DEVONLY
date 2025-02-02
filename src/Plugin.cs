@@ -176,6 +176,7 @@ public class OptionsMenu : OptionInterface
     public OptionsMenu(Plugin plugin)
     {
         furToggle = this.config.Bind<bool>("splugpack_Bool_Checkbox", false);
+        alwaysOnHolograms = this.config.Bind<bool>("splugpack_Bool_Holograms", false);
     }
     public override void Initialize()
     {
@@ -191,6 +192,9 @@ public class OptionsMenu : OptionInterface
                 new OpLabel(0f, 550f, "The Technomancer - Remix Menu", true),
                 new OpCheckBox(furToggle, 0, 500),
                 new OpLabel(30, 502, "Disable Fur"),
+
+                new OpCheckBox(alwaysOnHolograms, 0, 450),
+                new OpLabel(30, 452, "Force-Enable Holograms"),
         };
         opTab1.AddItems(UIArrayElements2);
     }
@@ -200,4 +204,5 @@ public class OptionsMenu : OptionInterface
     }
   
     static public Configurable<bool> furToggle;
+    static public Configurable<bool> alwaysOnHolograms;
 }

@@ -211,12 +211,17 @@ internal static class PlayerHooks
                 scanline.arrow.creature = nearestObject.nearestObjectType == "creature" ? nearestObject.nearestCreature : null;
                 scanline.arrow.item = nearestObject.nearestObjectType == "item" ? nearestObject.nearestItem : null;
                 scanline.arrow._object = nearestObject.nearestObjectType == "object" ? nearestObject.nearestPlacedObject : null;
-                if (scanline.arrow != null && scanline.arrow._object != null && scanline.arrow._object.data != null && scanline.arrow._object.data is TrainWarningBellData)
+                if (scanline.arrow != null && scanline.arrow._object != null && scanline.arrow._object.data != null)
                 {
-                    scanline.arrow.pos = (scanline.arrow._object.data as TrainWarningBellData).owner.pos + (scanline.arrow._object.data as TrainWarningBellData).ArrowPosition; // + new Vector2(0f, 35f);
+                    if (scanline.arrow._object.data is TrainWarningBellData)
+                        scanline.arrow.pos = (scanline.arrow._object.data as TrainWarningBellData).owner.pos + (scanline.arrow._object.data as TrainWarningBellData).ArrowPosition;// + new Vector2(0f, 35f);
+                    else if (scanline.arrow._object.data is TrackHologramData)
+                        scanline.arrow.pos = (scanline.arrow._object.data as TrackHologramData).owner.pos + (scanline.arrow._object.data as TrackHologramData).handle[1];// + new Vector2(0f, 35f);
                 }
                 else
-                    scanline.arrow.pos = nearestObject.nearestPosition/* + new Vector2(0f, nearestObject.nearestObjectType == "shortcut" ? 35f : 15f)*/;
+                {
+                    scanline.arrow.pos = nearestObject.nearestPosition/* + new Vector2(0f, nearObject.nearestObjectType == "shortcut" ? 35f : 15f)*/;
+                }
             }
         }
 
@@ -232,10 +237,17 @@ internal static class PlayerHooks
             scanline.arrow.creature = nearestObjectType == "creature" ? nearestCreature : null;
             scanline.arrow.item = nearestObjectType == "item" ? nearestItem : null;
             scanline.arrow._object = nearestObjectType == "object" ? nearestObject : null;
-            if (scanline.arrow._object.data is TrainWarningBellData)
-                scanline.arrow.pos = (scanline.arrow._object.data as TrainWarningBellData).owner.pos + (scanline.arrow._object.data as TrainWarningBellData).ArrowPosition;// + new Vector2(0f, 35f);
+            if (scanline.arrow != null && scanline.arrow._object != null && scanline.arrow._object.data != null)
+            {
+                if (scanline.arrow._object.data is TrainWarningBellData)
+                    scanline.arrow.pos = (scanline.arrow._object.data as TrainWarningBellData).owner.pos + (scanline.arrow._object.data as TrainWarningBellData).ArrowPosition;// + new Vector2(0f, 35f);
+                else if (scanline.arrow._object.data is TrackHologramData)
+                    scanline.arrow.pos = (scanline.arrow._object.data as TrackHologramData).owner.pos + (scanline.arrow._object.data as TrackHologramData).handle[1];// + new Vector2(0f, 35f);
+            }
             else
-                scanline.arrow.pos = nearestPosition/* + new Vector2(0f, nearestObjectType == "shortcut" ? 35f : 15f)*/;
+            {
+                scanline.arrow.pos = nearestPosition/* + new Vector2(0f, nearObject.nearestObjectType == "shortcut" ? 35f : 15f)*/;
+            }
         }
 
         if (!self.room.ViewedByAnyCamera(scanline.arrow.pos, 0f))
@@ -245,10 +257,17 @@ internal static class PlayerHooks
             scanline.arrow.creature = nearestObjectType == "creature" ? nearestCreature : null;
             scanline.arrow.item = nearestObjectType == "item" ? nearestItem : null;
             scanline.arrow._object = nearestObjectType == "object" ? nearestObject : null;
-            if (scanline.arrow._object != null && scanline.arrow._object.data is TrainWarningBellData)
-                scanline.arrow.pos = (scanline.arrow._object.data as TrainWarningBellData).owner.pos + (scanline.arrow._object.data as TrainWarningBellData).ArrowPosition;// + new Vector2(0f, 35f);
+            if (scanline.arrow != null && scanline.arrow._object != null && scanline.arrow._object.data != null)
+            {
+                if (scanline.arrow._object.data is TrainWarningBellData)
+                    scanline.arrow.pos = (scanline.arrow._object.data as TrainWarningBellData).owner.pos + (scanline.arrow._object.data as TrainWarningBellData).ArrowPosition;// + new Vector2(0f, 35f);
+                else if (scanline.arrow._object.data is TrackHologramData)
+                    scanline.arrow.pos = (scanline.arrow._object.data as TrackHologramData).owner.pos + (scanline.arrow._object.data as TrackHologramData).handle[1];// + new Vector2(0f, 35f);
+            }
             else
-                scanline.arrow.pos = nearestPosition/* + new Vector2(0f, nearestObjectType == "shortcut" ? 35f : 15f)*/;
+            {
+                scanline.arrow.pos = nearestPosition/* + new Vector2(0f, nearObject.nearestObjectType == "shortcut" ? 35f : 15f)*/;
+            }
         }
 
         // I believe this is the pointing code? Will rewrite later
@@ -293,10 +312,17 @@ internal static class PlayerHooks
                     scanline.arrow.creature = nearObject.nearestObjectType == "creature" ? nearObject.nearestCreature : null;
                     scanline.arrow.item = nearObject.nearestObjectType == "item" ? nearObject.nearestItem : null;
                     scanline.arrow._object = nearObject.nearestObjectType == "object" ? nearObject.nearestObject : null;
-                    if (scanline.arrow != null && scanline.arrow._object != null && scanline.arrow._object.data != null && scanline.arrow._object.data is TrainWarningBellData)
-                        scanline.arrow.pos = (scanline.arrow._object.data as TrainWarningBellData).owner.pos + (scanline.arrow._object.data as TrainWarningBellData).ArrowPosition;// + new Vector2(0f, 35f);
+                    if (scanline.arrow != null && scanline.arrow._object != null && scanline.arrow._object.data != null)
+                    {
+                        if (scanline.arrow._object.data is TrainWarningBellData)
+                            scanline.arrow.pos = (scanline.arrow._object.data as TrainWarningBellData).owner.pos + (scanline.arrow._object.data as TrainWarningBellData).ArrowPosition;// + new Vector2(0f, 35f);
+                        else if (scanline.arrow._object.data is TrackHologramData)
+                            scanline.arrow.pos = (scanline.arrow._object.data as TrackHologramData).owner.pos + (scanline.arrow._object.data as TrackHologramData).handle[1];// + new Vector2(0f, 35f);
+                    }
                     else
+                    {
                         scanline.arrow.pos = nearObject.nearestPosition/* + new Vector2(0f, nearObject.nearestObjectType == "shortcut" ? 35f : 15f)*/;
+                    }
                 }
             }
         }

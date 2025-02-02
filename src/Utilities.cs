@@ -1,3 +1,5 @@
+using UnityEngine.UIElements;
+
 namespace Slugpack;
 
 public static class Utilities
@@ -483,7 +485,11 @@ public static class Utilities
 
         foreach (var _object in objects)
         {
-            if (_object.pos == position)
+            if (_object.data is TrackHologramData && position == _object.pos + (_object.data as TrackHologramData).handle[1])
+            {
+                return ("object", null, null, new ShortcutData(), _object, position);
+            }
+            else if (_object.pos == position)
             {
                 return ("object", null, null, new ShortcutData(), _object, position);
             }
@@ -650,7 +656,18 @@ public static class Utilities
 
         creatures.ForEach(creature => positions.Add((creature as Creature).mainBodyChunk.pos));
         items.ForEach(item => positions.Add(item.firstChunk.pos));
-        objects.ForEach(_object => positions.Add(_object.pos));
+
+        // I hate my code
+        for (int i = 0; i < objects.Count; i++)
+        {
+            if (objects[i].data is TrackHologramData)
+                //position = objects[i].pos + (objects[i].data as TrackHologramData).handle[1];
+                positions.Add(objects[i].pos + (objects[i].data as TrackHologramData).handle[1]);
+            else
+                positions.Add(objects[i].pos);
+        }
+
+        // objects.ForEach(_object => positions.Add(_object.pos));
 
         if (positionsOnly)
         {
@@ -709,6 +726,10 @@ public static class Utilities
         foreach (var _object in objects)
         {
             Vector2 position = _object.pos;
+            if (_object.data is TrackHologramData)
+            {
+                position = _object.pos + (_object.data as TrackHologramData).handle[1];
+            }
             float distance = RWCustom.Custom.Dist(position, searchPosition);
             if (distance < nearestDistance)
             {

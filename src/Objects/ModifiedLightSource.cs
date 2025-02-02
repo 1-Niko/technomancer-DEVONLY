@@ -50,6 +50,9 @@ public class ModifiedLightSourceData(PlacedObject owner) : ManagedData(owner, nu
 
     [BooleanField("I", false, ManagedFieldWithPanel.ControlType.button, "Set Screen B To Current")]
     public bool setScreenB;
+
+    [BooleanField("J", false, ManagedFieldWithPanel.ControlType.button, "Force On")]
+    public bool forceOn;
 }
 
 public class ModifiedLightSource(PlacedObject placedObject) : UpdatableAndDeletable
@@ -108,25 +111,34 @@ public class ModifiedLightSource(PlacedObject placedObject) : UpdatableAndDeleta
                     break;
                 }
             case BlinkType.Flash:
-                { 
+                {
                     lightSourceA.blinkType = PlacedObject.LightSourceData.BlinkType.Flash;
                     lightSourceB.blinkType = PlacedObject.LightSourceData.BlinkType.Flash;
                     break;
                 }
         }
 
-        if (Constants.DamagedShortcuts.TryGetValue(room.game, out var CameraPosition))
-        {
-            if ((placedObject.data as ModifiedLightSourceData).setScreenA)
-            {
-                (placedObject.data as ModifiedLightSourceData).screenA = CameraPosition.camPosition;
-                (placedObject.data as ModifiedLightSourceData).setScreenA = false;
-            }
 
-            if ((placedObject.data as ModifiedLightSourceData).setScreenB)
+        if ((placedObject.data as ModifiedLightSourceData).forceOn)
+        {
+            lightSourceB.alpha = 0f;
+            lightSourceA.alpha = (placedObject.data as ModifiedLightSourceData).alpha;
+        }
+        else
+        {
+            if (Constants.DamagedShortcuts.TryGetValue(room.game, out var CameraPosition))
             {
-                (placedObject.data as ModifiedLightSourceData).screenB = CameraPosition.camPosition;
-                (placedObject.data as ModifiedLightSourceData).setScreenB = false;
+                if ((placedObject.data as ModifiedLightSourceData).setScreenA)
+                {
+                    (placedObject.data as ModifiedLightSourceData).screenA = CameraPosition.camPosition;
+                    (placedObject.data as ModifiedLightSourceData).setScreenA = false;
+                }
+
+                if ((placedObject.data as ModifiedLightSourceData).setScreenB)
+                {
+                    (placedObject.data as ModifiedLightSourceData).screenB = CameraPosition.camPosition;
+                    (placedObject.data as ModifiedLightSourceData).setScreenB = false;
+                }
             }
 
             if (CameraPosition.camPosition == (placedObject.data as ModifiedLightSourceData).screenA)

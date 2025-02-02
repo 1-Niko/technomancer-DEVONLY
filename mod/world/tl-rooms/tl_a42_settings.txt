@@ -1,7 +1,9 @@
 Template: NONE
 Clouds: 0.9021739
-Grime: 0.1195652
+Grime: 0.09782609
 Palette: 14
 EffectColorA: 19
-Effects: LightRain-0.2282609-20-20, Desaturation-0.2826087-20-86, 
-FadePalette: 10, 0.25
+Effects: LightRain-0.2282609-20-20, Desaturation-0.2826087-20-86, HeatWave-0.2173913-279-19, 
+PlacedObjects: LightSource><117.3099><762.1877><0.2934783~EffectColor1~3~-103~-273~-242.3975~0~1~None~0~0, LightSource><-26.69904><765.2697><0.3152174~EffectColor1~5~-104~-149~-357.3975~0~1~None~0~0, LightSource><-166.6729><763.1495><0.3152174~EffectColor1~45~-109~-26~-467.3975~0~1~None~0~0, DeadTokenStalk><919.8342><710.3881><-46~-79, DeadTokenStalk><811.9517><509.6941><19~94, DeadTokenStalk><737.8064><249.5503><-28~-79, DeadTokenStalk><916.8745><547.9065><-44~63, DeadTokenStalk><406.6454><535.5795><-55~-69, DeadTokenStalk><795.5509><199.7692><-68~-54, DeadTokenStalk><643.7602><448.3914><-12~85, DeadTokenStalk><573.6132><476.6863><37~56, DeadTokenStalk><694.0895><744.8807><18~-71, DeadTokenStalk><782.1747><759.1853><-29~-87, DangleFruit><839.9368><270.4283><18~-130~2~3, DangleFruit><325.9196><197.606><-199~-153~2~3, DangleFruit><358.7816><166.6975><50~-112~2~3, InsectGroup><739.0798><592.105><-154~64~-869~-528~StandardFly~0.2717391, InsectGroup><594.9475><174.9686><1~57~-780~-17~StandardFly~0.1195652, InsectGroup><370.5627><415.0701><2~133~-556~-191~StandardFly~0.1521739, InsectGroup><578.2805><329.3023><-276~380~0~0~FireFly~0.1956522, 
+AmbientSounds: OMNI><AM_ENV-LightWind.ogg><20.10425><530.137><0.4130435><1, OMNI><AM_RAIN-QuietThunder.ogg><19.92255><361.1844><0.3369565><1, OMNI><AM_ENV-Outside.ogg><18.94348><442.0506><0.5><1, OMNI><AM_ENV-LushNight.ogg><19.94745><284.2181><0.2608696><1, OMNI><SO_WAT-RainishDrips.ogg><14.59686><203.8714><0.3695652><1, SPOT><Mech Basic.wav><268.5765><482.3495><0.3369565><1><378.5765><443.3495><-40.35535><-37.35535><0><0.1, SPOT><Basic Mech.wav><272.3105><116.9406><0.3804348><1><318.3106><287.9406><-35.35534><-35.35534><0><0.1, SPOT><Basic Mech.wav><563.6319><22.58859><0.3586957><1><696.632><146.5886><-35.35534><-35.35534><0><0.1, SPOT><Basic Mech.wav><1101.302><127.2776><0.4021739><1><1053.302><417.2776><-62.35535><-72.35535><0><0.1, SPOT><Basic Mech.wav><671.1169><565.0876><0.3586957><1><730.1169><576.0876><-72.35535><-61.35535><0><0.1, 
+FadePalette: 10, 0.5

@@ -1,13 +1,13 @@
 {
-  "Title": "[BETA] The Technomancer",
+  "Title": "[BETA] The Technomancer DEVBUILD",
   "Description": "Adds a new playable slugcat to the game: The Technomancer!\r\nWith the ability to manipulate the ancient technologies around you to your whim, what might you do with it? \r\n\r\nThe Technomancer is a fluffy new Slugcat whose campaign takes place a long time ago, in the time of Looks to the Moon\u0027s prime. Regions are/will be much different than their future (present) versions. The world is alive, and you will get to explore it!",
-  "ID": "splugpack",
+  "ID": "splugpack.DEVBUILD",
   "Version": "1.4.1",
   "TargetGameVersion": "v1.9.06",
   "Requirements": "slime-cubed.slugbase,moreslugcats,regionkit,crs,pom,fisobs",
   "RequirementNames": "SlugBase,More Slugcats Expansion,RegionKit,Custom Regions Support,POM,Fisobs",
   "Authors": "Technomancer Development Team\r\n\r\nNiko - Project Lead, Lead Coder, Lead Leditor\r\nLurzard - Menu Art\r\nSupernova - Bugtester",
-  "Visibility": "Public",
+  "Visibility": "Unlisted",
   "Tags": [
     "Regions",
     "Campaigns",
@@ -16,7 +16,7 @@
     "Items",
     "Custom Slugcat"
   ],
-  "WorkshopID": 2961854585,
-  "UploadFilesOnly": false,
+  "WorkshopID": 3054822223,
+  "UploadFilesOnly": true,
   "UploadThumbnail": false
 }

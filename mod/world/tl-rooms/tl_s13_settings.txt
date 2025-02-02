@@ -1,0 +1,14 @@
+Template: NONE
+DangerType: None
+CeilingDrips: 1
+WaveSpeed: 0.4955674
+WaveLength: 0.9977837
+WaveAmplitude: 0.045343
+SecondWaveLength: 0.1666667
+SecondWaveAmplitude: 0
+Grime: 0.3913043
+Palette: 14
+Effects: Desaturation-0.3913043-30-95, HeatWave-0.2173913-296-98, 
+PlacedObjects: ShelterBhvrManager><-144.6631><321.3658><-40.99998~31~True~False~4~False~3~6~20~40~60~120~120~0~False, ShelterBhvrSpawnPosition><629.2263><450.9486><, InsectGroup><280.7155><614.697><27~-89~633~-176~StandardFly~0.5, InsectGroup><692.1979><605.7214><-7~-90~217.0001~39~StandardFly~0.5, InsectGroup><535.0748><600.5645><-35~-96~373.9999~-24~StandardFly~0.5, InsectGroup><433.1456><622.8871><-40~-79~478~-119~StandardFly~0.5, CustomDecal><219.9246><-144.4023><-15~688~440~670~509~-2~-389~176~0.2826087~1~0~unintendedrag~0.6956522~0.0326087~0.5434783~0.09782609~0.8260869~0.06521739~0.3804348~0.06521739, CustomDecal><598.2974><-28.69431><2~123~130~119~142~-5~281~35~0.2282609~1~0~coneclawse~0.2282609~0.1195652~0.3586957~0.1956522~0.3152174~0.07608695~0.3913043~0.173913, 
+AmbientSounds: OMNI><SO_WAT-RainishDrips.ogg><764.085><450.069><0.1521739><1.45, OMNI><MSC-LowGroans.ogg><764.4495><373.4862><0.08695652><1, OMNI><AM_RAIN-QuietThunder.ogg><763.9481><292.0569><0.1956522><1, OMNI><SO_WAT-MoreDrips.ogg><766.1605><530.0712><0.2391304><1, 
+FadePalette: 10, 0.5434783

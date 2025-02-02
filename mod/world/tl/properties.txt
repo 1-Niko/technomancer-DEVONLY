@@ -12,10 +12,8 @@ Subregion: Pipework
 Subregion: Silos
 Subregion: Retaining Wall
 Room_Attr: GATE_TL_OE: BlackLizard-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,
-Room_Attr: GATE_TL_SL: BlackLizard-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,
 Room_Attr: GATE_DS_SB: BlackLizard-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,MotherSpider-Forbidden,
 Room_Attr: GATE_LF_SB: BlackLizard-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,
-Room_Attr: GATE_SB_VS: BlackLizard-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,MotherSpider-Forbidden,
 Room_Attr: TL_B01: BlackLizard-Avoid,BigSpider-Avoid,SpitterSpider-Avoid,
 Room_Attr: TL_D01: BlackLizard-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,MotherSpider-Forbidden,
 Room_Attr: TL_C03: BlackLizard-Forbidden,BigSpider-Forbidden,SpitterSpider-Forbidden,

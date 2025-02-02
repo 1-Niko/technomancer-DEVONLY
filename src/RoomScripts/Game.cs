@@ -7,9 +7,9 @@ internal static class GameHooks
         On.RainWorldGame.ctor += RainWorldGame_ctor;
         On.RoomRealizer.CanAbstractizeRoom += RoomRealizer_CanAbstractizeRoom;
         On.RainWorldGame.Update += RainWorldGame_Update;
-        On.Region.GetProperRegionAcronym += Region_GetProperRegionAcronym;
-        On.Region.EquivalentRegion += Region_EquivalentRegion;
-        On.Region.GetVanillaEquivalentRegionAcronym += Region_GetVanillaEquivalentRegionAcronym;
+        //On.Region.GetProperRegionAcronym += Region_GetProperRegionAcronym;
+        //On.Region.EquivalentRegion += Region_EquivalentRegion;
+        //On.Region.GetVanillaEquivalentRegionAcronym += Region_GetVanillaEquivalentRegionAcronym;
         On.ShortcutGraphics.Update += ShortcutGraphics_Update;
         On.RoomCamera.SpriteLeaser.RemoveAllSpritesFromContainer += SpriteLeaser_RemoveAllSpritesFromContainer;
         On.RegionGate.customKarmaGateRequirements += RegionGate_customKarmaGateRequirements;
@@ -80,7 +80,7 @@ internal static class GameHooks
             self.elements.Add(new DistantBlinkingLight(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(-672f, 22f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 0.35f), new UnityEngine.Color(1f, 0f, 0f, 0.35f), 52, 0.11f, 79, 0.63f, 3019, false, false, false, true));
             self.elements.Add(new DistantBlinkingLight(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(-677f, -2f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 0.15f), new UnityEngine.Color(1f, 0f, 0f, 0.15f), 72, 0.16f, 85, 0.57f, 3010, false, false, false, true));
 
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 0));
+            /*self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 0));
             self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 1));
             self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 2));
             self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 3));
@@ -107,7 +107,7 @@ internal static class GameHooks
             self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 24));
             self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 25));
             self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 26));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 27));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 27));*/
         }
     }
 
@@ -472,7 +472,7 @@ internal static class GameHooks
         }
     }
 
-    private static string Region_GetProperRegionAcronym(On.Region.orig_GetProperRegionAcronym orig, SlugcatStats.Name character, string baseAcronym)
+    /*private static string Region_GetProperRegionAcronym(On.Region.orig_GetProperRegionAcronym orig, SlugcatStats.Name character, string baseAcronym)
     {
         string text = baseAcronym;
         if (character.ToString() == Technomancer)
@@ -512,5 +512,5 @@ internal static class GameHooks
         if ((regionA == "SB" || regionA == "TL") && (regionB == "TL" || regionB == "SB"))
             return true;
         return orig(regionA, regionB);
-    }
+    }*/
 }

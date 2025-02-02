@@ -1,2 +1,3 @@
 [ADD]GATE_TL_OE : 5 : 5
-[ADD]GATE_TL_SL : 2 : 5
+[ADD]GATE_TL_LM : 2 : 5
+[ADD]GATE_TL_VS : 3 : 5

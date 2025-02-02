@@ -14,7 +14,7 @@ namespace Slugpack
         [Vector2ArrayField("position", 2, true, Vector2ArrayRepresentationType.Chain, new float[4] { 0, 0, -100, 0 })]
         public Vector2[] hologramPosition;
 
-        [IntegerField("A", 0, 2, 0, ManagedFieldWithPanel.ControlType.arrows, displayName: "Hologram Index")]
+        [IntegerField("A", 0, 3, 0, ManagedFieldWithPanel.ControlType.arrows, displayName: "Hologram Index")]
         public int index;
     }
 
@@ -36,7 +36,7 @@ namespace Slugpack
             hologramSprite.position = (placedObject.data as TrackHologramData).hologramPosition[1];
 
             bool playerInRange = false;
-            float distance = RWCustom.Custom.Dist(Vector2.zero, (placedObject.data as TrackHologramData).rad);
+            float distance = (OptionsMenu.alwaysOnHolograms.Value) ? 0 : RWCustom.Custom.Dist(Vector2.zero, (placedObject.data as TrackHologramData).rad);
 
             foreach (var player in room.world.game.Players)
             {
@@ -67,7 +67,7 @@ namespace Slugpack
                 hologramSprite.trainCountdown = 90;
             }
 
-            hologramSprite.enabled = playerInRange && !trainInRange;
+            hologramSprite.enabled = playerInRange && !trainInRange || OptionsMenu.alwaysOnHolograms.Value;
         }
         private TrackHologramObject hologramSprite;
     }
@@ -167,9 +167,13 @@ namespace Slugpack
                     }
                     sLeaser.sprites[0].color = new Color(1f, 0f, 0f); // Utilities.ColourFade(new Vector4(1f, 0f, 0f, 1f), new Vector4(1f, 1f, 1f, 0f), (-Mathf.Cos(3.141f * ((float)stepTimer / 10f) / 2) + 1) / 2);
                     break;
+                case 3:
+                    sLeaser.sprites[0].element = Futile.atlasManager.GetElementWithName("SiloWarningSign");
+                    sLeaser.sprites[0].color = Utilities.ColourFade(new Vector4(1f, 0f, 0f, 1f), new Vector4(1f, 0.5f, 0f, 0.8f), (-Mathf.Cos(3.141f * ((float)stepTimer / 32f) / 4) + 1) / 2);
+                    break;
             }
 
-            sLeaser.sprites[0].isVisible = (!disabled && ((enabled && !flickering) || (enabled && flickering && stepTimer % 4 == 0))) && !forceHidden;
+            sLeaser.sprites[0].isVisible = ((!disabled && ((enabled && !flickering) || (enabled && flickering && stepTimer % 4 == 0))) && !forceHidden) || OptionsMenu.alwaysOnHolograms.Value;
 
             sLeaser.sprites[0].SetPosition(pos + position - rCam.pos);
             sLeaser.sprites[0].scaleX = 1f;
@@ -177,7 +181,7 @@ namespace Slugpack
             sLeaser.sprites[0].anchorX = 0f;
             sLeaser.sprites[0].anchorY = 0f;
 
-            if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var Shaders))
+            if (Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var Shaders) && !OptionsMenu.alwaysOnHolograms.Value)
             {
                 sLeaser.sprites[0].shader = rCam.room.game.rainWorld.Shaders["Hologram"];
             }

@@ -1,0 +1,30 @@
+DONE
+- Rain is happening in ALL campaigns instead of just technomancer
+- Block off the aquafir for now
+- Add a "ignore distance" debug option for holograms
+- Finish TL_C14
+- Finish A43 and A44
+- Finish TL_T01 objects
+
+IN PROGRESS
+- Unshade the citadel better
+- Somehow there is a way to get into pebbles (FIX)
+- Shoreline is not properly being replaced
+- Detect if SBCamerascroll is enabled
+	> If IS enabled then switch rooms to camerascroll compat rooms
+
+	ROOMS WHICH ARE CURRENTLY INCOMPATABLE:
+	TL_AC01 
+
+- FINISH TL_E05 YOU LAZY FUCK
+- Design layout for the retaining wall
+- Add SU connection (subway station)
+- Add a setting reset button/warning that they are not playing with intended settings
+- Set train warning bells to be compatable with force-enable holograms
+- Properly impliment parageist's stuff
+- Repopulate filtration system
+- Add (and populate) TL_T01 train interiors
+- Finish THE MAST connection
+- REDO TL_K01 background
+- Redo working trains
+- Add train length slider

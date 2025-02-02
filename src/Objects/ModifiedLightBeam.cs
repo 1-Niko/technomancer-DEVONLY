@@ -1,5 +1,13 @@
 namespace Slugpack;
 
+public enum ForceLight
+{
+    None,
+    A,
+    B,
+    Both
+}
+
 public class ModifiedLightBeamData(PlacedObject owner) : ManagedData(owner, null)
 {
     [Vector2ArrayField("LightBeam", 4, true, Vector2ArrayRepresentationType.Polygon, new float[8] { 0, 0, 0, 50, 50, 50, 50, 0 })]
@@ -34,6 +42,9 @@ public class ModifiedLightBeamData(PlacedObject owner) : ManagedData(owner, null
 
     [BooleanField("H", false, ManagedFieldWithPanel.ControlType.button, "Set Screen B To Current")]
     public bool setScreenB;
+
+    [EnumField<ForceLight>("I", ForceLight.None, [ForceLight.None, ForceLight.A, ForceLight.B, ForceLight.Both], ManagedFieldWithPanel.ControlType.arrows, "Force Light On")]
+    public ForceLight forced;
 }
 
 public class ModifiedLightBeam(PlacedObject placedObject, Room room) : UpdatableAndDeletable
@@ -56,12 +67,12 @@ public class ModifiedLightBeam(PlacedObject placedObject, Room room) : Updatable
 
         if (Constants.DamagedShortcuts.TryGetValue(room.game, out var CameraPosition))
         {
-            if ((placedObject.data as ModifiedLightBeamData).screenA == CameraPosition.camPosition)
+            if (((placedObject.data as ModifiedLightBeamData).screenA == CameraPosition.camPosition && ((placedObject.data as ModifiedLightBeamData).forced == ForceLight.None)) || ((placedObject.data as ModifiedLightBeamData).forced == ForceLight.A || (placedObject.data as ModifiedLightBeamData).forced == ForceLight.Both))
             {
                 Vector2[] vertices = (placedObject.data as ModifiedLightBeamData).BeamPosition;
                 LightBeam.verts = [vertices[0], vertices[3], vertices[1], vertices[2]];
             }
-            else if ((placedObject.data as ModifiedLightBeamData).screenB == CameraPosition.camPosition)
+            else if (((placedObject.data as ModifiedLightBeamData).screenB == CameraPosition.camPosition && ((placedObject.data as ModifiedLightBeamData).forced == ForceLight.None)) || ((placedObject.data as ModifiedLightBeamData).forced == ForceLight.B || (placedObject.data as ModifiedLightBeamData).forced == ForceLight.Both))
             {
                 Vector2[] vertices = (placedObject.data as ModifiedLightBeamData).AlternateBeamPosition;
                 LightBeam.verts = [vertices[4], vertices[1], vertices[3], vertices[2]];
