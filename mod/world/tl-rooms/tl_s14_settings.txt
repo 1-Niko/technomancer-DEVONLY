@@ -1,0 +1,8 @@
+Template: NONE
+DangerType: None
+Grime: 0
+Palette: 12
+PlacedObjects: ShelterBhvrPlacedDoor><133.6975><68.46832><1^0, ShelterBhvrSpawnPosition><416.2802><137.8023><, ShelterBhvrManager><293.6352><104.1473><100~50~True~False~4~False~3~6~20~40~60~120~120~120~False, 
+AmbientSounds: OMNI><AM_ENV-SubTerr.ogg><724.4337><443.4208><0.2826087><1, 
+FadePalette: 10, 0.5434783
+MorePalette0: 45, 0.5108696

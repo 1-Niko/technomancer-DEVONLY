@@ -1,0 +1,10 @@
+Template: NONE
+DangerType: None
+Grime: 0
+Palette: 21
+EffectColorB: 5
+PlacedObjects: DataPearl><392.1894><73.31439><0~0~0~0~Misc~0, DataPearl><410.937><73.18982><0~0~0~0~Misc~0, DataPearl><428.0214><70.80115><0~0~0~0~Misc~0, DataPearl><974.1483><111.8658><-233~-48~0~0~Misc~0, DataPearl><994.1274><111.1541><-249~76~0~0~Misc~0, DataPearl><1010.196><110.9604><-256~205~0~0~Misc~0, DataPearl><267.8192><130.0855><0~0~0~0~Misc~0, DataPearl><248.808><131.9442><0~0~0~0~Misc~0, DataPearl><230.8038><133.961><0~0~0~0~Misc~0, LightSource><656.1371><94.91507><0.5869565~EffectColor2~0~100~55~118.6025~0~0~None~0~0, LightSource><561.0587><55.69177><0.5326087~EffectColor2~0~100~66~282.6025~0~0~None~0~0, LightSource><482.1636><91.56964><0.7717391~EffectColor2~0~100~-59~118.6025~0~0~None~0~0, LightSource><401.2399><94.94974><0.6521739~EffectColor2~0~100~-51~248.6025~0~0~None~0~0, LightSource><326.0713><119.5898><0.6086956~EffectColor2~0~100~-177~120.6025~0~0~None~0~0, LightSource><261.4366><103.428><0.3804348~EffectColor2~0~100~-204~252.6025~0~0~None~0~0, 
+AmbientSounds: OMNI><Basic Mech.wav><710.0999><430.1733><0.2065217><1, SPOT><Mech Basic.wav><706.8046><273.0425><0.3043478><1><927.8046><28.04254><-33.35535><-27.35535><0><0.6326088, SPOT><AM_IND-50hz.ogg><394.4231><201.3154><0.6304348><0.1586957><473.4231><93.31537><-236.3553><-80.35535><0><0.05652187, OMNI><AM_ENV-SubTerr.ogg><721.0565><518.3005><0.2934783><1, OMNI><SO_IND-Boiler.ogg><534.3785><509.9089><0.1195652><1, 
+FadePalette: 8, 0.5217391
+MorePalette0: 10, 0.4782609
+MorePalette1: 12, 0.2065217

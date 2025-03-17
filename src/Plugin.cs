@@ -1,4 +1,5 @@
 ﻿using Menu.Remix.MixedUI;
+using Menu.Remix.MixedUI.ValueTypes;
 
 namespace Slugpack;
 
@@ -177,6 +178,7 @@ public class OptionsMenu : OptionInterface
     {
         furToggle = this.config.Bind<bool>("splugpack_Bool_Checkbox", false);
         alwaysOnHolograms = this.config.Bind<bool>("splugpack_Bool_Holograms", false);
+        trainLengthSlider = this.config.Bind<int>("splugpack_Int_TrainLength", 30);
     }
     public override void Initialize()
     {
@@ -187,7 +189,7 @@ public class OptionsMenu : OptionInterface
         OpContainer tab1Container = new OpContainer(new Vector2(0, 0));
         opTab1.AddItems(tab1Container);
 
-        UIelement[] UIArrayElements2 = new UIelement[]
+        UIArrayElements = new UIelement[]
         {
                 new OpLabel(0f, 550f, "The Technomancer - Remix Menu", true),
                 new OpCheckBox(furToggle, 0, 500),
@@ -195,14 +197,59 @@ public class OptionsMenu : OptionInterface
 
                 new OpCheckBox(alwaysOnHolograms, 0, 450),
                 new OpLabel(30, 452, "Force-Enable Holograms"),
+
+                new OpHoldButton(new Vector2(450f, 450f), 60f, "Reset", 380f),
+                new OpLabel(440, 430, "Warning! You do not have"),
+                new OpLabel(435, 417, "the recommended settings!"),
+                new OpSlider(trainLengthSlider, new Vector2(0f, 396f), 100, false)
+                {
+                    max = 100,
+                    hideLabel = false
+                },
+                new OpLabel(107, 402, "Train Length"),
         };
-        opTab1.AddItems(UIArrayElements2);
+        opTab1.AddItems(UIArrayElements);
     }
     public override void Update()
     {
         base.Update();
+
+        warningFlash += 1;
+
+        (UIArrayElements[5] as OpHoldButton).greyedOut = !(UIArrayElements[1] as OpCheckBox).GetValueBool() && !(UIArrayElements[3] as OpCheckBox).GetValueBool();
+
+        if (!(UIArrayElements[5] as OpHoldButton).greyedOut)
+        {
+            float flash = ((float)Math.Cos((3.14159f * warningFlash) / 10f) + 1f) / 2f;
+            (UIArrayElements[6] as OpLabel).color = new Color(1f, flash, flash, 1f);
+            (UIArrayElements[7] as OpLabel).color = new Color(1f, flash, flash, 1f);
+        }
+        else
+        {
+            (UIArrayElements[6] as OpLabel).color = new Color(1f, 0f, 0f, 0f);
+            (UIArrayElements[7] as OpLabel).color = new Color(1f, 0f, 0f, 0f);
+        }
+
+
+        if ((UIArrayElements[5] as OpHoldButton)._hasSignalled && !playedSound)
+        {
+            Menu.Remix.ConfigContainer.PlaySound(SoundID.MENU_Switch_Page_In);
+            (UIArrayElements[1] as OpCheckBox).SetValueBool(false);
+            (UIArrayElements[3] as OpCheckBox).SetValueBool(false);
+            playedSound = true;
+        }
+
+        if ((UIArrayElements[5] as OpHoldButton)._filled == 0)
+        {
+            playedSound = false;
+        }
     }
   
     static public Configurable<bool> furToggle;
     static public Configurable<bool> alwaysOnHolograms;
+    static public Configurable<int> trainLengthSlider;
+
+    UIelement[] UIArrayElements;
+    bool playedSound = false;
+    float warningFlash = 0f;
 }

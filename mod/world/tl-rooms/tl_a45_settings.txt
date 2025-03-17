@@ -1,0 +1,16 @@
+Template: NONE
+DangerType: None
+WaveSpeed: 0.5
+WaveLength: 0.75
+WaveAmplitude: 0.03587852
+SecondWaveLength: 0.1666667
+SecondWaveAmplitude: 0
+Grime: 0
+Palette: 12
+EffectColorA: 2
+EffectColorB: 13
+Effects: ReplaceEffectColorB-0-20-20-Color-0.9239131-0.3478261-0, 
+PlacedObjects: LightSource><328.802><79.44312><1~EffectColor2~-37~146~670~113.6025~0~0~None~0~0, LightSource><470.5648><182.3255><1~EffectColor2~17~125~-56.99997~191.6025~0~0~None~0~0, LightSource><570.5554><200.2961><1~EffectColor2~16~124~50~86.60254~0~0~None~0~0, LightSource><740.6108><213.3936><1~EffectColor2~158~49~203~123.6025~0~0~None~0~0, LightSource><193.6765><184.064><1~EffectColor2~102~127~-78~123.6025~0~0~None~0~0, SlimeMold><143.0547><144.5434><0~0~2~3, SlimeMold><854.3951><79.63763><0~0~2~3, SlimeMold><261.8895><173.0833><0~0~2~3, SlimeMold><533.6791><183.187><0~0~2~3, SlimeMold><577.7253><143.5515><0~0~2~3, SlimeMold><640.6222><206.3416><0~0~2~3, CosmeticSlimeMold><994.4421><78.30554><0~100, CosmeticSlimeMold><845.3476><67.37949><0~100, CosmeticSlimeMold><763.6741><207.3484><0~100, CosmeticSlimeMold><483.3992><176.4227><0~100, CosmeticSlimeMold2><553.1103><135.3569><0~100, CosmeticSlimeMold2><500.0676><179.4179><0~100, CosmeticSlimeMold2><359.0652><59.57639><0~100, CosmeticSlimeMold2><258.1664><192.139><0~100, 
+FadePalette: 10, 0
+MorePalette0: 8, 0.3804348
+MorePalette1: 45, 0.4565217

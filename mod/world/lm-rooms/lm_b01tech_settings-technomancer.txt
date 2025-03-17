@@ -1,0 +1,2 @@
+Palette: 11
+FadePalette: 35, 0.9768001, 0.9845335

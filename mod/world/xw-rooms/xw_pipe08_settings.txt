@@ -1,0 +1,6 @@
+Template: NONE
+Palette: 11
+Effects: HeatWave-0.09279898-20-20, 
+PlacedObjects: SteamPipe><442.683><300.0035><-7.82605~-32.33124, SteamPipe><509.98><303.5475><84.66351~-94.22813, SteamPipe><466.5398><297.6903><-9.960449~-81.42188, SteamPipe><232.251><390.1141><-74.70313~60.15836, LightSource><345.3462><267.0117><1~Environment~0~100~50~86.60254~0~0~None~0~0, LightSource><633.606><262.6227><1~Environment~0~100~50~86.60254~0~0~None~0~0, 
+FadePalette: 34, 0.5026608
+MorePalette0: 10, 0.3272081

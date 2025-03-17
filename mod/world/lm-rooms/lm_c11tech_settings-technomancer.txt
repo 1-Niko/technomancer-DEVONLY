@@ -1,0 +1,6 @@
+Template: NONE
+Clouds: 0.1546651
+Palette: 35
+Effects: Fog-0.1005322-20-20, 
+PlacedObjects: LightFixture><351.6654><1068.845><RedLight~17.32051~-10~64, LightFixture><732.3325><1426.651><RedLight~17.32051~-10~46, LightFixture><291.3821><1873.417><RedLight~17.32051~-10~54, LightFixture><347.0271><2293.06><RedLight~17.32051~-10~60, LightFixture><749.2267><2292.972><RedLight~17.32051~-10~5, ReliableSpear><427.5432><733.7742><, ReliableSpear><404.3931><747.4974><, ReliableSpear><511.3086><738.7416><, 
+FadePalette: 10, 0.6031929, 0.5799932, 0.5567934

@@ -1,0 +1,4 @@
+CeilingDrips: 0.03866643
+Palette: 35
+Effects: GreenSparks-0.3093297-20-20, BkgOnlyLightning-0.03093288-30-30, 
+FadePalette: 10, 0, 0.05413288, 0.1082654, 0, 0

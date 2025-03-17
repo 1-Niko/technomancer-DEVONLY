@@ -1,14 +1,14 @@
 {
 	"id": "splugpack.DEVBUILD",
 	"name": "[DEVBUILD] The Technomancer",
-	"release_build": "1.4.1",
-	"version": "1.4.2",
-	"authors": "Technomancer Development Team<LINE><LINE>Niko - Project Lead, Lead Coder, Lead Leditor<LINE>Lurzard - Menu Art<LINE>BensoneWhite - Programmer<LINE>parageist - Leditor<LINE>TollyCastle - Leditor<LINE>Beep - Graffiti",
+	"release_build": "1.4.3b",
+	"version": "1.4.4",
+	"authors": "Technomancer Development Team<LINE><LINE>Niko - Project Lead, Lead Coder, Lead Leditor<LINE>Lurzard - Menu Art<LINE>BensoneWhite - Programmer<LINE>parageist - Leditor<LINE>TollyCastle - Leditor<LINE>Beep - Graffiti<LINE>Floof - \"Professional Idiot\"",
 	"hide_version": false,
 	"requirements": [ "slime-cubed.slugbase", "moreslugcats", "regionkit", "crs", "pom", "fisobs" ],
 	"requirements_names": [ "SlugBase", "More Slugcats Expansion", "RegionKit", "Custom Regions Support", "POM", "Fisobs" ],
 	"description": "Adds a new playable slugcat to the game: The Technomancer!<LINE>With the ability to manipulate the ancient technologies around you to your whim, what might you do with it?",
 	"tags": [ "Regions", "Campaigns", "Game Mechanics", "Custom Slugcat" ],
-	"checksum_override": true,
+	"checksum_override": false,
 	"CHECKSUM_COMMENT": "Make sure that it's FALSE when devving"
 }

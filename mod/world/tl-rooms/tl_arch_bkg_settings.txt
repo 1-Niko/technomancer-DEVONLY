@@ -1,0 +1,12 @@
+Template: NONE
+DangerType: None
+Clouds: 1
+Grime: 0
+Palette: 21
+EffectColorA: 5
+EffectColorB: 9
+PlacedObjects: LightSource><521.3862><341.1465><0.173913~White~27~5~-156~62.60254~0~1~None~0~0, LightBeam><121.8797><123.0902><48~273~101~274~137~-7~734~238~0.5956527~1~0~0~None~0~0, LightBeam><341.132><114.0998><50~280~88~279~152~-5~490.0001~101~0.5739136~1~0~0~None~0~0, LightBeam><565.0937><111.4267><42~282~92~283~149~-2~276~-58~0.563044~1~0~0~None~0~0, LightSource><635.3839><376.1485><1~White~23~-92~50~86.60254~0~0~None~0~0, LightSource><408.1953><387.1924><1~White~12~-90~50~86.60254~0~0~None~0~0, LightSource><187.3352><377.8191><1~White~44~-90~50~86.60254~0~0~None~0~0, LightSource><413.0622><320.3099><1~White~-82~101~50~86.60254~0~0~None~0~0, LightSource><636.0074><302.3001><1~White~-116~80~50~86.60254~0~0~None~0~0, 
+FadePalette: 8, 0.5217391
+MorePalette0: 10, 0.6630435
+MorePalette1: 12, 0.1086956
+MorePalette2: 37, 0.1521739

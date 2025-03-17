@@ -1,0 +1,9 @@
+Template: NONE
+DangerType: FloodAndRain
+Clouds: 0.2934783
+Grime: 0
+Palette: 8
+EffectColorA: 13
+EffectColorB: 6
+Effects: SilenceWater-1-20-20, LightRain-0.173913-18-92, Bloom-1-291-33, LightBurn-1-303-99, 
+PlacedObjects: KarmaFlower><2024.944><138.9497><0~0~5~7, LightBeam><1895.61><68.64331><-257~650~-179~658~267~73~-464~-35~0.2369564~0~0~1~None~0~0, LightSource><1778.896><522.3871><0.4130435~EffectColor1~-589~-739~-186~-229.3975~1~0~None~0~0, 

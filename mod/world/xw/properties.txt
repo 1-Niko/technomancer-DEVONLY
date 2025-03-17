@@ -1,0 +1,2 @@
+Palette: 0
+Subregion: NOT YET ADDED

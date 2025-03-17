@@ -1,0 +1,17 @@
+{
+	"id": "Slugcat_Voyager",
+	"scene_folder": "slugbase/scenes/slugcat_voyager",
+	"images": [
+		{"name": "flat", "pos": [0, 0], "depth": -1.0, "flatmode": true},
+        {"name": "8", "pos": [200, 50], "depth":  2.5, "shader": "Normal"},
+        {"name": "7", "pos": [200, 50], "depth":  2.1, "shader": "Normal"},
+        {"name": "6", "pos": [200, 50], "depth":  1.9, "shader": "Normal"},
+        {"name": "5", "pos": [200, 50], "depth":  1.8, "shader": "Normal"},
+        {"name": "4", "pos": [200, 50], "depth":  1.7, "shader": "Normal"},
+        {"name": "3", "pos": [200, 50], "depth":  1.6, "shader": "Normal"},
+        {"name": "2", "pos": [200, 50], "depth":  1.4, "shader": "Normal"},
+        {"name": "1", "pos": [200, 50], "depth":  1.1, "shader": "Normal"}
+	],
+	"idle_depths": [1.4, 1.9],
+    "slugcat_depth": 1.8
+}

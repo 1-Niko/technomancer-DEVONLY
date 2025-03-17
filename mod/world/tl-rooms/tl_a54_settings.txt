@@ -1,0 +1,11 @@
+Template: NONE
+DangerType: None
+CeilingDrips: 1
+Grime: 0
+Palette: 21
+EffectColorA: 19
+Effects: SilenceWater-1-20-20, LightRain-0.3586957-28-84, 
+PlacedObjects: CGDrySpot><434.8397><245.6196><167~-151~-643^479~False~None, CGDrySpot><-200.8958><-113.1369><124~83~535^390~False~None, CGDrySpot><95.7776><265.4481><35~166~-508^-479~False~None, CGDrySpot><237.8025><238.2816><194~-132~94^-326~True~None, LightSource><377.3997><372.1327><0.2608696~EffectColor1~-45~35~50~86.60254~0~1~None~0~0, LightSource><381.9382><448.9322><0.326087~EffectColor1~-32~44~50~86.60254~0~1~None~0~0, CosmeticSlimeMold2><135.8918><617.1682><50~-75, CosmeticSlimeMold2><304.9079><625.0725><-3~-39, SlimeMold><123.3902><589.6426><-338~-128~2~3, SlimeMold><164.059><634.4409><-337~-66~2~3, SlimeMold><317.013><605.0504><-519~-266~2~3, LightFixture><301.828><215.3979><RedLight~17.32051~-10~52, LightFixture><881.3738><593.6571><RedLight~17.32051~-10~26, CosmeticSlimeMold><128.8054><617.2962><0~100, CosmeticSlimeMold><301.1635><634.1349><1~-50, 
+AmbientSounds: OMNI><AM_ENV-SubTerr.ogg><782.9411><450.3089><0.3804348><1, OMNI><AM_ENV-NatWind.ogg><728.5501><491.4928><0.3586957><1, DIR><AM_WIN-HowlingWnd.ogg><737.6819><549.812><0.4456522><1><-23.62938><0, SPOT><SO_IND-FlourLight.ogg><787.4238><490.849><0.5><1><891.4238><600.849><-35.35534><-35.35534><0><0.1, SPOT><SO_IND-FlourLight.ogg><787.05><490.7447><0.5><1><308.05><214.7447><-35.35534><-35.35534><0><0.1, 
+FadePalette: 20, 0.1304348
+MorePalette0: 10, 0.3913043

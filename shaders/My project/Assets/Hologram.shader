@@ -3,11 +3,11 @@ Shader "Custom/Radial"
     Properties
     {
         _MainTex ("Sprite Texture", 2D) = "white" {}
-		_Offset ("Offset", Float) = 0
-		_RandomOffset ("Randomized Offset", Float) = 0
-		_Radial ("Is Radial", Int) = 1
-		
-		_ColourA ("ColourA", Vector) = (1, 1, 1, 1)
+        _Offset ("Offset", Float) = 0
+        _RandomOffset ("Randomized Offset", Float) = 0
+        _Radial ("Is Radial", Int) = 1
+        _ColourA ("ColourA", Vector) = (1, 1, 1, 1)
+        _FlickeringDisabled ("Flickering Disabled", Int) = 0
     }
     SubShader
     {
@@ -26,12 +26,13 @@ Shader "Custom/Radial"
 			
             sampler2D _MainTex;
 			
-			float _Offset;
-			float _RandomOffset;
+            float _Offset;
+            float _RandomOffset;
 			
-			bool _Radial;
+            int _Radial;
+            int _FlickeringDisabled;
 
-			Vector _ColourA;
+            Vector _ColourA;
 
             struct MeshData
             {
@@ -55,40 +56,52 @@ Shader "Custom/Radial"
 
             float random(float2 uv)
             {
-                return frac(sin(dot(uv,float2(12.9898, 78.233))) * 43758.5453123);
+                return frac(sin(dot(uv, float2(12.9898, 78.233))) * 43758.5453123);
             }
 
-			float radialSine(float2 uv, float offset)
-			{
-				return sin(3.141 * 59 * sqrt(((uv.x - 0.5) * (uv.x - 0.5)) + ((uv.y - 0.5) * (uv.y - 0.5))) - offset);
-			}
+            float radialSine(float2 uv, float offset)
+            {
+                return sin(3.141 * 59 * sqrt(((uv.x - 0.5) * (uv.x - 0.5)) + ((uv.y - 0.5) * (uv.y - 0.5))) - offset);
+            }
 			
-			float scanline(float2 uv, float offset)
-			{
-				return sin(17 * 3.141 * (uv.y + -5 * uv.x - offset));
-			}
+            float scanline(float2 uv, float offset)
+            {
+                return sin(17 * 3.141 * (uv.y + -5 * uv.x - offset));
+            }
 			
-			fixed4 frag (Interpolators i) : SV_Target
-			{
-				bool isColour = false;
+            fixed4 frag (Interpolators i) : SV_Target
+            {
+                bool isColour = false;
 				
-				float4 colour = tex2D(_MainTex, i.uv);
-				float4 sample = tex2D(_MainTex, i.uv);
-				if (_Radial == 0 && radialSine(float2(colour.r, colour.g), _Offset) + random(float2(i.uv.x,i.uv.y + _RandomOffset)) < 0)
-				{ isColour = true; }
-				else if (_Radial == 1 && scanline(float2(colour.r, colour.g), _Offset / 67) + random(float2(i.uv.x,i.uv.y + _RandomOffset)) < 0)
-				{ isColour = true; }
+                float4 colour = tex2D(_MainTex, i.uv);
+                float4 sample = tex2D(_MainTex, i.uv);
 				
-				if (isColour)
+                if (_FlickeringDisabled == 0)
+                {
+                    if (_Radial == 0 && radialSine(float2(colour.r, colour.g), _Offset) + random(float2(i.uv.x, i.uv.y + _RandomOffset)) < 0)
+                    { 
+                        isColour = true; 
+                    }
+                    else if (_Radial == 1 && scanline(float2(colour.r, colour.g), _Offset / 67) + random(float2(i.uv.x, i.uv.y + _RandomOffset)) < 0)
+                    { 
+                        isColour = true; 
+                    }
+                }
+				else
 				{
-					if (sample.b == 1)
-					{
-						return _ColourA;
-					}
+					isColour = true;
 				}
 				
-				return float4(0,0,0,0);
-			}
+                if (isColour)
+                {
+                    if (sample.b == 1)
+                    {
+                        return _ColourA;
+                    }
+                }
+				
+                return float4(0, 0, 0, 0);
+            }
             ENDCG
         }
     }

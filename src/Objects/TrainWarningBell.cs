@@ -200,6 +200,25 @@ public class TrainBell(PlacedObject placedObject, Vector2 pos, int waitCount, Ve
 
         if (hardEnabled && (enabled || forceWarning) && Constants.shaders_enabled && Constants.SlugpackShaders.TryGetValue(rCam.room.game.rainWorld, out var Shaders))
         {
+            if (OptionsMenu.alwaysOnHolograms.Value)
+            {
+                sLeaser.sprites[0]._renderLayer?._material?.SetFloat("_FlickeringDisabled", 1);
+                sLeaser.sprites[1]._renderLayer?._material?.SetFloat("_FlickeringDisabled", 1);
+                sLeaser.sprites[2]._renderLayer?._material?.SetFloat("_FlickeringDisabled", 1);
+                sLeaser.sprites[3]._renderLayer?._material?.SetFloat("_FlickeringDisabled", 1);
+                sLeaser.sprites[4]._renderLayer?._material?.SetFloat("_FlickeringDisabled", 1);
+                sLeaser.sprites[5]._renderLayer?._material?.SetFloat("_FlickeringDisabled", 1);
+            }
+            else
+            {
+                sLeaser.sprites[0]._renderLayer?._material?.SetFloat("_FlickeringDisabled", 0);
+                sLeaser.sprites[1]._renderLayer?._material?.SetFloat("_FlickeringDisabled", 0);
+                sLeaser.sprites[2]._renderLayer?._material?.SetFloat("_FlickeringDisabled", 0);
+                sLeaser.sprites[3]._renderLayer?._material?.SetFloat("_FlickeringDisabled", 0);
+                sLeaser.sprites[4]._renderLayer?._material?.SetFloat("_FlickeringDisabled", 0);
+                sLeaser.sprites[5]._renderLayer?._material?.SetFloat("_FlickeringDisabled", 0);
+            }
+
             if (!(warning || forceWarning))
             {
                 sLeaser.sprites[0].SetPosition(pos - rCam.pos);

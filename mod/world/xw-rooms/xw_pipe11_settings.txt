@@ -1,0 +1,6 @@
+Template: NONE
+Palette: 11
+EffectColorA: 7
+Effects: Darkness-0.2319971-20-20, HeatWave-0.1623983-30-30, 
+PlacedObjects: LightSource><471.1145><575.7491><1~EffectColor1~-14.94061~-242.9229~-297.1917~-149.6017~1~0~None~0~0, 
+FadePalette: 34, 0.5026607

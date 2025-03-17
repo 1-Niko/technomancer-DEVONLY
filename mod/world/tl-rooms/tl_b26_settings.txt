@@ -1,0 +1,10 @@
+Template: NONE
+DangerType: FloodAndRain
+CeilingDrips: 1
+Grime: 0.1630435
+WaterReflectionAlpha: 0
+Palette: 5
+Effects: SilenceWater-1-20-20, Desaturation-0.4130435-14-74, HeatWave-0.7065217-279-24, 
+PlacedObjects: DataPearl><355.629><970.9093><0~0~0~0~Misc~0, SteamPipe><592.3282><336.1024><-61~123, SteamPipe><412.8922><193.8593><29~106, SteamPipe><341.95><301.0029><23~102, SteamPipe><694.6891><611.8095><-52~93, SteamPipe><721.6498><485.8269><-149~26, SteamPipe><267.5612><460.9339><72~77, SteamPipe><667.5717><264.0905><68~113, SteamPipe><732.6972><110.8071><-41~140, SteamPipe><623.8438><371.8233><23~121, SteamPipe><567.4869><246.1996><-88~91, SteamPipe><550.3044><125.7081><-57~135, SteamPipe><220.3002><254.7597><32~63, SteamPipe><572.4476><300.943><-59~121, SteamPipe><267.6523><400.8796><92~48, SteamPipe><332.6605><201.6307><-59~118, SteamPipe><442.1788><139.8395><42~113, SteamPipe><228.0683><143.938><53~88, SteamPipe><387.9609><306.5539><20~119, SteamPipe><229.3845><571.1481><56~91, SteamPipe><252.1155><520.148><61~89, 
+AmbientSounds: OMNI><SO_WAT-OpenFlow.ogg><747.3002><489.9917><0.5><1, 
+FadePalette: 10, 0.7934783, 0.8043478

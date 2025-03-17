@@ -1,2 +1,5 @@
 Template: NONE
+DangerType: Flood
+Palette: 10
 Effects: SilenceWater-1-20-20, 
+AmbientSounds: OMNI><AM_ENV-SubTerr.ogg><758.0219><448.1988><0.3152174><1, OMNI><SO_WAT-LilDrips.ogg><755.5528><520.7167><0.5><1, OMNI><SO_WAT-MoreDrips.ogg><756.8045><358.5576><0.5><1, 

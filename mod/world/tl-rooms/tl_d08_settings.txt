@@ -1,0 +1,16 @@
+Template: NONE
+DangerType: Blizzard
+CeilingDrips: 1
+WaveSpeed: 0.7561131
+WaveLength: 0.8719435
+WaveAmplitude: 5.299498E-15
+SecondWaveLength: 0.1666667
+SecondWaveAmplitude: 0
+Grime: 0.1630435
+WaterReflectionAlpha: 0
+Palette: 22
+Effects: Desaturation-0.5108696-20-20, SilenceWater-1-25-75, Coldness-1-33-123, DayNight-0.8043478-288-17, WaterDepth-0.06521739-289-75, 
+PlacedObjects: GlowWeed><687.0358><554.8032><0~0~2~3, GlowWeed><615.199><623.0198><0~0~2~3, GlowWeed><424.0928><422.8228><0~0~2~3, GlowWeed><277.949><564.7297><0~0~2~3, LeakyPipe><253.9186><2926.067><-270~-81~0.07608695~0;0^117;33^217;39^292;26, LeakyPipe><713.9234><2944.435><100~50~0.1086956~0;0^-68;18^-136;15^-307;25, DayNightSettings><-55.15454><2702.627><5~8.660254~22~10, 
+AmbientSounds: OMNI><SO_WAT-MoreDrips.ogg><760.0909><501.1288><0.5><1, OMNI><SO_WAT-LilDrips.ogg><765.5562><584.2008><0.5><1, OMNI><Weird Deep Hole.wav><790.8225><419.1578><0.3043478><1, OMNI><AM_RAIN-RollingThunder.ogg><735.3291><314.6039><0.7065217><1, 
+FadePalette: 10, 0.5760869, 0.7173913, 0.7717391, 0.8043478
+MorePalette0: 22, 1, 0, 0, 0

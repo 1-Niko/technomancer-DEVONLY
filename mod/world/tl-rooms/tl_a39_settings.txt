@@ -1,0 +1,4 @@
+Template: NONE
+DangerType: Flood
+Palette: 10
+AmbientSounds: OMNI><AM_ENV-SubTerr.ogg><749.556><444.2986><0.3152174><1, OMNI><SO_WAT-LilDrips.ogg><759.3446><514.8759><0.5><1, OMNI><SO_WAT-MoreDrips.ogg><754.8705><352.5904><0.5><1, 
