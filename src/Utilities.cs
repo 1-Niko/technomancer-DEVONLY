@@ -211,9 +211,9 @@ public static class Utilities
                 else if (nearestCreature is Overseer)
                     return (thrw) ? 88 : (jmp) ? 89 : 0;
 
-                else if (nearestCreature is Vulture && nearestCreature.Template.type == MoreSlugcatsEnums.CreatureTemplateType.MirosVulture)
+                else if (nearestCreature is Vulture && nearestCreature.Template.type == DLCSharedEnums.CreatureTemplateType.MirosVulture)
                     return (thrw) ? 192 : (jmp) ? 193 : 0;
-                else if (nearestCreature is DaddyLongLegs && nearestCreature.Template.type == MoreSlugcatsEnums.CreatureTemplateType.TerrorLongLegs)
+                else if (nearestCreature is DaddyLongLegs && nearestCreature.Template.type == DLCSharedEnums.CreatureTemplateType.TerrorLongLegs)
                     return (thrw) ? 194 : (jmp) ? 195 : 0;
                 else if (nearestCreature is Inspector)
                     return (thrw) ? 196 : (jmp) ? 197 : 0;

@@ -28,7 +28,7 @@ public class Plugin : BaseUnityPlugin
             Logger = base.Logger;
             DebugWarning("Technomancer is loading...");
 
-            ApplyCreatures();
+            //ApplyCreatures();
 
             On.RainWorld.OnModsInit += RainWorld_OnModsInit;
         }
@@ -55,7 +55,7 @@ public class Plugin : BaseUnityPlugin
             HypothermiaHooks.Apply();
             CreatureHooks.Apply();
             MoonDialogue.Apply();
-            InitializeObjects.Apply();
+            //InitializeObjects.Apply();
             RoomScripts.Apply();
 
             LoadAtlases();

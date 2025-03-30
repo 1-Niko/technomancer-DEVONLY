@@ -61,7 +61,8 @@ public class WaterTrashObject : CosmeticSprite, IDrawable
         {
             Vector2 offset = pos + new Vector2(trashArea.x / trashCount * i, 0);
             sLeaser.sprites[i].isVisible = true;
-            sLeaser.sprites[i].SetPosition(new Vector2(offset.x, room.FloatWaterLevel(Mathf.Max(offset.x, 0))) - rCam.pos);
+            //sLeaser.sprites[i].SetPosition(new Vector2(offset.x, room.FloatWaterLevel(Mathf.Max(offset.x, 0))) - rCam.pos);
+            sLeaser.sprites[i].SetPosition(new Vector2(offset.x, room.FloatWaterLevel(new Vector2(Mathf.Max(offset.x, 0), 0))) - rCam.pos);
 
             int depth = (int)Mathf.Round(Utilities.Normalize(depths[i], 0, 30, frontDepth, backDepth));
 
