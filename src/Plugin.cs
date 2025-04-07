@@ -28,7 +28,7 @@ public class Plugin : BaseUnityPlugin
             Logger = base.Logger;
             DebugWarning("Technomancer is loading...");
 
-            //ApplyCreatures();
+            ApplyCreatures();
 
             On.RainWorld.OnModsInit += RainWorld_OnModsInit;
         }
@@ -55,7 +55,7 @@ public class Plugin : BaseUnityPlugin
             HypothermiaHooks.Apply();
             CreatureHooks.Apply();
             MoonDialogue.Apply();
-            //InitializeObjects.Apply();
+            InitializeObjects.Apply();
             RoomScripts.Apply();
 
             LoadAtlases();
@@ -110,14 +110,13 @@ public class Plugin : BaseUnityPlugin
             }
             catch (Exception ex)
             {
-                Debug.Log($"Remix Menu Template examples: Hook_OnModsInit options failed init error {optionsMenuInstance}{ex}");
+                DebugError($"Remix Menu Template examples: Hook_OnModsInit options failed init error {optionsMenuInstance}{ex}");
             }
 
             On.RainWorld.OnModsDisabled += RainWorld_OnModsDisabled;
         }
         catch (Exception ex)
         {
-            Debug.LogException(ex);
             DebugError(ex);
             DebugError("Technomancer failed to load OnModsInit!");
         }

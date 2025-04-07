@@ -1,8 +1,8 @@
 namespace Slugpack;
 
-internal static class GameHooks
+public static class GameHooks
 {
-    internal static void Apply()
+    public static void Apply()
     {
         On.RainWorldGame.ctor += RainWorldGame_ctor;
         On.RoomRealizer.CanAbstractizeRoom += RoomRealizer_CanAbstractizeRoom;
@@ -11,7 +11,6 @@ internal static class GameHooks
         //On.Region.EquivalentRegion += Region_EquivalentRegion;
         //On.Region.GetVanillaEquivalentRegionAcronym += Region_GetVanillaEquivalentRegionAcronym;
         On.ShortcutGraphics.Update += ShortcutGraphics_Update;
-        On.RoomCamera.SpriteLeaser.RemoveAllSpritesFromContainer += SpriteLeaser_RemoveAllSpritesFromContainer;
         On.RegionGate.customKarmaGateRequirements += RegionGate_customKarmaGateRequirements;
         On.AboveCloudsView.ctor += AboveCloudsView_ctor;
 
@@ -357,33 +356,6 @@ internal static class GameHooks
         {
             self.karmaRequirements[0] = MoreSlugcatsEnums.GateRequirement.OELock;
             self.karmaRequirements[1] = MoreSlugcatsEnums.GateRequirement.OELock;
-        }
-    }
-
-    private static void SpriteLeaser_RemoveAllSpritesFromContainer(On.RoomCamera.SpriteLeaser.orig_RemoveAllSpritesFromContainer orig, RoomCamera.SpriteLeaser self)
-    {
-        try
-        {
-            orig(self);
-        }
-        catch (Exception ex)
-        {
-            if (self != null && self.sprites != null && self.sprites.Length > 0)
-            {
-                for (int i = 0; i < self.sprites.Length; i++)
-                {
-                    self.sprites[i].RemoveFromContainer();
-                }
-                if (self.containers != null)
-                {
-                    for (int j = 0; j < self.containers.Length; j++)
-                    {
-                        self.containers[j].RemoveFromContainer();
-                    }
-                }
-            }
-            Plugin.DebugError(ex);
-            Debug.LogException(ex);
         }
     }
 
