@@ -4,13 +4,14 @@ namespace Slugpack;
 
 internal static class PlayerGraphicsHooks
 {
-    public class TechnomancerFur : CosmeticSprite
+    public class FurTuft : CosmeticSprite
     {
-        public TechnomancerFur(Room room, PlayerGraphics owner)
+        public FurTuft(Room room, TechnomancerFur owner, Vector2 pos)
         {
-            this.pos = pos;
             this.room = room;
             this.owner = owner;
+            this.pos = pos;
+            this.prevPos = pos;
         }
 
         public override void Update(bool eu)
@@ -19,24 +20,40 @@ internal static class PlayerGraphicsHooks
 
         public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
-            sLeaser.sprites[0].scale = 100f;
-            sLeaser.sprites[0].SetPosition(pos);
-            sLeaser.sprites[0].isVisible = !owner.player.inShortcut;
+            (sLeaser.sprites[0] as TriangleMesh).MoveVertice(0, pos);
+            (sLeaser.sprites[0] as TriangleMesh).MoveVertice(1, pos + (new Vector2(0f, 2f) - (prevPos - pos)));
+            (sLeaser.sprites[0] as TriangleMesh).MoveVertice(2, pos + (new Vector2(2f, 2f) - (prevPos - pos)));
+            (sLeaser.sprites[0] as TriangleMesh).MoveVertice(3, pos + (new Vector2(2f, 4f) - (prevPos - pos)));
+            (sLeaser.sprites[0] as TriangleMesh).MoveVertice(4, pos + (new Vector2(4f, 4f) - (prevPos - pos)));
+            (sLeaser.sprites[0] as TriangleMesh).MoveVertice(5, pos + (new Vector2(4f, 2f) - (prevPos - pos)));
+            (sLeaser.sprites[0] as TriangleMesh).color = new UnityEngine.Color(0f, 1f, 0f);
+
+
+            prevPos = pos;
+
+
+            // sLeaser.sprites[0].isVisible = true;// !owner.player.inShortcut;
             base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
         }
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {
             sLeaser.sprites = new FSprite[1];
-            for (int i = 0; i < 1; i++)
-            { sLeaser.sprites[i] = new FSprite("pixel", true); }
+            TriangleMesh.Triangle[] tris = new TriangleMesh.Triangle[]
+            {
+            new TriangleMesh.Triangle(0, 1, 2),
+            new TriangleMesh.Triangle(1, 2, 3),
+            new TriangleMesh.Triangle(2, 3, 4),
+            new TriangleMesh.Triangle(2, 4, 5),
+            };
+            sLeaser.sprites[0] = new TriangleMesh("Futile_White", tris, true, false);
 
             AddToContainer(sLeaser, rCam, null);
         }
 
         public override void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
         {
-            newContatiner ??= rCam.ReturnFContainer("Midground");
+            newContatiner ??= rCam.ReturnFContainer("Foreground");
             foreach (FSprite fsprite in sLeaser.sprites)
             {
                 fsprite.RemoveFromContainer();
@@ -44,10 +61,47 @@ internal static class PlayerGraphicsHooks
             }
         }
 
-        public Vector2 pos;
+        public TechnomancerFur owner;
 
-        public Room room;
+        public Vector2 prevPos;
+    }
 
+    public class TechnomancerFur : CosmeticSprite
+    {
+        public TechnomancerFur(Room room, PlayerGraphics owner)
+        {
+            this.room = room;
+            this.owner = owner;
+        }
+
+        public override void Update(bool eu)
+        {
+            if (this.furTufts == null)
+            {
+                this.furTufts = new FurTuft[] { new FurTuft(room, this, pos) };
+
+                for (int i = 0; i < this.furTufts.Length; i++)
+                    room.AddObject(this.furTufts[i]);
+            }
+
+        }
+
+        public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
+        {
+            for (int i = 0; i < this.furTufts.Length; i++)
+                this.furTufts[i].pos = pos + new Vector2(0f, 30f);
+            base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
+        }
+
+        public override void Destroy()
+        {
+            for (int i = 0; i < this.furTufts.Length; i++)
+                this.furTufts[i].Destroy();
+
+            base.Destroy();
+        }
+
+        public FurTuft[] furTufts;
         public PlayerGraphics owner;
     }
 
@@ -114,21 +168,21 @@ internal static class PlayerGraphicsHooks
 
     private static void PlayerGraphics_InitiateSprites(On.PlayerGraphics.orig_InitiateSprites orig, PlayerGraphics self, RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     {
-        if (TechyFur == null)
-        {
-            TechyFur = new TechnomancerFur(self.player.room, self);
-            self.player.room.AddObject(TechyFur);
-        }
-        else if (TechyFur.room != self.player.room)
-        {
-            TechyFur.Destroy();
-            TechyFur = new TechnomancerFur(self.player.room, self);
-            self.player.room.AddObject(TechyFur);
-        }
+        // if (TechyFur == null)
+        // {
+        //     TechyFur = new TechnomancerFur(self.player.room, self);
+        //     self.player.room.AddObject(TechyFur);
+        // }
+        // else if (TechyFur.room != self.player.room)
+        // {
+        //     TechyFur.Destroy();
+        //     TechyFur = new TechnomancerFur(self.player.room, self);
+        //     self.player.room.AddObject(TechyFur);
+        // }
 
         orig(self, sLeaser, rCam);
 
-        TechyFur.pos = sLeaser.sprites[0].GetPosition();
+        // TechyFur.pos = sLeaser.sprites[0].GetPosition();
 
         string slug = self.player.slugcatStats.name.value;
         if (!new List<string> { "voyager", "technomancer" }.Contains(slug))
@@ -181,9 +235,10 @@ internal static class PlayerGraphicsHooks
         if (!OptionsMenu.furToggle.Value && sLeaser.sprites[3]?.element?.name is string text && text.StartsWith("Head"))
             sLeaser.sprites[3].element = Futile.atlasManager.GetElementWithName("Fluff" + text);
 
-        TechyFur.pos = sLeaser.sprites[0].GetPosition();
+        // TechyFur.pos = sLeaser.sprites[0].GetPosition();
+        // Plugin.Logger.LogInfo($"{self.head.rad} {self.owner.bodyChunks[0].rad} {self.owner.bodyChunks[1].rad} {self.tail[0].rad} {self.tail[1].rad} {self.tail[2].rad} {self.tail[3].rad}");
     }
 
 
-    private static TechnomancerFur TechyFur;
+    // public static TechnomancerFur TechyFur;
 }
