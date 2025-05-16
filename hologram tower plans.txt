@@ -1,0 +1,3 @@
+horizontal scanlines flicker individually as well as collectively
+its an old tower so maybe some of the lines go down/glitch sometimes
+edges get fuzzy/flickery at the end of each scanline

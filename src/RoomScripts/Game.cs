@@ -79,36 +79,79 @@ public static class GameHooks
             self.elements.Add(new DistantBlinkingLight(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(-672f, 22f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 0.35f), new UnityEngine.Color(1f, 0f, 0f, 0.35f), 52, 0.11f, 79, 0.63f, 3019, false, false, false, true));
             self.elements.Add(new DistantBlinkingLight(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(-677f, -2f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 0.15f), new UnityEngine.Color(1f, 0f, 0f, 0.15f), 72, 0.16f, 85, 0.57f, 3010, false, false, false, true));
 
-            self.elements.Add(new SkyProjector(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(244f, 105f), 130f), 130f, -14f));
+            self.elements.Add(new AdTower(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(-241f, -28f), 204f), 204f, -23f));
 
-            /*self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 0));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 1));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 2));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 3));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 4));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 5));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 6));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 7));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 8));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 9));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 10));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 11));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 12));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 13));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 14));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 15));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 16));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 17));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 18));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 19));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 20));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 21));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 22));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 23));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 24));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 25));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 26));
-            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, 27));*/
+            self.elements.Add(new SkyProjector(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(245f, -73f), 130f), 130f, -14f));
+            self.elements.Add(new Karma10Projection(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(245f, 180f), 130f), 130f, -14f));
+
+            /*
+            var orbitalPathFunctions = new Func<float, float>[]
+            {
+                oc => (-0.0000363267f * oc * oc) + (0.1710931268f * oc) - 86.5630594383f,  // Original orbital 0
+                oc => (-0.0000334082f * oc * oc) + (0.1712030144f * oc) - 65.9813493144f,  // Original orbital 1
+                oc => (-0.0000323288f * oc * oc) + (0.1710666561f * oc) - 47.8399195652f,  // Original orbital 2
+                oc => (-0.0000303659f * oc * oc) + (0.1711115019f * oc) - 32.1212810071f,  // Original orbital 3
+                oc => (-0.0000287223f * oc * oc) + (0.1710530134f * oc) - 18.2210235126f,  // Original orbital 4
+                oc => (-0.0000274961f * oc * oc) + (0.1709293376f * oc) - 5.8558448939f,   // Original orbital 5
+                oc => (-0.0000260650f * oc * oc) + (0.1710802118f * oc) + 5.2381700178f,    // Original orbital 6
+                oc => (-0.0000250335f * oc * oc) + (0.1710988528f * oc) + 15.1542853523f,   // Original orbital 7
+                oc => (-0.0000239273f * oc * oc) + (0.1713665901f * oc) + 24.2633553128f,   // Original orbital 8
+                oc => (-0.0000234322f * oc * oc) + (0.1708555706f * oc) + 32.5331710154f,   // Original orbital 9
+                oc => (-0.0000216621f * oc * oc) + (0.1711151146f * oc) + 39.9845200978f,   // Original orbital 10
+                oc => (-0.0000220592f * oc * oc) + (0.1708293211f * oc) + 46.8635180885f,   // Original orbital 11
+                oc => (-0.0000216171f * oc * oc) + (0.1705425743f * oc) + 53.2632652169f,   // Original orbital 12
+                oc => (-0.0000208150f * oc * oc) + (0.1707844536f * oc) + 59.1532616606f,   // Original orbital 13
+                oc => (-0.0000202718f * oc * oc) + (0.1706248968f * oc) + 64.7266484433f,   // Original orbital 14
+                oc => (-0.0000189377f * oc * oc) + (0.1708087470f * oc) + 69.5016064993f,   // Original orbital 15
+                oc => (-0.0000185779f * oc * oc) + (0.1707352130f * oc) + 74.3526367362f,   // Original orbital 16
+                oc => (-0.0000183122f * oc * oc) + (0.1707690558f * oc) + 78.7941796466f,   // Original orbital 17
+                oc => (-0.0000172209f * oc * oc) + (0.1707718221f * oc) + 82.7937619301f,   // Original orbital 18
+                oc => (-0.0000163887f * oc * oc) + (0.1709075477f * oc) + 86.5130019370f,   // Original orbital 19
+                oc => (-0.0000167171f * oc * oc) + (0.1708766189f * oc) + 90.4854475576f,   // Original orbital 20
+                oc => (-0.0000159250f * oc * oc) + (0.1712625822f * oc) + 93.7098254026f,   // Original orbital 21
+                oc => (-0.0000155831f * oc * oc) + (0.1712748680f * oc) + 96.9214488030f,   // Original orbital 22
+                oc => (-0.0000156110f * oc * oc) + (0.1713169652f * oc) + 99.9895828877f,   // Original orbital 23
+                oc => (-0.0000145937f * oc * oc) + (0.1710636304f * oc) + 102.7652850157f,  // Original orbital 24
+                oc => (-0.0000146095f * oc * oc) + (0.1710226112f * oc) + 105.6145134023f,  // Original orbital 25
+                oc => (-0.0000141062f * oc * oc) + (0.1710418138f * oc) + 108.1091811642f,  // Original orbital 26
+                oc => (-0.0000136275f * oc * oc) + (0.1712705948f * oc) + 110.5913379160f   // Original orbital 27
+            };
+
+            var orbitalMovementSpeeds = new float[orbitalPathFunctions.Length];
+            for (int i = 0; i < orbitalMovementSpeeds.Length; i++)
+            {
+                orbitalMovementSpeeds[i] = 4f / Mathf.Pow(2f, i);
+            }
+
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[0], orbitalMovementSpeeds[0]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[1], orbitalMovementSpeeds[1]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[2], orbitalMovementSpeeds[2]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[3], orbitalMovementSpeeds[3]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[4], orbitalMovementSpeeds[4]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[5], orbitalMovementSpeeds[5]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[6], orbitalMovementSpeeds[6]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[7], orbitalMovementSpeeds[7]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[8], orbitalMovementSpeeds[8]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[9], orbitalMovementSpeeds[9]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[10], orbitalMovementSpeeds[10]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[11], orbitalMovementSpeeds[11]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[12], orbitalMovementSpeeds[12]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[13], orbitalMovementSpeeds[13]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[14], orbitalMovementSpeeds[14]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[15], orbitalMovementSpeeds[15]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[16], orbitalMovementSpeeds[16]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[17], orbitalMovementSpeeds[17]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[18], orbitalMovementSpeeds[18]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[19], orbitalMovementSpeeds[19]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[20], orbitalMovementSpeeds[20]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[21], orbitalMovementSpeeds[21]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[22], orbitalMovementSpeeds[22]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[23], orbitalMovementSpeeds[23]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[24], orbitalMovementSpeeds[24]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[25], orbitalMovementSpeeds[25]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[26], orbitalMovementSpeeds[26]));
+            self.elements.Add(new DistantSatellite(self, self.PosFromDrawPosAtNeutralCamPos(new Vector2(0f, 0f), depth), depth, 10f, new UnityEngine.Color(0f, 1f, 0f, 1f), 63, 0.9f, 3000, true, orbitalPathFunctions[27], orbitalMovementSpeeds[27]));
+            */
         }
     }
 
@@ -356,7 +399,7 @@ public static class GameHooks
         orig(self);
         if (ModManager.MSC && self.room.abstractRoom.name == "GATE_TL_OE")
         {
-            self.karmaRequirements[0] = MoreSlugcatsEnums.GateRequirement.OELock;
+            self.karmaRequirements[0] = RegionGate.GateRequirement.ThreeKarma;
             self.karmaRequirements[1] = MoreSlugcatsEnums.GateRequirement.OELock;
         }
     }

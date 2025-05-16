@@ -29,6 +29,7 @@ internal static class InitializeObjects
                 RegisterManagedObject<RoomBackground, RoomBackgroundData, ManagedRepresentation>("ImageBackground", "Technomancer");
                 RegisterManagedObject<RadioLight, RadioLightObjectData, ManagedRepresentation>("BackgroundRadioLights", "Technomancer");
                 RegisterManagedObject<RadioLightExtender, RadioLightExtenderData, ManagedRepresentation>("BackgroundRadioExtender", "Technomancer");
+                RegisterManagedObject<TrainControllerHologram, TrainControllerHologramData, ManagedRepresentation>("TrainHologram", "Technomancer");
 
                 // RegisterManagedObject<ColourObject, ColourObjectData, ManagedRepresentation>("COLOURGRABBER", "Technomancer");
 

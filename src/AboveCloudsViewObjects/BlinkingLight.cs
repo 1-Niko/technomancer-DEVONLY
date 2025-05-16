@@ -136,10 +136,10 @@ public class DistantBlinkingLight : BackgroundScene.BackgroundSceneElement
                 ALPHA[i] = Mathf.Clamp((0.5f * colour_day.w) + Twinkle(982f * i + randomizedTwinkleOffset[i]), 0, 1);
 
                 sLeaser.sprites[i].isVisible = ((((timer % day_timer) / (float)day_timer) < day_activity) && ALPHA[i] > (1f / 3f) && ALPHA[0] > (1f / 8f)) || forceVisible;
-                if (ALPHA[i] * colour_day.w < (1f / 3f))
-                {
-                    sLeaser.sprites[i].isVisible = false;
-                }
+                // if (ALPHA[i] * colour_day.w < (1f / 3f))
+                // {
+                //     sLeaser.sprites[i].isVisible = false;
+                // }
                 if (i > 0)
                 {
                     sLeaser.sprites[i].color = new Color(colour_day.x, colour_day.y, colour_day.z, ALPHA[i] * colour_day.w);

@@ -103,15 +103,22 @@ public class TrainBell(PlacedObject placedObject, Vector2 pos, int waitCount, Ve
         }
 
         enabled = false;
-        for (int i = 0; i < players.Count; i++)
+        if (OptionsMenu.alwaysOnHolograms.Value)
         {
-            if (RWCustom.Custom.Dist(pos, players[i].mainBodyChunk.pos) < RWCustom.Custom.Dist(pos, pos + (placedObject.data as TrainWarningBellData).rad))
+            enabled = true;
+        }
+        else
+        {
+            for (int i = 0; i < players.Count; i++)
             {
-                enabled = true;
-                break;
+                if (RWCustom.Custom.Dist(pos, players[i].mainBodyChunk.pos) < RWCustom.Custom.Dist(pos, pos + (placedObject.data as TrainWarningBellData).rad))
+                {
+                    enabled = true;
+                    break;
+                }
+                if (enabled)
+                    break;
             }
-            if (enabled)
-                break;
         }
 
         var trackController = room.updateList.Where(element => element.ToString() == "Slugpack.TrainTrack").ToList();

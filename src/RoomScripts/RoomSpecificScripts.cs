@@ -61,10 +61,69 @@ public class GATE_TL_OE_IntroScript : UpdatableAndDeletable
                 if (abstrCrit != null)
                 {
                     var player = abstrCrit.realizedCreature as Player;
+                    player.AddFood(5);
+                    player.standing = true;
                     player.controller ??= new Player.NullController();
-                    player.SuperHardSetPosition(new Vector2(566f, 165f));
+                    player.SuperHardSetPosition(new Vector2(406f, 165f));
+
+                    (player.graphicsModule as PlayerGraphics).owner.bodyChunks[0].pos = new Vector2(390.1f, 165.6f);
+                    (player.graphicsModule as PlayerGraphics).owner.bodyChunks[1].pos = new Vector2(390.1f, 148f);
+                    (player.graphicsModule as PlayerGraphics).head.pos = new Vector2(390.1f, 170.1f);
+                    (player.graphicsModule as PlayerGraphics).tail[0].pos = new Vector2(384.3f, 146.1f);
+                    (player.graphicsModule as PlayerGraphics).tail[1].pos = new Vector2(377.2f, 143.5f);
+                    (player.graphicsModule as PlayerGraphics).tail[2].pos = new Vector2(370.2f, 142.2f);
+                    (player.graphicsModule as PlayerGraphics).tail[3].pos = new Vector2(363.4f, 141f);
                 }
             }
+
+            if (room.regionGate != null)
+            {
+                room.regionGate.letThroughDir = true;
+
+                room.regionGate.mode = RegionGate.Mode.ClosingAirLock;
+
+                room.regionGate.goalDoorPositions[0] = 1f;
+                room.regionGate.goalDoorPositions[1] = 1f;
+                room.regionGate.doors[1].closedFac = 1f;
+            }
+
+            Constants.DamagedShortcuts.TryGetValue(room.game, out var ShortcutTable);
+            int newRoom = room.abstractRoom.connections[0];
+            if (newRoom > -1)
+            {
+                AbstractRoom abstractRoom = room.world.GetAbstractRoom(newRoom);
+                while (abstractRoom.realizedRoom == null)
+                {
+                    abstractRoom.RealizeRoom(room.world, room.game);
+                }
+                var shortcutList = abstractRoom?.realizedRoom?.shortcuts?
+                    .Where(element => element.destNode != -1 && element.destNode < abstractRoom.connections?.Length && abstractRoom.connections[element.destNode] != -1)
+                    .ToList() ?? [];
+
+                if (shortcutList.Count > 0)
+                {
+                    var exitIndex = abstractRoom.ExitIndex(room.abstractRoom.index);
+                    if (exitIndex >= 0 && exitIndex < shortcutList.Count)
+                    {
+                        var shortcut = shortcutList[exitIndex];
+
+                        List<ShortcutData> inQuestion = room.shortcuts.Where(element => (element.destNode != -1 && element.destNode < room.abstractRoom.connections.Length && room.abstractRoom.connections[element.destNode] != -1) && element.shortCutType == ShortcutData.Type.RoomExit).ToList();
+
+                        ShortcutData[] shortcutDataArray = [inQuestion[0], shortcut];
+                        Room[] roomArray = [room, abstractRoom.realizedRoom];
+
+                        int lockTime = 10 * 40;
+
+                        LockHologram[] hologramArray = [new(room.MiddleOfTile(inQuestion[0].StartTile), (room.game.session.Players[0].realizedCreature as Player).ShortCutColor(), lockTime), new LockHologram(abstractRoom.realizedRoom.MiddleOfTile(shortcut.StartTile), (room.game.session.Players[0].realizedCreature as Player).ShortCutColor(), lockTime)];
+
+                        ShortcutTable.locks.Add(new Lock(shortcutDataArray, roomArray, lockTime, hologramArray));
+
+                        room.AddObject(hologramArray[0]);
+                        abstractRoom.realizedRoom.AddObject(hologramArray[1]);
+                    }
+                }
+            }
+
             alreadyRun = true;
             GiveAllPlayersControllersBack();
             return;
