@@ -1,6 +1,3 @@
-using Steamworks;
-using static UnityEngine.UI.Image;
-
 namespace Slugpack;
 
 internal static class PlayerGraphicsHooks
@@ -69,26 +66,26 @@ internal static class PlayerGraphicsHooks
             for (int i = 0; i < numSegments; i++)
                 segmentStiffness[i] = baseStiffnessFactors[i] * stiffnessScale;
 
-            resetChain(initialBaseAngleDeg);
+            ResetChain(initialBaseAngleDeg);
         }
 
-        public void setBaseAngleDeg(float angleDeg) => targetBaseAngle = angleDeg * (Mathf.PI / 180.0f);
+        public void SetBaseAngleDeg(float angleDeg) => targetBaseAngle = angleDeg * (Mathf.PI / 180.0f);
 
-        public void resetChain(float baseAngleDeg)
+        public void ResetChain(float baseAngleDeg)
         {
             targetBaseAngle = baseAngleDeg * (Mathf.PI / 180.0f);
             segmentAngles[0] = targetBaseAngle;
             for (int i = 0; i < numSegments; ++i)
             {
                 segmentAngVels[i] = 0.0f;
-                segmentAngles[i] = (i > 0) ? normalizeAngle(segmentAngles[i - 1]) : normalizeAngle(segmentAngles[i]);
+                segmentAngles[i] = (i > 0) ? NormalizeAngle(segmentAngles[i - 1]) : NormalizeAngle(segmentAngles[i]);
             }
-            updateGeometry();
+            UpdateGeometry();
         }
 
-        private float normalizeAngle(float angleRad) => (angleRad + Mathf.PI) % (2 * Mathf.PI) - Mathf.PI;
+        private float NormalizeAngle(float angleRad) => (angleRad + Mathf.PI) % (2 * Mathf.PI) - Mathf.PI;
 
-        private float calculateDamping(float speed)
+        private float CalculateDamping(float speed)
         {
             const float minSpeed = 10.0f, maxSpeed = 30.0f;
             const float minDamp = 1.0f, midDamp = 12.0f, maxDamp = 60.0f;
@@ -116,7 +113,7 @@ internal static class PlayerGraphicsHooks
             return new Vector2(p1x + tParam * (p2x - p1x), p1y + tParam * (p2y - p1y));
         }
 
-        private void updateJointPositions()
+        private void UpdateJointPositions()
         {
             jointPositions[0] = basePosition;
             Vector2 currentPos = basePosition;
@@ -128,7 +125,7 @@ internal static class PlayerGraphicsHooks
             }
         }
 
-        private void updateSegmentBounds()
+        private void UpdateSegmentBounds()
         {
             for (int i = 0; i < numSegments; i++)
             {
@@ -153,7 +150,7 @@ internal static class PlayerGraphicsHooks
             }
         }
 
-        private void updateJointConnectors()
+        private void UpdateJointConnectors()
         {
             float totalChainLen = 0;
             for (int i = 0; i < segmentLengths.Length; ++i) totalChainLen += segmentLengths[i];
@@ -239,7 +236,7 @@ internal static class PlayerGraphicsHooks
             }
         }
 
-        private void smoothPath()
+        private void SmoothPath()
         {
             if (controlPath.Length == 0) return;
 
@@ -314,40 +311,39 @@ internal static class PlayerGraphicsHooks
             }
         }
 
-        private void updateGeometry()
+        private void UpdateGeometry()
         {
-            updateJointPositions();
-            updateSegmentBounds();
-            updateJointConnectors();
+            UpdateJointPositions();
+            UpdateSegmentBounds();
+            UpdateJointConnectors();
             generateControlPath();
-            smoothPath();
+            SmoothPath();
         }
 
-        public void updateDynamics(float deltaTime, Vector2 flowVec, float gravityMag,
-                                       float bodySpeed, float baseAngleInfluence, Vector2 externalForce)
+        public void UpdateDynamics(float deltaTime, Vector2 flowVec, float gravityMag, float bodySpeed, float baseAngleInfluence, Vector2 externalForce)
         {
-            float damping = calculateDamping(bodySpeed);
+            float damping = CalculateDamping(bodySpeed);
             float flowMag = flowVec.magnitude; // Assuming flowVec is Vector2, .Length() -> .magnitude
             float flowAngle = Mathf.Atan2(flowVec.y, flowVec.x); // Changed .Y .X to .y .x
 
             float currentSegAngle_S0 = segmentAngles[0];
             float targetAngle_S0 = targetBaseAngle;
             float effStiffness_S0 = (baseInertia + segmentStiffness[0]) * 0.05f;
-            float torque_S0 = effStiffness_S0 * normalizeAngle(targetAngle_S0 - currentSegAngle_S0);
+            float torque_S0 = effStiffness_S0 * NormalizeAngle(targetAngle_S0 - currentSegAngle_S0);
             torque_S0 += gravityMag * segmentLengths[0] * Mathf.Cos(currentSegAngle_S0) * gravityEffect;
 
             float randFlowMag_S0 = flowMag * (1.0f + (float)(randomGen.NextDouble() * 0.4 - 0.2)); // Changed
             float randFlowAngle_S0 = flowAngle + (float)(randomGen.NextDouble() * (Mathf.PI / 6.0) - (Mathf.PI / 12.0)); // Changed
-            torque_S0 += 0.5f * segmentLengths[0] * randFlowMag_S0 * Mathf.Sin(normalizeAngle(randFlowAngle_S0 - currentSegAngle_S0));
+            torque_S0 += 0.5f * segmentLengths[0] * randFlowMag_S0 * Mathf.Sin(NormalizeAngle(randFlowAngle_S0 - currentSegAngle_S0));
 
             torque_S0 += (segmentLengths[0] / 2f) * (-externalForce.y * Mathf.Cos(currentSegAngle_S0) + externalForce.x * Mathf.Sin(currentSegAngle_S0)) * flowEffect;
 
-            float alignmentFactor_S0 = Math.Max(0f, 1f - Math.Abs(normalizeAngle(currentSegAngle_S0 - targetAngle_S0)) / Mathf.PI);
+            float alignmentFactor_S0 = Math.Max(0f, 1f - Math.Abs(NormalizeAngle(currentSegAngle_S0 - targetAngle_S0)) / Mathf.PI);
             torque_S0 -= damping * (1f + dampingFactor * alignmentFactor_S0) * segmentAngVels[0];
 
             float inertia_S0 = Math.Max(minInertia, inertiaFromLengthFactor * Mathf.Pow(segmentLengths[0], 3));
             segmentAngVels[0] += (inertia_S0 > 1e-9f ? (torque_S0 / inertia_S0) * deltaTime : 0f);
-            segmentAngles[0] = normalizeAngle(segmentAngles[0] + segmentAngVels[0] * deltaTime);
+            segmentAngles[0] = NormalizeAngle(segmentAngles[0] + segmentAngVels[0] * deltaTime);
 
             for (int segIdx = 1; segIdx < numSegments; segIdx++)
             {
@@ -357,20 +353,20 @@ internal static class PlayerGraphicsHooks
                 float effStiffness = baseInertia + segmentStiffness[segIdx];
 
                 float targetAngleForSeg = targetBaseAngle;
-                float blendedTargetAngle = normalizeAngle((1f - baseAngleInfluence) * prevSegAngle + baseAngleInfluence * targetAngleForSeg);
+                float blendedTargetAngle = NormalizeAngle((1f - baseAngleInfluence) * prevSegAngle + baseAngleInfluence * targetAngleForSeg);
 
-                float torque = effStiffness * normalizeAngle(blendedTargetAngle - currentSegAngle);
+                float torque = effStiffness * NormalizeAngle(blendedTargetAngle - currentSegAngle);
                 torque += gravityMag * segmentLengths[segIdx] * Mathf.Cos(currentSegAngle) * gravityEffect;
 
                 float randFlowMag = flowMag * (1f + (float)(randomGen.NextDouble() * 0.4 - 0.2)); // Changed
                 float randFlowAngle = flowAngle + (float)(randomGen.NextDouble() * (Mathf.PI / 6f) - (Mathf.PI / 12f)); // Changed
-                torque += 0.5f * segmentLengths[segIdx] * randFlowMag * Mathf.Sin(normalizeAngle(randFlowAngle - currentSegAngle));
+                torque += 0.5f * segmentLengths[segIdx] * randFlowMag * Mathf.Sin(NormalizeAngle(randFlowAngle - currentSegAngle));
                 torque += (segmentLengths[segIdx] / 2f) * (-externalForce.y * Mathf.Cos(currentSegAngle) + externalForce.x * Mathf.Sin(currentSegAngle)) * flowEffect;
 
-                float alignmentFactor = Math.Max(0f, 1f - Math.Abs(normalizeAngle(currentSegAngle - blendedTargetAngle)) / Mathf.PI);
+                float alignmentFactor = Math.Max(0f, 1f - Math.Abs(NormalizeAngle(currentSegAngle - blendedTargetAngle)) / Mathf.PI);
                 torque -= damping * (1f + dampingFactor * alignmentFactor) * segmentAngVels[segIdx];
 
-                float angleDiffPrev = normalizeAngle(currentSegAngle - prevSegAngle);
+                float angleDiffPrev = NormalizeAngle(currentSegAngle - prevSegAngle);
                 float softBendLimit = Mathf.PI / 2f - 0.02f;
                 float bendLimitBuffer = (20f * Mathf.PI / 180f);
                 float effectiveBendLimit = softBendLimit - bendLimitBuffer;
@@ -392,20 +388,20 @@ internal static class PlayerGraphicsHooks
 
                 float inertia = Math.Max(minInertia, inertiaFromLengthFactor * Mathf.Pow(segmentLengths[segIdx], 3));
                 segmentAngVels[segIdx] += (inertia > 1e-9f ? (torque / inertia) * deltaTime : 0f);
-                segmentAngles[segIdx] = normalizeAngle(segmentAngles[segIdx] + segmentAngVels[segIdx] * deltaTime);
+                segmentAngles[segIdx] = NormalizeAngle(segmentAngles[segIdx] + segmentAngVels[segIdx] * deltaTime);
 
-                float newAngleDiffPrev = normalizeAngle(segmentAngles[segIdx] - segmentAngles[segIdx - 1]);
+                float newAngleDiffPrev = NormalizeAngle(segmentAngles[segIdx] - segmentAngles[segIdx - 1]);
                 float hardBendLimit = Mathf.PI / 2f - 0.005f;
                 bool limitWasHit = false;
 
                 if (newAngleDiffPrev > hardBendLimit)
                 {
-                    segmentAngles[segIdx] = normalizeAngle(segmentAngles[segIdx - 1] + hardBendLimit);
+                    segmentAngles[segIdx] = NormalizeAngle(segmentAngles[segIdx - 1] + hardBendLimit);
                     limitWasHit = true;
                 }
                 else if (newAngleDiffPrev < -hardBendLimit)
                 {
-                    segmentAngles[segIdx] = normalizeAngle(segmentAngles[segIdx - 1] - hardBendLimit);
+                    segmentAngles[segIdx] = NormalizeAngle(segmentAngles[segIdx - 1] - hardBendLimit);
                     limitWasHit = true;
                 }
                 if (limitWasHit)
@@ -414,7 +410,7 @@ internal static class PlayerGraphicsHooks
                     segmentAngVels[segIdx] = segmentAngVels[segIdx - 1] - limitHitDamping * angVelDiff;
                 }
             }
-            updateGeometry();
+            UpdateGeometry();
         }
     }
 
@@ -425,20 +421,20 @@ internal static class PlayerGraphicsHooks
             this.room = room;
             this.owner = owner;
             this.pos = pos;
-            this.prevPos = pos;
-            this.physics = new HairPhysics(pos, 0f, new float[] { 50f, 50f, 50f, 40f });
-            this.colour = new Color(1f, 0f, 1f);
+            prevPos = pos;
+            physics = new HairPhysics(pos, 0f, [50f, 50f, 50f, 40f]);
+            colour = new Color(1f, 0f, 1f);
         }
 
         public override void Update(bool eu)
         {
-            physics.updateDynamics(
+            physics.UpdateDynamics(
                 1/40f,
                 Vector2.zero,
                 10f,
                 1f,
                 0f,
-                (this.prevPos - this.pos) * 64
+                (prevPos - pos) * 64
             );
 
             renderPath = divAll(physics.renderPath, 20f);
@@ -449,6 +445,9 @@ internal static class PlayerGraphicsHooks
 
         public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
+            base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
+
+            if (sLeaser.sprites[0] == null || renderPath == null) return;
             (sLeaser.sprites[0] as TriangleMesh).MoveVertice(0, pos + renderPath[0]);
 
             int idxA = pathA ? 1 : 0;
@@ -467,21 +466,21 @@ internal static class PlayerGraphicsHooks
             (sLeaser.sprites[0] as TriangleMesh).MoveVertice(11, pos + renderPath[10 - idxB]);
             (sLeaser.sprites[0] as TriangleMesh).MoveVertice(12, pos + renderPath[10]);
             (sLeaser.sprites[0] as TriangleMesh).MoveVertice(13, pos + renderPath[11]);
-            (sLeaser.sprites[0] as TriangleMesh).color = new UnityEngine.Color(0f, 1f, 0f);
+            (sLeaser.sprites[0] as TriangleMesh).color = new Color(0f, 1f, 0f);
 
             prevPos = pos;
 
-            sLeaser.sprites[0].color = this.colour;
+            sLeaser.sprites[0].color = colour;
 
             // sLeaser.sprites[0].isVisible = true;// !owner.player.inShortcut;
-            base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
+            
         }
 
         public override void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
         {
             sLeaser.sprites = new FSprite[1];
-            TriangleMesh.Triangle[] tris = new TriangleMesh.Triangle[]
-            {
+            TriangleMesh.Triangle[] tris =
+            [
             new TriangleMesh.Triangle(12, 13, 0),
             new TriangleMesh.Triangle(12, 1, 0),
             new TriangleMesh.Triangle(11, 12, 1),
@@ -494,7 +493,7 @@ internal static class PlayerGraphicsHooks
             new TriangleMesh.Triangle(8, 5, 4),
             new TriangleMesh.Triangle(7, 8, 5),
             new TriangleMesh.Triangle(7, 6, 5),
-            };
+            ];
             sLeaser.sprites[0] = new TriangleMesh("Futile_White", tris, true, false);
 
             AddToContainer(sLeaser, rCam, null);
@@ -544,30 +543,34 @@ internal static class PlayerGraphicsHooks
 
         public override void Update(bool eu)
         {
-            if (this.furTufts == null)
+            if (furTufts == null)
             {
-                this.furTufts = new FurTuft[] { new FurTuft(room, this, pos) };
+                furTufts = [new FurTuft(room, this, pos)];
 
-                for (int i = 0; i < this.furTufts.Length; i++)
-                    room.AddObject(this.furTufts[i]);
+                for (int i = 0; i < furTufts.Length; i++)
+                    room.AddObject(furTufts[i]);
             }
 
         }
 
         public override void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
         {
-            for (int i = 0; i < this.furTufts.Length; i++)
+            if (furTufts != null)
             {
-                this.furTufts[i].pos = pos + new Vector2(0f, 30f);
-                this.furTufts[i].colour = this.colour;
+                for (int i = 0; i < furTufts.Length; i++)
+                {
+                    furTufts[i].pos = pos + new Vector2(0f, 30f);
+                    furTufts[i].colour = colour;
+                }
             }
+
             base.DrawSprites(sLeaser, rCam, timeStacker, camPos);
         }
 
         public override void Destroy()
         {
-            for (int i = 0; i < this.furTufts.Length; i++)
-                this.furTufts[i].Destroy();
+            for (int i = 0; i < furTufts.Length; i++)
+                furTufts[i].Destroy();
 
             base.Destroy();
         }

@@ -269,7 +269,7 @@ public class Karma10Projection : BackgroundScene.BackgroundSceneElement
 
         for (int i = 0; i < heights.Length; i++)
         {
-            List<Vector2[]> bucket = new List<Vector2[]>();
+            List<Vector2[]> bucket = [];
             for (int j = 0; j < segments.Length; j++)
             {
                 if (IsIntersect(segments[j][0], segments[j][1], heights[i]))
@@ -324,7 +324,7 @@ public class Karma10Projection : BackgroundScene.BackgroundSceneElement
         Vector2[][] segments = new Vector2[connections.Length][];
         for (int i = 0; i < connections.Length; i++)
         {
-            segments[i] = new Vector2[2] { pMesh[connections[i][0]], pMesh[connections[i][1]] };
+            segments[i] = [pMesh[connections[i][0]], pMesh[connections[i][1]]];
         }
         return segments;
     }
@@ -505,13 +505,13 @@ public class Karma10Projection : BackgroundScene.BackgroundSceneElement
         new Vector3(0.333158f, 0.83629f, 0f),
         new Vector3(0.279731f, 0.745267f, 0f),
     };
-    private int[][] connections = new int[][] {
+    private int[][] connections = [
         new int[] {0, 1},
         new int[] {1, 2},
         new int[] {2, 3},
         new int[] {3, 0},
 
-       new int[] {4, 5},
+        new int[] {4, 5},
         new int[] {5, 6},
         new int[] {6, 7},
         new int[] {7, 4},
@@ -567,5 +567,5 @@ public class Karma10Projection : BackgroundScene.BackgroundSceneElement
         new int[] {55, 56},
         new int[] {56, 57},
         new int[] {57, 11},
-    };
+    ];
 }
