@@ -1,16 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net48</TargetFramework>
-    <LangVersion>preview</LangVersion>
-    <AssemblyName>Slugpack</AssemblyName>
-	<Nullable>disable</Nullable>
-    <RootNamespace>Slugpack</RootNamespace>
-  <PathMap>$(MSBuildProjectDirectory)=/$(SolutionName)</PathMap>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="slugpack" />
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net48</TargetFramework>
+		<LangVersion>preview</LangVersion>
+		<AssemblyName>Slugpack</AssemblyName>
+		<Nullable>disable</Nullable>
+		<RootNamespace>Slugpack</RootNamespace>
+		<PathMap>$(MSBuildProjectDirectory)=/$(SolutionName)</PathMap>
+	</PropertyGroup>
 
 	<Target Name="GenerateMod" AfterTargets="PostBuildEvent">
 		<ItemGroup>
@@ -27,15 +23,50 @@
 
 
 	<ItemGroup>
-        <Reference Include="../lib/*.dll">
-            <Private>false</Private>
-        </Reference>
-    </ItemGroup>
+		<Reference Include="../lib/*.dll">
+			<Private>false</Private>
+		</Reference>
+	</ItemGroup>
 
 
 	<ItemGroup>
-	  <None Remove="Creatures\Lizards\HiveQueen\HiveQueenHooks.cs~RF4bf08bc9.TMP" />
+	  <Compile Remove="Dependencies\**" />
+	  <EmbeddedResource Remove="Dependencies\**" />
+	  <None Remove="Dependencies\**" />
+	  <Reference Remove="Dependencies\**" />
 	</ItemGroup>
-    
+
+
+	<ItemGroup>
+	  <Reference Include="Assembly-CSharp">
+	    <HintPath>Dependencies\Assembly-CSharp.dll</HintPath>
+	  </Reference>
+	  <Reference Include="BepInEx">
+	    <HintPath>Dependencies\BepInEx.dll</HintPath>
+	  </Reference>
+	  <Reference Include="HOOKS-Assembly-CSharp">
+	    <HintPath>Dependencies\HOOKS-Assembly-CSharp.dll</HintPath>
+	  </Reference>
+	  <Reference Include="Unity.Mathematics">
+	    <HintPath>Dependencies\Unity.Mathematics.dll</HintPath>
+	  </Reference>
+	  <Reference Include="UnityEngine">
+	    <HintPath>Dependencies\UnityEngine.dll</HintPath>
+	  </Reference>
+	  <Reference Include="UnityEngine.CoreModule">
+	    <HintPath>Dependencies\UnityEngine.CoreModule.dll</HintPath>
+	  </Reference>
+	  <Reference Include="UnityEngine.InputLegacyModule">
+	    <HintPath>Dependencies\UnityEngine.InputLegacyModule.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
+
+	<ItemGroup>
+		<Folder Include="Campaigns\Technomancer\Utils\" />
+		<Folder Include="Campaigns\Common Utils\" />
+		<Folder Include="Campaigns\Voyager\Utils\" />
+	</ItemGroup>
+
 
 </Project>

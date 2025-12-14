@@ -1,254 +1,66 @@
-﻿using Menu.Remix.MixedUI;
-using Menu.Remix.MixedUI.ValueTypes;
+﻿// Plugin.cs
+/* Acts as the main entry point for the mod */
+
+using BepInEx;
+using System.IO;
+using System.Linq;
+using System;
 
 namespace Slugpack;
 
-[BepInPlugin(MOD_ID, MOD_NAME, VERSION)]
+[BepInPlugin(_ID, "Slugpack", "1.0.0")]
 public class Plugin : BaseUnityPlugin
 {
-    public const string MOD_NAME = "SlugpackPlugin";
-    public const string MOD_ID = "splugpack";
-    public const string VERSION = "1.0.1";
+    const string _ID = "nikki.slugpack";
 
     public bool IsInit;
     public OptionsMenu optionsMenuInstance;
 
-    public static void DebugWarning(object ex) => Logger.LogWarning(ex);
-
-    public static void DebugError(object ex) => Logger.LogError(ex);
-
-    public static void DebugLog(object ex) => Logger.LogInfo(ex);
-
-    public static new ManualLogSource Logger;
-
     public void OnEnable()
     {
-        try
-        {
-            Logger = base.Logger;
-            DebugWarning("Technomancer is loading...");
-
-            ApplyCreatures();
-
-            On.RainWorld.OnModsInit += RainWorld_OnModsInit;
-        }
-        catch (Exception ex)
-        {
-            DebugError(ex);
-            Debug.LogException(ex);
-        }
+        Log.Init(base.Logger);
+        On.RainWorld.OnModsInit += RainWorld_OnModsInit;
     }
 
     private void RainWorld_OnModsInit(On.RainWorld.orig_OnModsInit orig, RainWorld self)
     {
         orig(self);
-        try
-        {
-            if (IsInit) return;
-            IsInit = true;
 
-            TnEnums.Init();
+        if (IsInit) return;
+        IsInit = true;
 
-            GameHooks.Apply();
-            PlayerGraphicsHooks.Apply();
-            PlayerHooks.Apply();
-            HypothermiaHooks.Apply();
-            CreatureHooks.Apply();
-            MoonDialogue.Apply();
-            InitializeObjects.Apply();
-            RoomScripts.Apply();
+        LoadAtlases();
 
-            LoadAtlases();
+        optionsMenuInstance = new OptionsMenu(this);
+        MachineConnector.SetRegisteredOI("splugpack", optionsMenuInstance);
+        MachineConnector.SetRegisteredOI("splugpack.DEVBUILD", optionsMenuInstance);
 
-            if (Constants.shaders_enabled)
-            {
-                if (!Constants.SlugpackShaders.TryGetValue(self, out var _))
-                { Constants.SlugpackShaders.Add(self, _ = new Shaders()); }
-
-                if (Constants.SlugpackShaders.TryGetValue(self, out var Shaders))
-                {
-                    Shaders.SlugShaders = Utilities.LoadFromEmbeddedResource("Slugpack.slugpack");
-
-                    if (Shaders.SlugShaders != null)
-                    {
-                        // Utilities.InPlaceTryCatch(ref Shaders._shadowMask, Shaders.SlugShaders.LoadAsset<Texture2D>("Assets/TL_V01.png"), "Technomancer (SlugPack/Game.cs/%ln): Texture \"_shadowMask\" Failed to set!");
-                        Utilities.InPlaceTryCatch(ref Shaders._effectMask, Shaders.SlugShaders.LoadAsset<Texture2D>("Assets/EFFECT_MASK.png"), "Technomancer (SlugPack/Game.cs/%ln): Texture \"_effectMask\" Failed to set!");
-                        Utilities.InPlaceTryCatch(ref Shaders._RGB2HSL, Shaders.SlugShaders.LoadAsset<Texture2D>("Assets/RGB2HSL.png"), "Technomancer (SlugPack/Game.cs/%ln): Texture \"_RGB2HSL\" Failed to set!");
-                        Utilities.InPlaceTryCatch(ref Shaders._HSL2RGB, Shaders.SlugShaders.LoadAsset<Texture2D>("Assets/HSL2RGB.png"), "Technomancer (SlugPack/Game.cs/%ln): Texture \"_HSL2RGB\" Failed to set!");
-
-                        Utilities.InPlaceTryCatch(ref Shaders.Redify, FShader.CreateShader("Redify", Shaders.SlugShaders.LoadAsset<Shader>("Assets/NoTex.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"Redify\" Failed to set!");
-                        Utilities.InPlaceTryCatch(ref Shaders.ShadowMask, FShader.CreateShader("ShadowMask", Shaders.SlugShaders.LoadAsset<Shader>("Assets/ShadowMask.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"ShadowMask\" Failed to set!");
-                        Utilities.InPlaceTryCatch(ref Shaders.HologramA, FShader.CreateShader("RadialA", Shaders.SlugShaders.LoadAsset<Shader>("Assets/Hologram.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"HologramA\" Failed to set!");
-                        Utilities.InPlaceTryCatch(ref Shaders.HologramB, FShader.CreateShader("RadialB", Shaders.SlugShaders.LoadAsset<Shader>("Assets/Hologram.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"HologramB\" Failed to set!");
-                        Utilities.InPlaceTryCatch(ref Shaders.Distances, FShader.CreateShader("Distances", Shaders.SlugShaders.LoadAsset<Shader>("Assets/DistancePoints.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"Distances\" Failed to set!");
-                        Utilities.InPlaceTryCatch(ref Shaders.ProjectionLinesA, FShader.CreateShader("ProjetionLinesA", Shaders.SlugShaders.LoadAsset<Shader>("Assets/ProjectionLines.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"ProjectionLinesA\" Failed to set!");
-                        Utilities.InPlaceTryCatch(ref Shaders.ProjectionLinesB, FShader.CreateShader("ProjetionLinesB", Shaders.SlugShaders.LoadAsset<Shader>("Assets/ProjectionLines.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"ProjectionLinesB\" Failed to set!");
-                        Utilities.InPlaceTryCatch(ref Shaders.ProjectionLinesC, FShader.CreateShader("ProjetionLinesC", Shaders.SlugShaders.LoadAsset<Shader>("Assets/ProjectionLines.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"ProjectionLinesC\" Failed to set!");
-                        Utilities.InPlaceTryCatch(ref Shaders.ProjectionLinesD, FShader.CreateShader("ProjetionLinesD", Shaders.SlugShaders.LoadAsset<Shader>("Assets/ProjectionLines.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"ProjectionLinesD\" Failed to set!");
-                        Utilities.InPlaceTryCatch(ref Shaders.ColourChangerShader, FShader.CreateShader("ColourChangerShader", Shaders.SlugShaders.LoadAsset<Shader>("Assets/ChangeEffectColour.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"ColourChangerShader\" Failed to set!");
-                        Utilities.InPlaceTryCatch(ref Shaders.SelectionShader, FShader.CreateShader("SelectionShader", Shaders.SlugShaders.LoadAsset<Shader>("Assets/SelectionObject.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"SelectionShader\" Failed to set!");
-                        Utilities.InPlaceTryCatch(ref Shaders.ConnectingLine, FShader.CreateShader("ConnectingLine", Shaders.SlugShaders.LoadAsset<Shader>("Assets/ConnectingLine.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"ConnectingLine\" Failed to set!");
-                        Utilities.InPlaceTryCatch(ref Shaders.ModifiedLightBeamShader, FShader.CreateShader("ModifiedLightBeamShader", Shaders.SlugShaders.LoadAsset<Shader>("Assets/ModifiedLightBeam.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"ModifiedLightBeamShader\" Failed to set!");
-                        Utilities.InPlaceTryCatch(ref Shaders.DynamicTrain, FShader.CreateShader("DynamicTrainShader", Shaders.SlugShaders.LoadAsset<Shader>("Assets/dynamicTrains.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"DynamicTrain\" Failed to set!");
-                        Utilities.InPlaceTryCatch(ref Shaders.SpinningFan, FShader.CreateShader("SpinningFan", Shaders.SlugShaders.LoadAsset<Shader>("Assets/fanBlade.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"SpinningFan\" Failed to set!");
-                        Utilities.InPlaceTryCatch(ref Shaders.CustomCustomDepth, FShader.CreateShader("CustomCustomDepth", Shaders.SlugShaders.LoadAsset<Shader>("Assets/CustomCustomDepth.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"CustomCustomDepth\" Failed to set!");
-                        Utilities.InPlaceTryCatch(ref Shaders.DistantCityLights, FShader.CreateShader("BackgroundCityLights", Shaders.SlugShaders.LoadAsset<Shader>("Assets/BackgroundCityLights.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"BackgroundCityLights\" Failed to set!");
-                        Utilities.InPlaceTryCatch(ref Shaders.Satellite, FShader.CreateShader("Satellite", Shaders.SlugShaders.LoadAsset<Shader>("Assets/Satellite.shader")), "Technomancer (SlugPack/Game.cs/%ln): Shader \"Satellite\" Failed to set!");
-                    }
-                    else
-                    {
-                        DebugLog("Technomancer: Error loading shaders or shader assets!");
-                    }
-                }
-            }
-
-            optionsMenuInstance = new OptionsMenu(this);
-            try
-            {
-                MachineConnector.SetRegisteredOI("splugpack", optionsMenuInstance);
-                MachineConnector.SetRegisteredOI("splugpack.DEVBUILD", optionsMenuInstance);
-            }
-            catch (Exception ex)
-            {
-                DebugError($"Remix Menu Template examples: Hook_OnModsInit options failed init error {optionsMenuInstance}{ex}");
-            }
-
-            On.RainWorld.OnModsDisabled += RainWorld_OnModsDisabled;
-        }
-        catch (Exception ex)
-        {
-            DebugError(ex);
-            DebugError("Technomancer failed to load OnModsInit!");
-        }
+        Technomancer.Init();
+        Voyager.Init();
     }
 
-    private void RainWorld_OnModsDisabled(On.RainWorld.orig_OnModsDisabled orig, RainWorld self, ModManager.Mod[] newlyDisabledMods)
-    {
-        orig(self, newlyDisabledMods);
-        for (var i = 0; i < newlyDisabledMods.Length; i++)
-        {
-            if (newlyDisabledMods[i].id == MOD_ID)
-            {
-                DebugWarning($"Unregistering Creatures from {MOD_ID}");
-                TnEnums.Unregister();
-                break;
-            }
-        }
-    }
-
-    private void ApplyCreatures()
-    {
-        DebugWarning("Loading Creatures from Technomancer");
-
-        HiveQueenHooks.Apply();
-        PastGreenHooks.Apply();
-        CaveLeechHooks.Apply();
-
-        Content.Register(
-            new CaveLeechCritob(),
-            new HiveQueenCritob(),
-            new PastGreenCritob());
-    }
-
+    // Will find some cleaner way to do this later
     private void LoadAtlases()
     {
         try
         {
-            foreach (string file in from file in AssetManager.ListDirectory("tn_atlases")
-                                    where Path.GetExtension(file).Equals(".png")
-                                    select file)
+            var pngFiles = AssetManager.ListDirectory("tn_atlases")
+                                       .Where(f => Path.GetExtension(f) == ".png");
+
+            foreach (string file in pngFiles)
             {
-                _ = File.Exists(Path.ChangeExtension(file, ".txt"))
-                    ? Futile.atlasManager.LoadAtlas(Path.ChangeExtension(file, null))
-                    : Futile.atlasManager.LoadImage(Path.ChangeExtension(file, null));
+                string assetName = Path.ChangeExtension(file, null);
+                bool hasAtlasData = File.Exists(assetName + ".txt");
+
+                // Execute the specific logic based on file existence
+                if (hasAtlasData)
+                    Futile.atlasManager.LoadAtlas(assetName);
+                else
+                    Futile.atlasManager.LoadImage(assetName);
             }
         }
         catch (Exception ex)
         {
-            DebugError(ex);
-            throw new Exception($"Failed to load {MOD_NAME} atlases!");
         }
     }
-}
-
-public class OptionsMenu : OptionInterface
-{
-    public OptionsMenu(Plugin plugin)
-    {
-        furToggle = this.config.Bind<bool>("splugpack_Bool_Checkbox", false);
-        alwaysOnHolograms = this.config.Bind<bool>("splugpack_Bool_Holograms", false);
-        trainLengthSlider = this.config.Bind<int>("splugpack_Int_TrainLength", 30);
-    }
-    public override void Initialize()
-    {
-        var opTab1 = new OpTab(this, "Default Canvas");
-        this.Tabs = new[] { opTab1 };
-
-        // Tab 1
-        OpContainer tab1Container = new OpContainer(new Vector2(0, 0));
-        opTab1.AddItems(tab1Container);
-
-        UIArrayElements = new UIelement[]
-        {
-                new OpLabel(0f, 550f, "The Technomancer - Remix Menu", true),
-                new OpCheckBox(furToggle, 0, 500),
-                new OpLabel(30, 502, "Disable Fur"),
-
-                new OpCheckBox(alwaysOnHolograms, 0, 450),
-                new OpLabel(30, 452, "Force-Enable Holograms"),
-
-                new OpHoldButton(new Vector2(450f, 450f), 60f, "Reset", 380f),
-                new OpLabel(440, 430, "Warning! You do not have"),
-                new OpLabel(435, 417, "the recommended settings!"),
-                new OpSlider(trainLengthSlider, new Vector2(0f, 396f), 100, false)
-                {
-                    max = 100,
-                    hideLabel = false
-                },
-                new OpLabel(107, 402, "Train Length"),
-        };
-        opTab1.AddItems(UIArrayElements);
-    }
-    public override void Update()
-    {
-        base.Update();
-
-        warningFlash += 1;
-
-        (UIArrayElements[5] as OpHoldButton).greyedOut = !(UIArrayElements[1] as OpCheckBox).GetValueBool() && !(UIArrayElements[3] as OpCheckBox).GetValueBool();
-
-        if (!(UIArrayElements[5] as OpHoldButton).greyedOut)
-        {
-            float flash = ((float)Math.Cos((3.14159f * warningFlash) / 10f) + 1f) / 2f;
-            (UIArrayElements[6] as OpLabel).color = new Color(1f, flash, flash, 1f);
-            (UIArrayElements[7] as OpLabel).color = new Color(1f, flash, flash, 1f);
-        }
-        else
-        {
-            (UIArrayElements[6] as OpLabel).color = new Color(1f, 0f, 0f, 0f);
-            (UIArrayElements[7] as OpLabel).color = new Color(1f, 0f, 0f, 0f);
-        }
-
-
-        if ((UIArrayElements[5] as OpHoldButton)._hasSignalled && !playedSound)
-        {
-            Menu.Remix.ConfigContainer.PlaySound(SoundID.MENU_Switch_Page_In);
-            (UIArrayElements[1] as OpCheckBox).SetValueBool(false);
-            (UIArrayElements[3] as OpCheckBox).SetValueBool(false);
-            playedSound = true;
-        }
-
-        if ((UIArrayElements[5] as OpHoldButton)._filled == 0)
-        {
-            playedSound = false;
-        }
-    }
-  
-    static public Configurable<bool> furToggle;
-    static public Configurable<bool> alwaysOnHolograms;
-    static public Configurable<int> trainLengthSlider;
-
-    UIelement[] UIArrayElements;
-    bool playedSound = false;
-    float warningFlash = 0f;
 }

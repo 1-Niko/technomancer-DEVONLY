@@ -1,0 +1,32 @@
+RULES:
+- Every single file must have ONE purpose
+- No two files may have the SAME purpose
+
+Goals:
+- No dependencies, bar the base game.
+
+
+
+Input.GetKey("w")
+
+. (Just the basics to get the mod running, some debug stuff, very simple)
+├── Campaigns
+│   ├── Common Utils
+│   ├── Technomancer
+│   │   ├── Appearance
+│   │   │   ├── Body.cs
+│   │   │   ├── Head.cs
+│   │   │   ├── Init.cs
+│   │   │   └── Tail.cs
+│   │   ├── Init.cs
+│   │   └── Utils
+│   └── Voyager
+│       ├── Appearance
+│       │   ├── Body.cs
+│       │   ├── Head.cs
+│       │   ├── Init.cs
+│       │   └── Tail.cs
+│       ├── Init.cs
+│       └── Utils
+└── Menu
+
