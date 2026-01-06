@@ -9,5 +9,6 @@ public static partial class Technomancer
     {
         Log.Info("Initializing Technomancer...");
         Appearance.Apply();
+        Ability.Apply();
     }
 }

@@ -5,6 +5,9 @@ using BepInEx;
 using System.IO;
 using System.Linq;
 using System;
+using System.Security.Permissions;
+
+[assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
 
 namespace Slugpack;
 

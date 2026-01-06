@@ -38,20 +38,23 @@
 
 
 	<ItemGroup>
-	  <Reference Include="Assembly-CSharp">
-	    <HintPath>Dependencies\Assembly-CSharp.dll</HintPath>
-	  </Reference>
 	  <Reference Include="BepInEx">
 	    <HintPath>Dependencies\BepInEx.dll</HintPath>
 	  </Reference>
 	  <Reference Include="HOOKS-Assembly-CSharp">
 	    <HintPath>Dependencies\HOOKS-Assembly-CSharp.dll</HintPath>
 	  </Reference>
+	  <Reference Include="Assembly-CSharp">
+	    <HintPath>Dependencies\PUBLIC-Assembly-CSharp.dll</HintPath>
+	  </Reference>
 	  <Reference Include="Unity.Mathematics">
 	    <HintPath>Dependencies\Unity.Mathematics.dll</HintPath>
 	  </Reference>
 	  <Reference Include="UnityEngine">
 	    <HintPath>Dependencies\UnityEngine.dll</HintPath>
+	  </Reference>
+	  <Reference Include="UnityEngine.AudioModule">
+	    <HintPath>Dependencies\UnityEngine.AudioModule.dll</HintPath>
 	  </Reference>
 	  <Reference Include="UnityEngine.CoreModule">
 	    <HintPath>Dependencies\UnityEngine.CoreModule.dll</HintPath>
@@ -63,9 +66,7 @@
 
 
 	<ItemGroup>
-		<Folder Include="Campaigns\Technomancer\Utils\" />
 		<Folder Include="Campaigns\Common Utils\" />
-		<Folder Include="Campaigns\Voyager\Utils\" />
 	</ItemGroup>
 
 
